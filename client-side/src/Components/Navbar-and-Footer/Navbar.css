@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "DM Sans";
+}
+
+body{
+    background-color: #f4f4f4;
+}
+a {
+    font-size: 1.1rem;
+    text-align: left;
+    width: 100%;;
+    padding: 0.9em 0.9em ;
+    color: white;
+    margin: 0 ;
+   
+}
+:root {
+	--mainColor: #10162F;;
+	--mainColorLight: #292482;
+	--secondaryColor: #FFF0E5;
+	--textColor: #eee;
+}
+
+.span-red{
+    
+        display: flex;
+        height: 1.59em;
+        width: 1.59em;
+        justify-content: center;
+        align-items: center;
+        background-color: red;
+        border-radius: 1000em;
+        padding: 0.3em;
+        font-size: 0.8em;
+        margin-bottom: 0.87em;
+        margin-left: -0.17em;
+  
+}
+.span-others{
+    
+    margin-bottom:-0.1em
+
+}
+.images-in-carousels{
+    height: 24em;
+}
+/* Styling our header in which our nav bar is sitted inside */
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 80px;
+    gap: 2.5em;
+	padding: 0 2rem;
+    background-color: #386AEB;
+    /* background-image: linear-gradient(#111212, #002064); */
+	color: #fff;
+    position:fixed;
+    top:0; 
+    left:0; 
+    right:0;
+    z-index: 1;
+}
+
+
+/* h3-for-navbar is the styles for the Passcoder words just beside the logo */
+.h3-for-navbar{
+    margin-left:0.2em;
+    font-weight: bolder;
+
+}
+
+/* our nav link contents */
+
+nav h6 {
+	margin: 0 1rem;
+    font-size: 1em;
+	text-decoration: none;
+    display: flex;
+
+  
+}
+.utton{
+    
+}
+.cart-search-user{
+    color: white;
+    display:flex;
+    gap: 2em;
+    font-size:1.25em ;
+
+}
+
+header .nav-btn {
+	padding: 5px;
+	cursor: pointer;
+	background: transparent;
+	border: none;
+	outline: none;
+
+	visibility: hidden;
+	opacity: 0;
+	font-size: 1.8rem;
+}
+
+header div
+ {
+	display: flex;
+	align-items: center;
+}
+
+nav {
+	display: none;
+	align-items: center;
+}
+/* these sections are for our nav bar sign up buttons on display none and block */
+.div-navbar-signup-button{
+    display: none;
+   
+}
+.navbar-signup-button-close{
+    display: block;
+    color: #ffffff;
+    border:none;
+    border-radius: 0.43em;
+    transition: 2s;
+ }
+ .navbar-signup-button-close:hover{
+    display: block;
+    width: 10em;
+    height: 3em;
+    border:0.13 solid #386AEB;
+    background-color: orangered;
+    color: #ffffff;
+    border-radius: 05em;
+    transition: 1s;
+ }
+.navbar-signup-button{
+    display:none;
+ }
+
+
+ 
+@media only screen and (max-width: 1054px) {
+	header .nav-btn {
+		visibility: visible;
+		opacity: 1;
+        
+	}
+    .images-in-carousels{
+        height: 16em;
+    }
+    .cart-cart-in-words{
+        display: none;
+    }
+    .div-navbar-signup-button{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width:100%;
+        margin-top: 2em;
+    }
+    .navbar-signup-button{
+       display:flex;
+        justify-content: center;
+        opacity: 1;
+        width: 100%;
+        height: 3em;
+        border-radius: 0.43em;
+        border:none;
+        color:white;
+        transition: 1s;
+        align-items: center;
+     }
+     .navbar-signup-button:hover{
+        display:flex;
+        justify-content: center;
+        opacity: 1;
+        align-items: center;
+        width: 100%;
+        height: 3em;
+        border-radius: 0.43em;
+        border:none;
+        color:white;
+        background-color: orangered;
+        transition: 1s;
+      }
+      
+    .navbar-signup-button-close{
+       display:none;
+       
+    }
+
+    .Logo-top-left{
+        display: none;
+    }
+	 nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 80%;
+		display: flex;
+		flex-direction: column;
+        text-align: left;
+        align-items: flex-start;
+        justify-content: center;
+		gap: 0.2rem;
+       padding-left: 1em;
+       padding:1em;
+		background-color:#386AEB;
+        color: #fff ;
+		transition: 1s;
+		transform: translateY(-100vh);
+	}
+    .span-others{
+    
+        margin-bottom:0.1
+  
+}
+	header .responsive_nav {
+		transform: none;
+	}
+
+	nav .nav-close-btn {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+        color:#ffffff;
+	}
+
+	nav h6  {
+		font-size: 1.1rem;
+        text-align: left;
+        width: 100%;;
+        padding: 0.9em 0.9em ;
+        color: white;
+        margin: 0 ;
+ 
+	}
+
+    .cart-search-user{
+        color: white;
+        display:flex;
+        gap: 1.3em;
+        font-size:1.1em ;
+    
+    }
+    .logo-in-the-dropdown{
+        background-color: #ffffff45;
+        padding: 0.3em 1em;
+        display: flex;
+        justify-content: center;
+        border-radius: 2em;
+        align-items: center;
+        gap: -2em
+        
+    }
+    .span-red{
+    
+        display: flex;
+        height: 1.49em;
+        width: 1.49em;
+        justify-content: center;
+        align-items: center;
+        background-color: red;
+        border-radius: 1000em;
+        padding: 0.6em;
+        font-size: 0.7em;
+        margin-bottom: 0.87em;
+        margin-left: -0.17em;
+  
+}
+    
+}
+

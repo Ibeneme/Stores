@@ -1,0 +1,50 @@
+.first-product-details-div{
+    display: flex;
+    padding: 2em;
+    gap: 3em;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.img-to-map-products-details{
+    width: 20em
+}
+.div-btn-details{
+    width: 18em
+}
+.content-details{
+    width: 53em
+}
+/* .div-to-map-products-details {
+    margin-top: -0.6em;
+    position: relative;
+    width: 16em;
+    height: 13em;
+    overflow: hidden;
+  }
+  
+  .div-to-map-products-details img {
+    border-radius: 0.73em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    clip: rect(10, 222em, 10, 10);
+  rect(top, right, bottom, left) In this example, we're cropping the left half of the imag
+  } */
+
+  @media only screen and (max-width: 664px){
+
+    .first-product-details-div{
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+        gap: 3em;
+        justify-content: center;
+        align-items: center;
+    }
+    .content-details{
+        width: 100%
+    }
+    
+  }

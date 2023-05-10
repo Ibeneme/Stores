@@ -1,0 +1,13 @@
+.input-forms{
+    padding-left: 1em;
+    padding: 0.8em;
+    width: 38em;
+}
+
+@media only screen and (max-width: 570px){
+    .input-forms{
+        padding-left: 1em;
+        padding: 0.8em;
+        width: 90vw;
+    }
+}

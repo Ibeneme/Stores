@@ -1,0 +1,238 @@
+.spread{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2em;
+    gap:0.7em
+}
+.no-product{
+    margin-top: 6em;
+    background-color: white;
+    padding: 3em;
+    border-radius: 0.7em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+
+
+}
+.no-product>img{
+    width: 9em
+}
+.hide-add{
+    visibility:hidden;
+    margin-top: -2em;
+}
+.show-delete-btn{
+  
+    visibility: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 4em;
+    background-color: rgba(255, 0, 0, 0.164);
+    color: red;
+    border: none;
+    padding: 0.3em;
+    border-radius: 0.32em;
+}
+.mehnn{
+        margin-top: 1.4em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-right: 2em;
+        align-items: center;
+   
+}
+.cart-first-div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    border: none;
+    border-radius: 0.9em;
+    background-color: white;
+    width: 65vw;
+    padding:0.3em;
+    height: fit-content;
+}
+
+.img-cart-first-div{
+    width: 9em;
+    padding:0.5em;
+
+}
+.clear-cart{
+
+    width: 8em;
+    height: 2.5em;
+    border: none;
+    background-color: rgba(255, 0, 0, 0.096);
+    color: red;
+    border-radius: 1.2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+.add-items{
+    background-color: #386aeb;
+    color: white;
+    font-size: 0.9em;
+    width: 2em;
+    height: 2em;
+    border: none;
+    border-radius: 0.4em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.last-checkout-div{
+    background-color: white;
+    width: 30vw;
+    height: fit-content;
+    padding:1.2em;
+    border-radius: 1em;
+
+}
+.checkout-btn{
+    width: 100%;
+    background-color: #386aeb;
+    color:white;
+    border: none;
+    height: 3.6em;
+}
+
+@media only screen and (max-width: 1170px){
+    .spread{
+        display: flex;
+        flex-direction: column;
+        justify-content:center;
+        align-items: center;
+        padding: 2em;
+        gap:0.7em
+    }
+    .last-checkout-div{
+        background-color: white;
+        width: 90vw;
+        height: fit-content;
+        padding:1.2em;
+        border-radius: 1em;
+    
+    }
+    .cart-first-div{
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+        border: none;
+        border-radius: 0.9em;
+        background-color: white;
+        width: 90vw;
+        padding:0.3em
+    }
+    
+
+}
+@media only screen and (max-width: 600px){
+.spread{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2em;
+    gap:0.7em
+}
+.cart-first-div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    border: none;
+    border-radius: 0.9em;
+    background-color: white;
+    width: 95vw;
+    padding:0.3em
+}
+
+.img-cart-first-div{
+    width: 7.6em;
+    padding:0.5em;
+
+}
+.clear-cart{
+    visibility: hidden;
+    width: 8em;
+    height: 2.5em;
+    border: none;
+    background-color: rgba(255, 0, 0, 0.096);
+    color: red;
+    border-radius: 1.2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-items{
+    background-color: #386aeb;
+    color: white;
+    font-size: 0.9em;
+    width: 2em;
+    height: 2em;
+    border: none;
+    border-radius: 0.4em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.last-checkout-div{
+    background-color: white;
+    width: 95vw;
+    height: fit-content;
+    padding:1.2em;
+    border-radius: 1em;
+
+}
+.h2-tired{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    margin-left: -12em;
+
+}
+.checkout-btn{
+    width: 100%;
+    background-color: #386aeb;
+    color:white;
+    border: none;
+    height: 3.6em;
+}
+.hide-add{
+    visibility: visible;
+    margin: 0;
+    padding-bottom: 0.71em;
+  
+}
+.off-add-n-minus{
+    visibility: hidden;
+}
+.show-delete-btn{
+    visibility: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 4em;
+    background-color: rgba(255, 0, 0, 0.164);
+    color: red;
+    border: none;
+    padding: 0.3em;
+    border-radius: 0.32em;
+}
+}
+
