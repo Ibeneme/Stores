@@ -75,11 +75,14 @@ const Product = () => {
                   <h2 
                    onClick={() => handleClick(product.id)}
                    className="price-to-map">
-                    <span
+                    <b>
+                       <span
                       className="product-span"
                     >
                       NGN
                     </span>
+                    </b>
+                   
                     {product.price}
                     <span
                      className="product-span"
