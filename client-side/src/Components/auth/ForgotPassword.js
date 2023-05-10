@@ -107,8 +107,9 @@ const ForgotPassword = () => {
               <button
                 style={{
                   backgroundColor: "#386AEB",
-                  height: "3.4em",
-                  border: "0.7em",
+                  height: "3.9em",
+                  borderRadius: "0.4em",
+                    border:'none',
                   color: "white",
               
                 }}

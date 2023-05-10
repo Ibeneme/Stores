@@ -211,7 +211,8 @@
     background-color: #386aeb;
     color:white;
     border: none;
-    height: 3.6em;
+    height: 4.4em;
+    border-radius: 0.5em;
 }
 .hide-add{
     visibility: visible;

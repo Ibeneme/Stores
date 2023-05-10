@@ -6,8 +6,8 @@ import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import { useNavigate } from "react-router";
 
 const SignUp = () => {
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, "Must be 12 Characters or less")
@@ -15,7 +15,6 @@ const SignUp = () => {
     lastName: Yup.string()
       .max(15, "Must be 12 Characters or less")
       .required("Your Last name is required"),
-
   });
   return (
     <div
@@ -33,7 +32,6 @@ const SignUp = () => {
           firstName: "",
           lastName: "",
           middleName: "",
-         
         }}
         validationSchema={validate}
       >
@@ -68,21 +66,26 @@ const SignUp = () => {
               {" "}
               Sign Up to HydraXpress
             </h2>
-            <p  style={{
-            marginTop:"0.5em"
-           
-          }}>Already have an account? <span 
-             style={{
-              color: "#386AEB",
-             
-            }}
-            onClick={()=>navigate('/signin')} 
-            
-            >Sign In</span></p><br /> <br />
+            <p
+              style={{
+                marginTop: "0.5em",
+              }}
+            >
+              Already have an account?{" "}
+              <span
+                style={{
+                  color: "#386AEB",
+                }}
+                onClick={() => navigate("/signin")}
+              >
+                Sign In
+              </span>
+            </p>
+            <br /> <br />
             {console.log(formik.values)}
             <Form>
               <TextField label="First Name" name="firstName" type="text" />
-              <br/>
+              <br />
               <TextField label="Last Name" name="lastName" type="text" />
               {/* <TextField label="Email Address" name="email" type="email" />
                 <TextField label="Date Of Birth" name="DateOfBirth" type="date" />
@@ -102,30 +105,39 @@ const SignUp = () => {
                   flexDirection: "column",
                 }}
               >
-                <br />
+                <br /> <br />
                 <button
                   style={{
                     backgroundColor: "#386AEB",
                     height: "3.4em",
-                    border: "0.7em",
+                    borderRadius: "0.4em",
+                    border: "none",
                     color: "white",
-                   
                   }}
                   type="submit"
-
-                  onClick={()=>navigate('/signupnext')}
+                  onClick={() => navigate("/signupnext")}
                 >
                   Next
                 </button>
-                <br /> <br /> <br />
+                <br /> <br />{" "}
+                <p
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  Or
+                </p>
+                <br />
+                <br />
                 <button
                   style={{
                     backgroundColor: "black",
-                    height: "3.4em",
-                    border: "0.7em",
+                    height: "3.9em",
+
                     color: "white",
-                   
-                    borderRadius: "0.3em",
+                    borderRadius: "0.4em",
+                    border: "none",
                   }}
                   type="submit"
                 >
@@ -133,12 +145,13 @@ const SignUp = () => {
                 </button>
                 <button
                   style={{
-                  
-                    height: "3.4em",
-                    border: "0.7em",
+                    backgroundColor: "#66666635",
+                    height: "3.9em",
+                    borderRadius: "0.4em",
+                    border: "none",
                     color: "black",
-                   
-                    marginTop:'0.8em'
+
+                    marginTop: "0.8em",
                   }}
                   type="submit"
                 >

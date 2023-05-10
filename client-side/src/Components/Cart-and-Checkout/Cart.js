@@ -10,7 +10,8 @@ import {
 } from "../../Slices/cartSlice";
 import { useEffect } from "react";
 import "./Cart.css";
-import { MdDelete } from "react-icons/md";
+import {BiMinus} from 'react-icons/bi'
+import { MdAdd, MdDelete } from "react-icons/md";
 import logo from './images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png'
 import Navbar from '../Navbar-and-Footer/Navbar'
 
@@ -101,7 +102,7 @@ const Cart = (cartItem) => {
                               className="add-items"
                               onClick={() => decreaseInCart(cartItem)}
                             >
-                              -
+                              <BiMinus/>
                             </button>
                             <h4
                               style={{
@@ -119,7 +120,7 @@ const Cart = (cartItem) => {
                               className="add-items"
                               onClick={() => increaseInCart(cartItem)}
                             >
-                              +
+                             <MdAdd/>
                             </button>
                           </div>
                       </div>
@@ -198,7 +199,7 @@ const Cart = (cartItem) => {
                               className="add-items"
                               onClick={() => decreaseInCart(cartItem)}
                             >
-                              -
+                             <BiMinus />
                             </button>
                             <h4
                               style={{
@@ -216,7 +217,7 @@ const Cart = (cartItem) => {
                               className="add-items"
                               onClick={() => increaseInCart(cartItem)}
                             >
-                              +
+                             <MdAdd/>
                             </button>
                           </div>
                           <h2

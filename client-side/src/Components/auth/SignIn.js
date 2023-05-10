@@ -113,6 +113,7 @@ const SignIn = () => {
               }}
             >
               <br />
+              <br /> 
               <button
                 style={{
                   backgroundColor: "#386AEB",
@@ -127,33 +128,38 @@ const SignIn = () => {
               >
                 Next
               </button>
-              <br /> <br /> <br />
-              <button
+              <br /> <br /> <p
                 style={{
-                  backgroundColor: "black",
-                  height: "3.4em",
-                  border: "0.7em",
-                  color: "white",
-       
-                  borderRadius: "0.3em",
-                }}
-                type="submit"
-              >
-                Sign in with Passcoder
-              </button>
+                  display:'flex',
+                  justifyContent:'center'
+                }}>Or</p><br />
+                <br />
               <button
-                style={{
-                
-                  height: "3.4em",
-                  border: "0.7em",
-                  color: "black",
-                
-                  marginTop:'0.8em'
-                }}
-                type="submit"
-              >
-                Sign in with Google
-              </button>
+                  style={{
+                    backgroundColor: "black",
+                    height: "3.9em",
+                    border: "0.7em",
+                    color: "white",
+                   
+                    borderRadius: "0.3em",
+                  }}
+                  type="submit"
+                >
+                  Sign in with Passcoder
+                </button>
+                <button
+                  style={{
+                    backgroundColor: "#66666635",
+                    height: "3.9em",
+                    border: "0.7em",
+                    color: "black",
+                   
+                    marginTop:'0.8em'
+                  }}
+                  type="submit"
+                >
+                  Sign in with Google
+                </button>
             </div>
 
             {/* <button type='submit'>Reset</button> */}
