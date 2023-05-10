@@ -66,7 +66,7 @@ const SignUp = () => {
               }}
             >
               {" "}
-              SignUp with HydraXpress
+              Sign Up to HydraXpress
             </h2>
             <p  style={{
             marginTop:"0.5em"
@@ -129,7 +129,7 @@ const SignUp = () => {
                   }}
                   type="submit"
                 >
-                  Sign in with Passcode
+                  Sign in with Passcoder
                 </button>
                 <button
                   style={{

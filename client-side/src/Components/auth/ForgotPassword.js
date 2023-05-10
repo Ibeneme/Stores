@@ -6,7 +6,8 @@ import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import { useNavigate } from "react-router";
 
 
-const ForgotPassword = () => {  const navigate = useNavigate()
+const ForgotPassword = () => {  
+  const navigate = useNavigate()
     
   const validate = Yup.object({
     email: Yup.string()
@@ -81,7 +82,8 @@ const ForgotPassword = () => {  const navigate = useNavigate()
               flexDirection:'row',
               justifyContent:'flex-end'
 
-            }}> Did you Remember your Password? Sign In</p>
+            }}
+            onClick={()=>navigate('/signin')}> Did you Remember your Password? Sign In</p>
             <br />
             {/* <TextField label="Email Address" name="email" type="email" />
               <TextField label="Date Of Birth" name="DateOfBirth" type="date" />
