@@ -113,6 +113,7 @@ const SignUp = () => {
                     borderRadius: "0.4em",
                     border: "none",
                     color: "white",
+                    fontSize:'1em',
                   }}
                   type="submit"
                   onClick={() => navigate("/signupnext")}
@@ -134,7 +135,7 @@ const SignUp = () => {
                   style={{
                     backgroundColor: "black",
                     height: "3.9em",
-
+                      fontSize:'1em',
                     color: "white",
                     borderRadius: "0.4em",
                     border: "none",
@@ -149,6 +150,7 @@ const SignUp = () => {
                     height: "3.9em",
                     borderRadius: "0.4em",
                     border: "none",
+                    fontSize:'1em',
                     color: "black",
 
                     marginTop: "0.8em",

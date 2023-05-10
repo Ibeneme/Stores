@@ -111,6 +111,7 @@ const ForgotPassword = () => {
                   borderRadius: "0.4em",
                     border:'none',
                   color: "white",
+                  fontSize:'1em',
               
                 }}
                 type="submit"

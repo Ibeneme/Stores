@@ -68,7 +68,10 @@ const Cart = (cartItem) => {
             borderRadius:'0.4em',
             border:'none',
             backgroundColor:'#386AEB',
-            color:'white'
+            color:'white',
+            
+              fontSize:'1em',
+         
           }} onClick={() => navigate("/")}>Start shopping</button>
           <br/>
         </div>
@@ -100,6 +103,7 @@ const Cart = (cartItem) => {
                           >
                             <button
                               className="add-items"
+                              
                               onClick={() => decreaseInCart(cartItem)}
                             >
                               <BiMinus/>
@@ -300,6 +304,9 @@ const Cart = (cartItem) => {
             
               <br /> <br />
             <button 
+            style={{
+              fontSize:'1em',
+            }}
             className="checkout-btn"
             onClick={() => navigate("/signup")}>Checkout</button>
           

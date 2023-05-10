@@ -120,6 +120,7 @@ const SignIn = () => {
                   height: "3.4em",
                   border: "0.7em",
                   color: "white",
+                  fontSize:'1em',
               
                 }}
                 type="submit"
@@ -136,6 +137,7 @@ const SignIn = () => {
                 <br />
               <button
                   style={{
+                    fontSize:'1em',
                     backgroundColor: "black",
                     height: "3.9em",
                     border: "0.7em",
@@ -149,6 +151,7 @@ const SignIn = () => {
                 </button>
                 <button
                   style={{
+                    fontSize:'1em',
                     backgroundColor: "#66666635",
                     height: "3.9em",
                     border: "0.7em",
