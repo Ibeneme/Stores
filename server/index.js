@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get('/', (req, res) => {
-    res.send('my demo server on hydra express')
+    res.send('Ibeneme Ikenna')
 })
 
 app.get('/products', (req, res) => {

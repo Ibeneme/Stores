@@ -14,7 +14,7 @@ export const fetchProductDetails = createAsyncThunk(
     "products/productsFetch", 
     async(id = null, {rejectedWithvalue})=>{
         try{
-            const response = await axios.get(`http://localhost:5000/products/${id}`)
+            const response = await axios.get(`https://hydra-store.onrender.com/products/${id}`)
         return response.data
         }
         catch(error){

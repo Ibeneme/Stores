@@ -11,7 +11,7 @@ export const getProductById = createAsyncThunk(
   'product/getProductById',
   async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/products/${id}`);
+      const response = await axios.get(`https://hydra-store.onrender.com/products/${id}`);
       return response.data;
     } catch (error) {
       return error.message;

@@ -21,7 +21,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(`http://localhost:5000/products/${id}`);
+      const response = await axios.get(`https://hydra-store.onrender.com/products/${id}`);
       const data = await response.data.product;
       setProduct(data);
     };
