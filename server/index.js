@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get('/', (req, res) => {
-    res.send('welcome to ikxpress')
+    res.send('my demo server on hydra express')
 })
 
 app.get('/products', (req, res) => {
@@ -31,5 +31,5 @@ const port = process.env.PORT || 5000;
 
 // Listen on the specified port
 app.listen(port, () => {
-  console.log(`App is listening oon port ${port}`);
+  console.log(`App is listening onn port ${port}`);
 });
