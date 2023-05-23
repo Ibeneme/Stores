@@ -109,7 +109,7 @@ const SignUp = () => {
                 <button
                   style={{
                     backgroundColor: "#386AEB",
-                    height: "3.4em",
+                    height: "3.1em",
                     borderRadius: "0.4em",
                     border: "none",
                     color: "white",
@@ -134,7 +134,7 @@ const SignUp = () => {
                 <button
                   style={{
                     backgroundColor: "black",
-                    height: "3.9em",
+                    height: "3.1em",
                       fontSize:'1em',
                     color: "white",
                     borderRadius: "0.4em",
@@ -147,10 +147,10 @@ const SignUp = () => {
                 <button
                   style={{
                     backgroundColor: "#66666635",
-                    height: "3.9em",
+                    height: "3.1em",
                     borderRadius: "0.4em",
                     border: "none",
-                    fontSize:'1em',
+                    fontSize:'01em',
                     color: "black",
 
                     marginTop: "0.8em",

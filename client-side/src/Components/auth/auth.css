@@ -2,7 +2,8 @@
     padding-left: 1em;
     padding: 0.8em;
     width: 38em;
-    height: 3.8em
+    height: 4.32em;
+    border: black 0.12em solid;
 }
 
 @media only screen and (max-width: 570px){
@@ -10,5 +11,6 @@
         padding-left: 1em;
         padding: 0.8em;
         width: 90vw;
+        height: 4.0em;
     }
 }

@@ -66,7 +66,7 @@ const ForgotPassword = () => {
             }}
           >
             {" "}
-            ForgotPassword
+            Forgot Password
           </h2>
           <p  style={{
             marginTop:"0.5em"
@@ -83,7 +83,12 @@ const ForgotPassword = () => {
               justifyContent:'flex-end'
 
             }}
-            onClick={()=>navigate('/signin')}> Did you Remember your Password? Sign In</p>
+            onClick={()=>navigate('/signin')}> Did you Remember your Password?
+            <span style={{
+              color:'blue',
+              marginLeft:'0.31em'
+            }}> Sign In
+              </span> </p>
             <br />
             {/* <TextField label="Email Address" name="email" type="email" />
               <TextField label="Date Of Birth" name="DateOfBirth" type="date" />
@@ -107,7 +112,7 @@ const ForgotPassword = () => {
               <button
                 style={{
                   backgroundColor: "#386AEB",
-                  height: "3.9em",
+                  height: "3.1em",
                   borderRadius: "0.4em",
                     border:'none',
                   color: "white",

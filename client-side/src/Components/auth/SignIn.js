@@ -117,7 +117,7 @@ const SignIn = () => {
               <button
                 style={{
                   backgroundColor: "#386AEB",
-                  height: "3.4em",
+                  height: "3.1em",
                   border: "0.7em",
                   color: "white",
                   fontSize:'1em',
@@ -139,7 +139,7 @@ const SignIn = () => {
                   style={{
                     fontSize:'1em',
                     backgroundColor: "black",
-                    height: "3.9em",
+                    height: "3.1em",
                     border: "0.7em",
                     color: "white",
                    
@@ -153,7 +153,7 @@ const SignIn = () => {
                   style={{
                     fontSize:'1em',
                     backgroundColor: "#66666635",
-                    height: "3.9em",
+                    height: "3.1em",
                     border: "0.7em",
                     color: "black",
                    

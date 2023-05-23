@@ -11,8 +11,8 @@ import ForgotPassword from "./Components/auth/ForgotPassword";
 import Verify from "./Components/auth/Verify";
 import Carousels from "./Components/Navbar-and-Footer/Carousel";
 import NextSignUp from "./Components/auth/nextSignUp";
-import Footer from "./Components/Navbar-and-Footer/Footer";
-
+import Checkout from "./Components/Cart-and-Checkout/Checkout";
+import PaymentCheckout from "./Components/Cart-and-Checkout/Payment";
 
 function App() {
   return (
@@ -29,12 +29,14 @@ function App() {
 
           <Route path="/Signin" element={<SignIn />} />
           <Route path="/Signup" element={<SignUp />} />
-          <Route path="/next" element={<NextSignUp />} />
+          <Route path="/Signupnext" element={<NextSignUp />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/payment" element={<PaymentCheckout />} />
 
         </Routes>
-        <Footer />
+   
       </BrowserRouter>
     </>
   );

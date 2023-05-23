@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import './Details.css'
 import Navbar from '../Navbar-and-Footer/Navbar'
-
+import Footer from '../Navbar-and-Footer/Footer'
+import Loader from "../Loader/Loader";
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ const ProductPage = () => {
   }, [id]);
 
   if (!product) {
-    return <div>No product</div>;
+    return <div>
+      <Loader />
+    </div>;
   } else {
     return (
       <div>
@@ -64,6 +67,7 @@ onClick={() => handleAddToCart(product)}>Add to Cart</button>
 </div>
 </div>
 </div>
+<Footer />
       </div>
      
     );

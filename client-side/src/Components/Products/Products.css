@@ -13,8 +13,8 @@
 .div-style-first{
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items:center;
     gap: 1em
 }
 .button-to-map-productss{
@@ -256,14 +256,14 @@
     .div-style-first{
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
+        justify-content: center;
+        align-items: center;
         gap: 1em
     }
     .button-to-map-productss{
         width: 13em;
         padding: 1em;
-        height: 3.8em;
+        height: 3.6em;
         background-color: #386aeb;
         color: white;
         border-radius: 0.2em;
@@ -369,8 +369,8 @@
     .div-style-first{
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
+        justify-content: center;
+        align-items: center;
         gap: 1em
     }
     .button-to-map-productss{

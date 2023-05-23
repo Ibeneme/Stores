@@ -14,6 +14,7 @@ import {BiMinus} from 'react-icons/bi'
 import { MdAdd, MdDelete } from "react-icons/md";
 import logo from './images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png'
 import Navbar from '../Navbar-and-Footer/Navbar'
+import Footer from '../Navbar-and-Footer/Footer'
 
 const Cart = (cartItem) => {
   const cart = useSelector((state) => state.cart);
@@ -314,7 +315,9 @@ const Cart = (cartItem) => {
         </div>
       )}
     </div>
+    <Footer />
     </div>
+        
    
   );
 };

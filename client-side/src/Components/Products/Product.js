@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "./Products.css";
 import Carousels from "../Navbar-and-Footer/Carousel";
 import Navbar from '../Navbar-and-Footer/Navbar'
-
+import Footer from '../Navbar-and-Footer/Footer'
+import Loader from "../Loader/Loader";
 
 
 const Product = () => {
@@ -25,7 +26,7 @@ const Product = () => {
   return (
     <div>
       <Navbar />
-      <Carousels  />
+  
       <div
       style={{
         marginTop: "2em",
@@ -34,10 +35,18 @@ const Product = () => {
      
     >
       {isLoading ? (
-        <p> Loading.. </p>
+        <p> <Loader /> </p>
       ) : error ? (
         <p>an error occured.. </p>
       ) : (
+        <div>
+          <div
+          style={{
+            marginTop:'-2em',
+            marginBottom:'4em'
+          }}> <Carousels  />
+            </div>
+   
         <div
         className="div-style-first">
           <h2>New Arrivals</h2>
@@ -100,10 +109,16 @@ const Product = () => {
                 
               </div>
             ))}
+           
           </div>
+        
         </div>
+        <Footer />
+         </div>
       )}
     </div>
+  
+   
     </div>
   );
 };

@@ -74,7 +74,7 @@ const NextSignUp = () => {
             }}
           >
             {" "}
-            SignUp with HydraXpress
+            Sign Up with HydraXpress
           </h2>
           <p>Already have an account? <span 
            style={{
@@ -108,14 +108,14 @@ const NextSignUp = () => {
               <button
                 style={{
                   backgroundColor: "#386AEB",
-                  height: "3.4em",
+                  height: "3.5em",
                   border: "0.7em",
                   color: "white",
                
                 }}
                 type="submit"
 
-                onClick={()=>navigate('/signupnext')}
+                onClick={()=>navigate('/checkout')}
               >
                 Next
               </button>

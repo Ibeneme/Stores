@@ -102,11 +102,13 @@
 
 }
 .checkout-btn{
+    border-radius: 0.2em;
     width: 100%;
     background-color: #386aeb;
     color:white;
     border: none;
-    height: 3.6em;
+    height: 3.1em;
+    border-radius: 0.5em;
 }
 
 @media only screen and (max-width: 1170px){
@@ -211,7 +213,7 @@
     background-color: #386aeb;
     color:white;
     border: none;
-    height: 4.4em;
+    height: 3.1em;
     border-radius: 0.5em;
 }
 .hide-add{
