@@ -33,7 +33,7 @@
   rect(top, right, bottom, left) In this example, we're cropping the left half of the imag
   } */
 
-  @media only screen and (max-width: 664px){
+  @media only screen and (max-width: 764px){
 
     .first-product-details-div{
         display: flex;

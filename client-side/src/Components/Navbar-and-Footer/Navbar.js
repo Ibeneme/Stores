@@ -53,16 +53,87 @@ function Navbar() {
       </div>
 
       <nav className="nav-bar" ref={navRef}>
-        <span className="logo-in-the-dropdown">
-          <img
+        <span 
+         style={{
+          backgroundColor:'#fff',
+          color: '#386AEB',
+        }}
+        
+        className="logo-in-the-dropdown main-btn">
+          <h5
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              fontSize: "1em",
+              color: '#386AEB',
+              paddingBottom: "0.7em",
+              paddingTop: "1em",
+              paddingLeft: "2em",
+              paddingRight: "2em",
+              width: "14em",
+            }}
+            onClick={() => {
+              navigate("/signup");
+            }}
+            className="dropdown-p"
+          >
+            {" "}
+            Sign In as a User
+          </h5>
+
+          {/* <img
             style={{ marginRight: "-0.7em" }}
             width="23em"
             height="23em"
             alt="logo"
             src={logo}
           />
-          <h6 className="h3-for-navbar">HydraXpress</h6>{" "}
+          <h6 className="h3-for-navbar">HydraXpress</h6>{" "} */}
         </span>
+        <p
+        style={{
+          marginTop:'0.3em'
+        }}></p>
+        <span 
+         style={{
+          backgroundColor:'#386AEB',
+           border:'0.16em solid white',
+          color: '#fff',
+        }}
+        className="logo-in-the-dropdown">
+          <h5
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent:'center',
+              fontSize: "1em",
+              color: "white",
+              paddingTop: "0.7em",
+              paddingBottom: "1em",
+              paddingLeft: "2em",
+              paddingRight: "2em",
+              width: "14em",
+            }}
+            onClick={() => {
+              navigate("/vendorSignin");
+            }}
+            className="dropdown-p"
+          >
+            Sign In as a Vendor
+          </h5>
+
+          {/* <img
+    style={{ marginRight: "-0.7em" }}
+    width="23em"
+    height="23em"
+    alt="logo"
+    src={logo}
+  />
+  <h6 className="h3-for-navbar">HydraXpress</h6>{" "} */}
+        </span>
+
         <br />
         {Categories.map((e) => {
           return <CategoriesForProps key={e.id} icon={e.icon} name={e.name} />;
@@ -80,26 +151,67 @@ function Navbar() {
         }}
         className="cart-search-user"
       >
-         <span className="utton">
-          <FaSearch
-           
-            className="utton span-others"
-          />
+        <span className="utton">
+          <div className="dropdown">
+            <span className="dropbtn">
+              <span
+                style={{
+                  marginRight: "2em",
+                }}
+                className="utton span-others"
+              >
+                <FaUser className="utton user-button" />
+              </span>
+            </span>
+            <div className="dropdown-content">
+              <h5
+                style={{
+                  color: "white",
+                  paddingBottom: "0.7em",
+                  paddingTop: "1em",
+                  paddingLeft: "2em",
+                  paddingRight: "2em",
+                  width: "100%",
+                }}
+                onClick={() => {
+                  navigate("/signup");
+                }}
+                className="dropdown-p"
+              >
+                {" "}
+                Sign In as a User
+              </h5>
+              <h5
+                style={{
+                  color: "white",
+                  paddingTop: "0.7em",
+                  paddingBottom: "1em",
+                  paddingLeft: "2em",
+                  paddingRight: "2em",
+                  width: "100%",
+                }}
+                onClick={() => {
+                  navigate("/vendorSignin");
+                }}
+                className="dropdown-p"
+              >
+                Sign In as a Vendor
+              </h5>
+            </div>
+          </div>
+
+          <FaSearch 
+          style={{
+            
+          }}className="utton span-others" />
         </span>
-        <span className="utton span-others">
-          <FaUser
-           
-            onClick={() => {
-              navigate("/signup");
-            }}
-            className="utton"
-          />
-        </span>
+
         <span
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+        
           }}
           onClick={() => {
             navigate("/Cart");
@@ -107,7 +219,7 @@ function Navbar() {
           className="utton"
         >
           <h4
-          className="cart-cart-in-words"
+            className="cart-cart-in-words"
             style={{
               marginRight: "0.4em",
             }}
@@ -117,14 +229,9 @@ function Navbar() {
 
           <FaShoppingCart className="utton" />
           {cartTotalQuantity >= 1 ? (
-            <span
-             className="span-red"
-            >
-              {cartTotalQuantity}
-            </span>
+            <span className="span-red">{cartTotalQuantity}</span>
           ) : null}
         </span>
-       
       </h6>
     </header>
   );
