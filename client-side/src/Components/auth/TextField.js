@@ -12,6 +12,7 @@ const TextField = ({label, ...props}) => {
       }}>
          <label htmlFor={field.name}>{label}</label>
         <input 
+        style={{ touchAction: 'manipulation' }}
         className='input-forms'
         {...field} {...props}
         placeholder={label}
