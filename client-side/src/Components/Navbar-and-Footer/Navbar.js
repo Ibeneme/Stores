@@ -73,7 +73,7 @@ function Navbar() {
               paddingTop: "1em",
               paddingLeft: "0.3em",
               paddingRight: "0.3em",
-              width: "10.4em",
+              width: "16em",
             }}
             onClick={() => {
               navigate("/signup");
@@ -117,7 +117,7 @@ function Navbar() {
               paddingBottom: "1em",
               paddingLeft: "0.3em",
               paddingRight: "0.3em",
-              width: "10.4em",
+              width: "16em",
             }}
             onClick={() => {
               navigate("/vendorSignin");
