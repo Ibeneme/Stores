@@ -9,9 +9,11 @@ import {
 } from "react-icons/fa";
 import "./Navbar.css";
 import logo from "./image/Group 12.png";
-import CategoriesForProps from "../Categories/CategoriesForProps";
-import Categories from "../Categories/CategoriesData";
 import { useNavigate } from "react-router";
+
+// import CategoriesForProps from "../Categories/CategoriesForProps";
+// import Categories from "../Categories/CategoriesData";
+
 
 function Navbar() {
   const navRef = useRef();
@@ -52,7 +54,7 @@ function Navbar() {
         </h3>
       </div>
 
-      <nav className="nav-bar" ref={navRef}>
+      <nav  className="nav-bar" ref={navRef}>
         <span
           style={{
             backgroundColor: "#fff",
@@ -135,9 +137,9 @@ function Navbar() {
         </span>
 
         <br />
-        {Categories.map((e) => {
+        {/* {Categories.map((e) => {
           return <CategoriesForProps key={e.id} icon={e.icon} name={e.name} />;
-        })}
+        })} */}
 
         <button className="nav-btn nav-close-btn" onClick={showNavbar}>
           <FaTimes />

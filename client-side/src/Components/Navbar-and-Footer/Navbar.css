@@ -260,10 +260,9 @@ nav {
 		flex-direction: column;
         text-align: left;
         align-items: flex-start;
-        justify-content: center;
 		gap: 0.2rem;
        padding-left: 1em;
-       padding-top:7em;
+       padding-top:12em;
        padding-bottom:8em;
 		background-color:#386AEB;
         color: #fff ;
