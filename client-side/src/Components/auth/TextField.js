@@ -4,6 +4,7 @@ import './auth.css'
 
 const TextField = ({label, ...props}) => {
    const [ field ] = useField(props)
+
   return (
     <div>
       <div style={{
@@ -12,7 +13,8 @@ const TextField = ({label, ...props}) => {
       }}>
          <label htmlFor={field.name}>{label}</label>
         <input 
-        style={{ touchAction: 'manipulation' }}
+        style={{ touchAction: 'manipulation',
+      fontSize:'1em' }}
         className='input-forms'
         {...field} {...props}
         placeholder={label}
