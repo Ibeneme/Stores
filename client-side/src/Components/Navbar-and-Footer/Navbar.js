@@ -53,30 +53,29 @@ function Navbar() {
       </div>
 
       <nav className="nav-bar" ref={navRef}>
-        <span 
-         style={{
-          backgroundColor:'#fff',
-          color: '#386AEB',
-        }}
-        
-        className="logo-in-the-dropdown main-btn">
+        <span
+          style={{
+            backgroundColor: "#fff",
+            color: "#386AEB",
+          }}
+          className="logo-in-the-dropdown main-btn"
+        >
           <h5
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               fontSize: "1em",
-              color: '#386AEB',
+              color: "#386AEB",
               paddingBottom: "0.7em",
               paddingTop: "1em",
-              paddingLeft: "2em",
-              paddingRight: "2em",
-              width: "14em",
+              paddingLeft: "0.3em",
+              paddingRight: "0.3em",
+              width: "10.4em",
             }}
             onClick={() => {
               navigate("/signup");
             }}
-            className="dropdown-p"
           >
             {" "}
             Sign In as a User
@@ -92,34 +91,35 @@ function Navbar() {
           <h6 className="h3-for-navbar">HydraXpress</h6>{" "} */}
         </span>
         <p
-        style={{
-          marginTop:'0.3em'
-        }}></p>
-        <span 
-         style={{
-          backgroundColor:'#386AEB',
-           border:'0.16em solid white',
-          color: '#fff',
-        }}
-        className="logo-in-the-dropdown">
+          style={{
+            marginTop: "0.3em",
+          }}
+        ></p>
+        <span
+          style={{
+            backgroundColor: "#386AEB",
+            border: "0.16em solid white",
+            color: "#fff",
+          }}
+          className="logo-in-the-dropdown"
+        >
           <h5
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent:'center',
+              justifyContent: "center",
               fontSize: "1em",
               color: "white",
               paddingTop: "0.7em",
               paddingBottom: "1em",
-              paddingLeft: "2em",
-              paddingRight: "2em",
-              width: "14em",
+              paddingLeft: "0.3em",
+              paddingRight: "0.3em",
+              width: "10.4em",
             }}
             onClick={() => {
               navigate("/vendorSignin");
             }}
-            className="dropdown-p"
           >
             Sign In as a Vendor
           </h5>
@@ -200,10 +200,7 @@ function Navbar() {
             </div>
           </div>
 
-          <FaSearch 
-          style={{
-            
-          }}className="utton span-others" />
+          <FaSearch style={{}} className="utton span-others" />
         </span>
 
         <span
@@ -211,7 +208,6 @@ function Navbar() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-        
           }}
           onClick={() => {
             navigate("/Cart");
