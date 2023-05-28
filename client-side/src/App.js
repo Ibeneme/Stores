@@ -19,6 +19,7 @@ import VendorSignIn from "./Vendor-interface/auth/VendorSignIn";
 import VendorNextSignUp from "./Vendor-interface/auth/VendornextSignUp";
 import VendorForgotPassword from "./Vendor-interface/auth/VendorForgotPassword";
 import VendorVerify from "./Vendor-interface/auth/VendorVerify";
+import PIDSignUp from "./Components/auth/Pid";
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
           <Route path="/verify" element={<Verify />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<PaymentCheckout />} />
+          <Route path="/pid" element={<PIDSignUp />} />
+
 
 
           <Route path="/vendorhome" element={<VendorHome />} />

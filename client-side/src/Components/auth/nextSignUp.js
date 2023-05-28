@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Formik, Form } from "formik";
-import TextField from "./TextField";
+import TextField from "./Input-components/TextField";
 import * as Yup from "yup";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import { useNavigate } from "react-router";

@@ -1,10 +1,10 @@
 import React from 'react'
 import { ErrorMessage, useField } from 'formik'
-import './auth.css'
+import '../auth.css'
 
 const TextField = ({label, ...props}) => {
    const [ field ] = useField(props)
-
+   const emptyOnChange = () => {};
   return (
     <div>
       <div style={{
@@ -12,7 +12,9 @@ const TextField = ({label, ...props}) => {
         flexDirection:'column'
       }}>
          <label htmlFor={field.name}>{label}</label>
+        
         <input 
+        onChange={emptyOnChange} 
         style={{ touchAction: 'manipulation',
       fontSize:'1em' }}
         className='input-forms'

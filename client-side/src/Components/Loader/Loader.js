@@ -1,10 +1,14 @@
 import React from 'react';
-import './Loader.css'; // Import the CSS file for styling
+import loaderGif from './gif/Studio_Project_V6.gif';
 
 const Loader = () => {
   return (
-    <div className="loader-container">
-      <div className="loader"></div>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor:'white', width:'100vw' }}>
+     <div style={{
+      marginTop:'-12em'
+     }} >
+       <img src={loaderGif} alt="Loading" style={{ width: '500px', height: '500px', objectFit: 'cover', paddingTop:'12em' }} />
+    </div>
     </div>
   );
 };
