@@ -12,7 +12,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import productsReducer from './Slices/productsSlice'
 import signupReducer from "./Slices/authSlice/signupSlice";
 import authReducer from './Slices/authSlice/authSlice'; 
-// import signinSlice from "./Slices/authSlice/signinSlice";
+import verificationReducer from './Slices/authSlice/emailVerificationSlice';
+import signinSlice from "./Slices/authSlice/signinSlice";
+
+import otpVerifyReducer from "./Slices/authSlice/verifySignOtp";
 import forgotPasswordReducer from './Slices/authSlice/EmailresetPassword'
 import otpReducer from './Slices/authSlice/createOtp'
 
@@ -20,15 +23,15 @@ import otpReducer from './Slices/authSlice/createOtp'
   
 const store = configureStore({
   reducer: {
-
+    verification: verificationReducer,
     products: productReducer,
     cart: cartReducer,
     signup: signupReducer,
-    // signIn: signinSlice,
+    signIn: signinSlice,
     auth: authReducer,
     forgotPassword: forgotPasswordReducer,
     otp: otpReducer,
-
+    verificationOTP: otpVerifyReducer,
     product: productsReducer,
     [productsApi.reducerPath]: productsApi.reducer,
   },
