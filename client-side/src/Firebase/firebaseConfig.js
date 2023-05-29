@@ -15,30 +15,30 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-firebase.auth().settings.appVerificationDisabledForTesting = true;
+// firebase.auth().settings.appVerificationDisabledForTesting = true;
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 // Function to send email verification using Firebase
-export const sendEmailVerification = async (email) => {
-  try {
-    await auth.currentUser.sendEmailVerification();
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+// export const sendEmailVerification = async (email) => {
+//   try {
+//     await auth.currentUser.sendEmailVerification();
+//   } catch (error) {
+//     throw new Error(error.message);
+//   }
+// };
 
 // Function to sign in with email and password using Firebase
-export const signIn = async (email, password) => {
-  try {
-    const userCredential = await auth.signInWithEmailAndPassword(email, password);
-    const user = userCredential.user;
-    return user;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+// export const signIn = async (email, password) => {
+//   try {
+//     const userCredential = await auth.signInWithEmailAndPassword(email, password);
+//     const user = userCredential.user;
+//     return user;
+//   } catch (error) {
+//     throw new Error(error.message);
+//   }
+// };
 
 export default firebase;
