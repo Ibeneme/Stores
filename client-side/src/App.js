@@ -42,6 +42,8 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<PaymentCheckout />} />
           <Route path="/pid" element={<PIDSignUp />} />
+          <Route path="/pid-signup" element={<PIDSignUp />} />
+
 
 
 

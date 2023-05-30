@@ -3,26 +3,23 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../Slices/authSlice";
-// import { useSelector } from "react-redux";
-import {  useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 
-const SignIn = () => {
+const PIDSignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-// //  const location = useLocation();
-// //   const queryParams = new URLSearchParams(location.search);
-// //   const email = queryParams.get('email');
 
-// //   const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
 
 
   const [user, setUser] = useState({
-   otp: "",
+    country: "",
+    pid: "",
   });
-
-  
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(registerUser(user)).then((response) => {
@@ -82,15 +79,15 @@ const SignIn = () => {
           marginTop: "0.5em",
         }}
       >
-        Verify your Account
+        Sign Up with Passcoder
       </h2>
       <p style={{ marginTop: "0.5em" }}>
-        Didn't get an OTP{" "}
+       Already have an account?{" "}
         <span
           style={{ color: "#386AEB", cursor: "pointer" }}
-          // onClick={() => navigate("/pid-signup")}
+          onClick={() => navigate("/signup")}
         >
-          Resend OTP
+          Sign In with Passcoder
         </span>
       </p>
       <br />{" "}
@@ -113,22 +110,41 @@ const SignIn = () => {
             }}
           >
             {" "}
-            OTP
+            Country
           </label>
           <input
-            name="otp"
-            placeholder="Enter your OTP"
+            name="country"
+            placeholder="Country"
             type="text"
             className="input-forms"
-            onChange={(e) => setUser({ ...user, otp: e.target.value })}
+            onChange={(e) => setUser({ ...user, country: e.target.value })}
           />
         </div>
 
-  
+    
+
+        <div>
+          {" "}
+          <label
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
+            {" "}
+            Passcoder ID
+          </label>
+          <input
+            name="pid"
+            placeholder="Enter Passcoder ID"
+            type="text"
+            className="input-forms"
+            onChange={(e) => setUser({ ...user, pid: e.target.value })}
+          />
+        </div>
    
 
     <button 
-
         style={{
           backgroundColor:'#386aeb',
           color:'white',
@@ -137,9 +153,8 @@ const SignIn = () => {
           marginTop:'2em'
         }}
         className="input-forms">
-          Verify
+          {auth.registerStatus === "pending" ? "Loading...." : "Submit"}
         </button>
-
       </div>
     </form>
     <br/>
@@ -151,4 +166,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default PIDSignUp;

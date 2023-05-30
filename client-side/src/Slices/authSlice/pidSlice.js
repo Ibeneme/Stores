@@ -3,34 +3,30 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
-  userSignUp: {}, 
-  userToken: null,
   error: null,
   success: false,
 };
 
-const signupSlice = createSlice({
-  name: "signup",
+const PIDsignupSlice = createSlice({
+  name: "PIDsignup",
   initialState,
   reducers: {
-    signupRequest: (state) => {
+    PIDsignupRequest: (state) => {
       state.loading = true;
       state.error = null;
       state.success = false;
     },
-    signupSuccess: (state) => {
+    PIDsignupSuccess: (state) => {
       state.loading = false;
       state.success = true;
     },
-    signupFailure: (state, action) => {
+    PIDsignupFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
   },
 });
 
-export const { signupRequest, signupSuccess, signupFailure } = signupSlice.actions;
+export const { PIDsignupRequest, PIDsignupSuccess, PIDsignupFailure } = PIDsignupSlice.actions;
 
-export default signupSlice.reducer;
-
-
+export default PIDsignupSlice.reducer;
