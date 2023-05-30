@@ -21,10 +21,11 @@ function Navbar() {
     navRef.current.classList.toggle("responsive_nav");
   };
   const { cartTotalQuantity } = useSelector((state) => state.cart);
+  const { _id } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   return (
-    <header
+    <header  
     // style={{
     //   boxShadow: "0 2px 4px 0 rgba(0,0,0,.2)",
     // }}
@@ -80,7 +81,7 @@ function Navbar() {
             }}
           >
             {" "}
-            Sign In as a User
+            Sign Up to Buy
           </h5>
 
           {/* <img
@@ -120,10 +121,10 @@ function Navbar() {
               width: "16em",
             }}
             onClick={() => {
-              navigate("/vendorSignin");
+              navigate("/pid-signup");
             }}
           >
-            Sign In as a Vendor
+            Start Selling With Us
           </h5>
 
           {/* <img
@@ -165,8 +166,13 @@ function Navbar() {
                 <FaUser className="utton user-button" />
               </span>
             </span>
-            <div className="dropdown-content">
-              <h5
+         <div className="dropdown-content">
+
+          {_id ? <p>LogOut</p>  : <div style={{
+              display:'flex',
+              flexDirection:'column'
+            }}>
+            <h5
                 style={{
                   color: "white",
                   paddingBottom: "0.7em",
@@ -181,7 +187,7 @@ function Navbar() {
                 className="dropdown-p"
               >
                 {" "}
-                Sign In as a User
+                Sign Up to Buy
               </h5>
               <h5
                 style={{
@@ -197,8 +203,12 @@ function Navbar() {
                 }}
                 className="dropdown-p"
               >
-                Sign In as a Vendor
+               Become a Seller
               </h5>
+              </div> 
+          }
+            
+              
             </div>
           </div>
 

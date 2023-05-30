@@ -4,7 +4,7 @@ import { url } from "./api";
 import jwtDecode from "jwt-decode";
 
 const initialState = {
-  token: localStorage.getItem('token'),
+  token: localStorage.getItem("token"),
   firstname: "",
   lastname: "",
   gender: "",
@@ -36,10 +36,8 @@ export const registerUser = createAsyncThunk(
         confirmPassword: userSignUp.confirmPassword,
       });
 
-     
       localStorage.setItem("token", token.data);
       return token.data;
-
     } catch (error) {
       console.log(error.response.data);
       return rejectWithValue(error.response.data);
@@ -47,6 +45,22 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (user, { rejectWithValue }) => {
+    try {
+      const token = await axios.post(`${url}/auth/user/signin/via/email`, {
+        email: user.email,
+        password: user.password,
+      });
+      localStorage.setItem("token", token.data);
+      return token.data;
+    } catch (error) {
+      console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -75,6 +89,31 @@ const authSlice = createSlice({
         ...state,
         registerStatus: "rejected",
         registerError: action.payload,
+      };
+    });
+    builder.addCase(loginUser.pending, (state, action) => {
+      return { ...state, loginStatus: "pending" };
+    });
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      if (action.payload) {
+        const userSignUp = jwtDecode(action.payload);
+
+        return {
+          ...state,
+          token: action.payload,
+          firstname: userSignUp.firstname,
+          lastname: userSignUp.lastname,
+          email: userSignUp.email,
+          _id: userSignUp._id,
+          loginStatus: "success",
+        };
+      } else return state;
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      return {
+        ...state,
+        loginStatus: "rejected",
+        loginError: action.payload,
       };
     });
   },

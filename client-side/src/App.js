@@ -13,12 +13,6 @@ import Carousels from "./Components/Navbar-and-Footer/Carousel";
 import NextSignUp from "./Components/auth/nextSignUp";
 import Checkout from "./Components/Cart-and-Checkout/Checkout";
 import PaymentCheckout from "./Components/Cart-and-Checkout/Payment";
-import VendorHome from "./Vendor-interface/Vendor-Signin/VendorHome";
-import VendorSignUp from "./Vendor-interface/auth/VendorSignUp";
-import VendorSignIn from "./Vendor-interface/auth/VendorSignIn";
-import VendorNextSignUp from "./Vendor-interface/auth/VendornextSignUp";
-import VendorForgotPassword from "./Vendor-interface/auth/VendorForgotPassword";
-import VendorVerify from "./Vendor-interface/auth/VendorVerify";
 import PIDSignUp from "./Components/auth/Pid";
 
 function App() {
@@ -46,13 +40,6 @@ function App() {
 
 
 
-
-          <Route path="/vendorhome" element={<VendorHome />} />
-          <Route path="/vendorSignup" element={<VendorSignUp />} />
-          <Route path="/vendorSignin" element={<VendorSignIn />} />
-          <Route path="/vendorSignnext" element={<VendorNextSignUp />} />
-          <Route path="/vendorforgot" element={<VendorForgotPassword />} />
-          <Route path="/vendorverify" element={<VendorVerify />} />
 
         </Routes>
    

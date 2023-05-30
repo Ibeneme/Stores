@@ -30,7 +30,7 @@ const SignUp = () => {
     e.preventDefault();
     dispatch(registerUser(user)).then((response) => {
       if (response.payload.success) {
-        navigate(`/vendorsignup?email=${user.email}`);
+        navigate(`/verify?email=${user.email}`);
       } else {
         console.log("nooooo");
       }

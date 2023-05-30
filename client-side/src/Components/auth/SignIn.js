@@ -166,7 +166,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../Slices/authSlice";
+import { loginUser } from "../../Slices/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
@@ -179,20 +179,15 @@ const SignIn = () => {
   const auth = useSelector((state) => state.auth);
 
   const [user, setUser] = useState({
-    name: "",
+ 
     email: "",
     password: "",
-    firstname: "",
-    lastname: "",
-    gender: "",
-    dob: "",
-    country: "",
-    confirmPassword: "",
+  
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(user)).then((response) => {
+    dispatch(loginUser(user)).then((response) => {
       if (response.payload.success) {
         navigate(`/verify?email=${user.email}`);
       } else {
@@ -342,7 +337,7 @@ const SignIn = () => {
             }}
             className="input-forms"
           >
-            {auth.registerStatus === "pending" ? "Loading...." : "Submit"}
+            {auth.loginStatus === "pending" ? "Loading...." : "Submit"}
           </button>
         </div>
       </form>

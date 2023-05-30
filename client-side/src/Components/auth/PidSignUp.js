@@ -79,7 +79,7 @@ const PIDSignUp = () => {
           marginTop: "0.5em",
         }}
       >
-        Sign Up with Passcoder
+       Create an account with Passcoder
       </h2>
       <p style={{ marginTop: "0.5em" }}>
        Already have an account?{" "}
