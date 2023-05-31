@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../Slices/authSlice";
 import { useSelector } from "react-redux";
@@ -7,12 +7,12 @@ import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 
+
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth);
-
 
   const [user, setUser] = useState({
     name: "",
@@ -26,17 +26,18 @@ const SignUp = () => {
     confirmPassword: "",
   });
  
+  useEffect(() => {
+    if (auth._id) {
+      navigate("/cart");
+    }
+  }, [auth._id, navigate]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(user)).then((response) => {
-      if (response.payload.success) {
-        navigate(`/verify?email=${user.email}`);
-      } else {
-        console.log("nooooo");
-      }
-    });
-  };
 
+    console.log(user);
+    dispatch(registerUser(user));
+  };
   return (
     <div
     style={{
@@ -286,6 +287,9 @@ const SignUp = () => {
         className="input-forms">
           {auth.registerStatus === "pending" ? "Loading...." : "Submit"}
         </button>
+        {auth.registerStatus === "rejected" ? (
+          <p>{auth.registerError}</p>
+        ) : null}
       </div>
     </form>
     <br/>
@@ -317,6 +321,7 @@ const SignUp = () => {
                            marginTop: "0.8em",
                       }}
                       className="input-forms"
+                
                      >
                           Sign in with Google
                      </button>

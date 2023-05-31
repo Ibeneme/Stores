@@ -21,7 +21,7 @@ function Navbar() {
     navRef.current.classList.toggle("responsive_nav");
   };
   const { cartTotalQuantity } = useSelector((state) => state.cart);
-  const { _id } = useSelector((state) => state.auth);
+  // const { _id } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   return (
@@ -168,7 +168,7 @@ function Navbar() {
             </span>
          <div className="dropdown-content">
 
-          {_id ? <p>LogOut</p>  : <div style={{
+          {/* {_id ? <p>LogOut</p>  : <div style={{
               display:'flex',
               flexDirection:'column'
             }}>
@@ -206,7 +206,7 @@ function Navbar() {
                Become a Seller
               </h5>
               </div> 
-          }
+          } */}
             
               
             </div>

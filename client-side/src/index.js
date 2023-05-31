@@ -12,16 +12,14 @@ import 'react-toastify/dist/ReactToastify.css'
 import productsReducer from './Slices/productsSlice'
 import authReducer from './Slices/authSlice'; 
 
-
-   
-  
-  
 const store = configureStore({
   reducer: {
     products: productReducer,
     cart: cartReducer,
     auth: authReducer,
     product: productsReducer,
+
+ 
     [productsApi.reducerPath]: productsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
