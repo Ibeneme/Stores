@@ -11,6 +11,7 @@ import cartReducer, { getTotal } from './Slices/cartSlice'
 import 'react-toastify/dist/ReactToastify.css'
 import productsReducer from './Slices/productsSlice'
 import authReducer from './Slices/authSlice'; 
+import verificationReducer from './Slices/verificationSlice'
 
 const store = configureStore({
   reducer: {
@@ -18,12 +19,13 @@ const store = configureStore({
     cart: cartReducer,
     auth: authReducer,
     product: productsReducer,
-
+    verification: verificationReducer,
  
     [productsApi.reducerPath]: productsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(productsApi.middleware);
+    
   },
 });
 

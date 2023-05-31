@@ -2,9 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { url, setHeaders } from "./api";
 import jwtDecode from "jwt-decode";
+import firebase from 'firebase/compat/app';
+import 'firebase/auth';
+import firebaseConfig from '../Firebase/firebaseConfig';
+
+
+firebase.initializeApp(firebaseConfig);
+
+const token = localStorage.getItem("token")? localStorage.getItem('token')
+: null
 
 const initialState = {
-  token: localStorage.getItem("token"),
+  token,
   firstname: "",
   lastname: "",
   gender: "",
@@ -25,6 +34,7 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userSignUp, { rejectWithValue }) => {
     try {
+      
       const response = await axios.post(`${url}/auth/user/signup`, {
         email: userSignUp.email,
         firstname: userSignUp.firstname,
@@ -37,6 +47,7 @@ export const registerUser = createAsyncThunk(
       });
 
       const token = response.data.token;
+      console.log(response)
       localStorage.setItem("token", token);
       return token;
     } catch (error) {
@@ -54,12 +65,28 @@ export const loginUser = createAsyncThunk(
         email: user.email,
         password: user.password,
       });
-      const token = response.data;
+      const token = response.data.token;
+      console.log(response)
       localStorage.setItem("token", token);
       return token;
     } catch (error) {
-      console.log(error.response);
-      return rejectWithValue(error.response);
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const signInWithGoogle = createAsyncThunk(
+  'auth/signInWithGoogle',
+  async (_, { rejectWithValue }) => {
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      const result = await firebase.auth().signInWithPopup(provider);
+      const { uid, displayName, email } = result.user;
+      const token = await result.user.getIdToken();
+      localStorage.setItem('token', token);
+      return { uid, displayName, email };
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -201,8 +228,25 @@ const authSlice = createSlice({
         getUserError: action.payload,
       };
     });
+  
+      builder
+        .addCase(signInWithGoogle.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(signInWithGoogle.fulfilled, (state, action) => {
+          state.loading = false;
+          state.user = action.payload;
+        })
+        .addCase(signInWithGoogle.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        });
+ 
   },
 });
 export const { loadUser, logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;
+
+

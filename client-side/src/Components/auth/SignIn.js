@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../Slices/authSlice";
+import { loginUser, signInWithGoogle } from "../../Slices/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
@@ -27,12 +27,26 @@ const SignIn = () => {
     dispatch(loginUser(user)).then((response) => {
       if (response.payload) {
         navigate(`/verify?email=${user.email}`);
+
       } else {
         console.log("nooooo");
       }
     });
   };
+  const googleSubmit = async (e) => {
+    e.preventDefault();
   
+    try {
+      const result = await dispatch(signInWithGoogle(user));
+      if (result.type === signInWithGoogle.fulfilled.toString()){
+        navigate('/cart'); 
+      } else {
+        
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div
       style={{
@@ -202,7 +216,7 @@ const SignIn = () => {
           marginTop: "0.8em",
         }}
         className="input-forms"
-
+  onClick={googleSubmit}
       >
         Sign in with Google
       </button>
