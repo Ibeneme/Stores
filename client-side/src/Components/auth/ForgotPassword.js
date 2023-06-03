@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../Slices/authSlice";
+import { sendPasswordResetEmail } from "../../Slices/Users/ForgotPasswordSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
@@ -11,15 +11,26 @@ import "./auth.css";
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const forgotPassword = useSelector((state) => state.forgotPassword);
 
-  const auth = useSelector((state) => state.auth);
-
-  const [user, setUser] = useState({
-    email: "",
-
-  });
-
-
+  const [email, setEmail] = useState("");
+ 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch(sendPasswordResetEmail(email));
+      const isResetPassword = response.payload?.status === "fulfilled";
+      if (isResetPassword) {
+       
+        navigate("/cart");
+        console.log("yes");
+      } else {
+        return console.log("Registration failed");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -49,6 +60,7 @@ const ForgotPassword = () => {
           justifyContent: "center",
           alignItems: "center",
         }}
+        onSubmit={handleSubmit}
       >
         <img
           style={{
@@ -105,7 +117,7 @@ const ForgotPassword = () => {
               placeholder="Email"
               type="text"
               className="input-forms"
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -131,7 +143,7 @@ const ForgotPassword = () => {
             }}
             className="input-forms"
           >
-            {auth.registerStatus === "pending" ? "Loading...." : "Submit"}
+              {forgotPassword.status === "pending" ? "Loading...." : "Submit"}
           </button>
         </div>
       </form>

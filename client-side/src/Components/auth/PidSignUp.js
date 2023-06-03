@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../Slices/authSlice";
+import { registerUserViaPasscoder } from "../../Slices/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
@@ -19,16 +19,22 @@ const PIDSignUp = () => {
     country: "",
     pid: "",
   });
- 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(registerUser(user)).then((response) => {
-      if (response.payload.success) {
-        navigate(`/`);
+    try {
+      const response = await dispatch(registerUserViaPasscoder(user));
+      if (response.meta.requestStatus === "fulfilled"){
+        navigate(`/pidsignin`);
       } else {
-        console.log("nooooo");
+        console.log("Registration failed");
+        console.log(response)
+        setError("Please Re-Confirm your details");
       }
-    });
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   return (
@@ -41,7 +47,7 @@ const PIDSignUp = () => {
       flexDirection: "column",
       paddingLeft: "2em",
       paddingRight: "2em",
-      paddingTop: "8em",
+      paddingTop: "19em",
       paddingBottom: "12em",
       justifyContent: "center",
       alignItems: "center",
@@ -85,7 +91,7 @@ const PIDSignUp = () => {
        Already have an account?{" "}
         <span
           style={{ color: "#386AEB", cursor: "pointer" }}
-          onClick={() => navigate("/signup")}
+          onClick={() => navigate("/pidsignin")}
         >
           Sign In with Passcoder
         </span>
@@ -99,7 +105,23 @@ const PIDSignUp = () => {
           alignItems: "center",
         }}
       >
-    <br /> <br />
+    <br />   {error ? (
+              <p
+                style={{
+                  backgroundColor: "#FF000029",
+                  color: "#FF0000",
+                  height: "2.4em",
+                  display: "flex",
+                  alignItems: "center",
+                  paddingLeft: "1em",
+                  width:'100%',
+                  borderLeft: "0.3em red solid",
+                  marginBottom: "0.9em",
+                }}
+              >
+                {error}
+              </p>
+            ) : null}<br />
 
         <div>
           {" "}

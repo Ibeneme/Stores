@@ -57,7 +57,15 @@ key={product.id}
 <h2>{product.name}</h2>
 <br/>
 <p>{product.description}</p>
-<p>{product.price}</p>
+<p style={{
+  marginTop:'1em',
+  fontSize:'1.5em',
+  fontWeight:'bolder'
+}}><span style={{
+  marginTop:'1em',
+  fontSize:'0.8em',
+  fontWeight:'small'
+}}>NGN</span>{product.price}</p>
 <br/>  <br/>
 <div className="div-btn-details">
 <button 

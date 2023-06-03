@@ -10,28 +10,53 @@ import { productsApi } from "./Slices/productAPI";
 import cartReducer, { getTotal } from './Slices/cartSlice'
 import 'react-toastify/dist/ReactToastify.css'
 import productsReducer from './Slices/productsSlice'
-import authReducer from './Slices/authSlice'; 
-import verificationReducer from './Slices/verificationSlice'
+import authReducer, { loadUser } from './Slices/authSlice'; 
+import forgotPasswordReducer from './Slices/Users/ForgotPasswordSlice'
 
-const store = configureStore({
-  reducer: {
+
+const saveStateMiddleware = store => next => action => {
+  const result = next(action);
+  const state = JSON.stringify(store.getState());
+  localStorage.setItem('reduxState', state);
+   return result;
+ };
+
+ 
+ const store = configureStore({
+   reducer: {
+     auth: authReducer,
     products: productReducer,
     cart: cartReducer,
-    auth: authReducer,
     product: productsReducer,
-    verification: verificationReducer,
- 
+     forgotPassword:forgotPasswordReducer,
     [productsApi.reducerPath]: productsApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(productsApi.middleware);
+  
+   middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat(saveStateMiddleware, productsApi.middleware);
     
   },
 });
-
+ 
+// const store = configureStore({
+//   reducer: {
+//     auth: authReducer,
+//     products: productReducer,
+//     cart: cartReducer,
+//     product: productsReducer,
+//     forgotPassword:forgotPasswordReducer,
+//     [productsApi.reducerPath]: productsApi.reducer,
+//   },
+  
+//   middleware: (getDefaultMiddleware) => {
+//     return getDefaultMiddleware().concat(productsApi.middleware);
+    
+//   },
+// });
 
 store.dispatch(productsFetch());
 store.dispatch(getTotal());
+store.dispatch(loadUser(null));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

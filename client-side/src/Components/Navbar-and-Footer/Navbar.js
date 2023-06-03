@@ -1,34 +1,30 @@
 import { useRef } from "react";
-import { useSelector } from "react-redux";
-import {
-  FaBars,
-  FaSearch,
-  FaShoppingCart,
-  FaTimes,
-  FaUser,
-} from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { FaBars, FaSearch, FaShoppingCart, FaTimes } from "react-icons/fa";
 import "./Navbar.css";
 import logo from "./image/Group 12.png";
 import { useNavigate } from "react-router";
-
-// import CategoriesForProps from "../Categories/CategoriesForProps";
-// import Categories from "../Categories/CategoriesData";
+import { logoutUser } from "../../Slices/authSlice";
 
 
 function Navbar() {
+  const dispatch = useDispatch();
   const navRef = useRef();
   const showNavbar = () => {
     navRef.current.classList.toggle("responsive_nav");
   };
+  const handleLogout = () => {
+    dispatch(logoutUser(null));
+   window.location.reload(); 
+  };
+
   const { cartTotalQuantity } = useSelector((state) => state.cart);
-  // const { _id } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   return (
-    <header  
-    // style={{
-    //   boxShadow: "0 2px 4px 0 rgba(0,0,0,.2)",
-    // }}
+    <header
+  
     >
       <div>
         <button
@@ -55,92 +51,88 @@ function Navbar() {
         </h3>
       </div>
 
-      <nav  className="nav-bar" ref={navRef}>
-        <span
-          style={{
-            backgroundColor: "#fff",
-            color: "#386AEB",
-          }}
-          className="logo-in-the-dropdown main-btn"
-        >
-          <h5
+      <nav className="nav-bar" ref={navRef}>
+        <span>
+          {auth.token ? (
+            <span
             style={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              fontSize: "1em",
-              color: "#386AEB",
-              paddingBottom: "0.7em",
-              paddingTop: "1em",
-              paddingLeft: "0.3em",
-              paddingRight: "0.3em",
-              width: "16em",
-            }}
-            onClick={() => {
-              navigate("/signup");
+              gap: "1em",
+              flexDirection:'column'
             }}
           >
-            {" "}
-            Sign Up to Buy
-          </h5>
+            <span>
+              <button
+                style={{
+                  padding: " 1em 3em",
+                  border: "0.083em solid white",
+                  color: "white",
+                  borderRadius: "0.3em",
+                  backgroundColor: "#386AEB",
+                  cursor: "pointer",
+                  width:'17em',
+                }}
+                onClick={handleLogout}
+              >
+                Log Out
+              </button>
+            </span>
 
-          {/* <img
-            style={{ marginRight: "-0.7em" }}
-            width="23em"
-            height="23em"
-            alt="logo"
-            src={logo}
-          />
-          <h6 className="h3-for-navbar">HydraXpress</h6>{" "} */}
-        </span>
-        <p
-          style={{
-            marginTop: "0.3em",
-          }}
-        ></p>
-        <span
-          style={{
-            backgroundColor: "#386AEB",
-            border: "0.16em solid white",
-            color: "#fff",
-          }}
-          className="logo-in-the-dropdown"
-        >
-          <h5
+            <button
+              style={{
+                padding: " 1em 3em",
+                border: "none",
+                backgroundColor: "black",
+                color: "white",
+                borderRadius: "0.3em",
+                width:'17em',
+              }}
+              onClick={() => navigate("/vendor")}
+            >
+              Sell
+            </button>
+          </span>
+          ) : (
+            <span
             style={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1em",
-              color: "white",
-              paddingTop: "0.7em",
-              paddingBottom: "1em",
-              paddingLeft: "0.3em",
-              paddingRight: "0.3em",
-              width: "16em",
-            }}
-            onClick={() => {
-              navigate("/pid-signup");
+              gap: "1em",
+              flexDirection:'column'
             }}
           >
-            Start Selling With Us
-          </h5>
+            <span>
+              <button
+                style={{
+                  padding: " 1em 3em",
+                  border: "0.083em solid white",
+                  color: "white",
+                  borderRadius: "0.3em",
+                  backgroundColor: "#386AEB",
+                  cursor: "pointer",
+                  width:'17em',
+                }}
+                onClick={() => navigate("/signin")}
+              >
+                Sign In
+              </button>
+            </span>
 
-          {/* <img
-    style={{ marginRight: "-0.7em" }}
-    width="23em"
-    height="23em"
-    alt="logo"
-    src={logo}
-  />
-  <h6 className="h3-for-navbar">HydraXpress</h6>{" "} */}
+            <button
+              style={{
+                padding: " 1em 3em",
+                border: "none",
+                backgroundColor: "black",
+                color: "white",
+                borderRadius: "0.3em",
+                width:'17em',
+              }}
+              onClick={() => navigate("/signup")}
+            >
+              Sign Up
+            </button>
+          </span>
+          )}
         </span>
-
-        <br />
-        {/* {Categories.map((e) => {
-          return <CategoriesForProps key={e.id} icon={e.icon} name={e.name} />;
-        })} */}
 
         <button className="nav-btn nav-close-btn" onClick={showNavbar}>
           <FaTimes />
@@ -154,92 +146,134 @@ function Navbar() {
         }}
         className="cart-search-user"
       >
-        <span className="utton">
-          <div className="dropdown">
-            <span className="dropbtn">
-              <span
-                style={{
-                  marginRight: "2em",
-                }}
-                className="utton span-others"
-              >
-                <FaUser className="utton user-button" />
-              </span>
-            </span>
-         <div className="dropdown-content">
-
-          {/* {_id ? <p>LogOut</p>  : <div style={{
-              display:'flex',
-              flexDirection:'column'
-            }}>
-            <h5
-                style={{
-                  color: "white",
-                  paddingBottom: "0.7em",
-                  paddingTop: "1em",
-                  paddingLeft: "2em",
-                  paddingRight: "2em",
-                  width: "100%",
-                }}
-                onClick={() => {
-                  navigate("/signup");
-                }}
-                className="dropdown-p"
-              >
-                {" "}
-                Sign Up to Buy
-              </h5>
-              <h5
-                style={{
-                  color: "white",
-                  paddingTop: "0.7em",
-                  paddingBottom: "1em",
-                  paddingLeft: "2em",
-                  paddingRight: "2em",
-                  width: "100%",
-                }}
-                onClick={() => {
-                  navigate("/vendorSignin");
-                }}
-                className="dropdown-p"
-              >
-               Become a Seller
-              </h5>
-              </div> 
-          } */}
-            
-              
-            </div>
-          </div>
-
-          <FaSearch style={{}} className="utton span-others" />
-        </span>
-
-        <span
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            alignItem: "center",
+            gap: "1.5em",
           }}
-          onClick={() => {
-            navigate("/Cart");
-          }}
-          className="utton"
         >
-          <h4
-            className="cart-cart-in-words"
-            style={{
-              marginRight: "0.4em",
-            }}
-          >
-            Cart
-          </h4>
+          <span className="utton">
+            <div className="dropdown">
+              <span className="dropbtn">
+                <span
+                  style={{
+                    marginRight: "2em",
+                  }}
+                  
+                  className="utton span-others"
+                ></span>
+              </span>
+              <div className="dropdown-content"></div>
+            </div>
 
-          <FaShoppingCart className="utton" />
-          {cartTotalQuantity >= 1 ? (
-            <span className="span-red">{cartTotalQuantity}</span>
-          ) : null}
-        </span>
+            <FaSearch style={{}} className="utton span-others" />
+          </span>
+
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => {
+              navigate("/Cart");
+            }}
+            className="utton"
+          >
+            <h4
+              className="cart-cart-in-words"
+              style={{
+                marginRight: "0.4em",
+              }}
+            >
+       
+            </h4>
+
+            <FaShoppingCart className="utton" />
+            {cartTotalQuantity >= 1 ? (
+              <span style={{}} className="span-red">
+                {cartTotalQuantity}
+              </span>
+            ) : null}
+
+            <br />
+          </span>
+
+          <span className="hide-btnn">
+            {auth.token ? (
+              <span style={{
+                display: "flex",
+                gap: "1em",
+              }}>
+  <button
+                    style={{
+                      padding: " 1em 3em",
+                      border: "0.083em solid white",
+                      color: "white",
+                      borderRadius: "0.3em",
+                      backgroundColor: "#386AEB",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleLogout}
+                 
+                  >
+                   Log Out
+                  </button>
+              <button
+                style={{
+                  padding: " 1em 3em",
+                  border: "none",
+                  backgroundColor: "black",
+                  color: "white",
+                  borderRadius: "0.3em",
+                }}
+                onClick={() => navigate("/vendorHome")}
+              >
+               Sell
+              </button>
+                </span>
+          
+            ) : (
+              <span
+                style={{
+                  display: "flex",
+                  gap: "1em",
+                }}
+              >
+                <span>
+                  <button
+                    style={{
+                      padding: " 1em 3em",
+                      border: "0.083em solid white",
+                      color: "white",
+                      borderRadius: "0.3em",
+                      backgroundColor: "#386AEB",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => navigate("/signin")}
+                  >
+                    Sign In
+                  </button>
+                </span>
+
+                <button
+                  style={{
+                    padding: " 1em 3em",
+                    border: "none",
+                    backgroundColor: "black",
+                    color: "white",
+                    borderRadius: "0.3em",
+                  }}
+                  onClick={() => navigate("/signup")}
+                >
+                  Sign Up
+                </button>
+              </span>
+            )}
+          </span>
+        </div>
       </h6>
     </header>
   );

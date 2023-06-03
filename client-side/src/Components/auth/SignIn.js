@@ -1,52 +1,65 @@
-
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser, signInWithGoogle } from "../../Slices/authSlice";
-import { useSelector } from "react-redux";
+
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
- 
 
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  
-  const auth = useSelector((state) => state.auth);
+
 
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(user)).then((response) => {
-      if (response.payload) {
-        navigate(`/verify?email=${user.email}`);
+    try {
+      const response = await dispatch(loginUser(user));
+      console.log(response);
+      console.log(response.meta.requestStatus);
 
+      if (response.meta.requestStatus === "fulfilled") {
+        navigate("/");
       } else {
-        console.log("nooooo");
+        console.log(user);
+        setError("Invalid Email or Password");
       }
-    });
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
+
   const googleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const result = await dispatch(signInWithGoogle(user));
-      if (result.type === signInWithGoogle.fulfilled.toString()){
-        navigate('/cart'); 
+      if (result.type === signInWithGoogle.fulfilled.toString()) {
+        navigate("/cart");
       } else {
-        
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+
+   const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div
       style={{
@@ -63,6 +76,7 @@ const SignIn = () => {
         alignItems: "center",
       }}
     >
+       
       <form
         onSubmit={handleSubmit}
         style={{
@@ -71,7 +85,6 @@ const SignIn = () => {
           weight: "100vw",
           display: "flex",
           flexDirection: "column",
-
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -103,10 +116,10 @@ const SignIn = () => {
             style={{ color: "#386AEB", cursor: "pointer" }}
             onClick={() => navigate("/signup")}
           >
-            Sign in
+            Sign up
           </span>
         </p>
-        <br />{" "}
+        <br />
         <div
           style={{
             width: "100%",
@@ -116,68 +129,103 @@ const SignIn = () => {
           }}
         >
           <div>
-            {" "}
+            <br />
+            {error ? (
+              <p
+                style={{
+                  backgroundColor: "#FF000029",
+                  color: "#FF0000",
+                  height: "2.4em",
+                  display: "flex",
+                  alignItems: "center",
+                  paddingLeft: "1em",
+                  borderLeft: "0.3em red solid",
+                  marginBottom: "0.9em",
+                }}
+              >
+                {error}
+              </p>
+            ) : null}
+            <br />
             <label
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
               }}
             >
-              {" "}
               Email
             </label>
             <input
-            autoComplete="off"
+              autoComplete="off"
               name="email"
               placeholder="Email"
-              type="text"
+              type="email"
+              required
               className="input-forms"
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             />
           </div>
 
           <div>
-            {" "}
             <label
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
               }}
             >
-              {" "}
               Password
             </label>
-            <input
-            autoComplete="off"
-              name="password"
-              placeholder="Password"
-              type="password"
-              className="input-forms"
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-            />
+            <div style={{ position: "relative" }}>
+              <input
+                autoComplete="off"
+                name="password"
+                placeholder="Password"
+                type={showPassword ? "text" : "password"}
+                className="input-forms"
+                onChange={(e) =>
+                  setUser({ ...user, password: e.target.value })
+                }
+              />
+              <span
+                style={{
+                  marginTop:"-0.75em",
+                  fontSize:'0.8em',
+                  position: "absolute",
+                  right: "1em",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+                onClick={handleTogglePassword}
+              >
+               {showPassword ? <FiEyeOff /> : <FiEye />}
+              </span>
+            </div>
           </div>
-              <div style={{
-                  display:'flex',
-                  justifyContent:"flex-end",
-                  alignItems:"flex-end",
-                  width:'100%',
-                
-
-
-                }}>
-
-                <p style={{
-                  color:'#386aeb',
-                  marginTop:'-1em',
-                  width:'100%',
-                  display:'flex',
-                  justifyContent:"flex-end",
-                  alignItems:"flex-end",
-                
-
-                }} onClick={()=>navigate('/forgotPassword')}>Forgot Password?</p>
-             
-              </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+              width: "100%",
+              marginTop: "-1em",
+            }}
+          >
+            <p
+              style={{
+                color: "#386aeb",
+               
+                width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                cursor:'pointer'
+              }}
+              onClick={() => navigate("/forgotPassword")}
+            >
+              Forgot Password?
+            </p>
+          </div>
           <button
             style={{
               backgroundColor: "#386aeb",
@@ -188,7 +236,7 @@ const SignIn = () => {
             }}
             className="input-forms"
           >
-            {auth.loginStatus === "pending" ? "Loading...." : "Submit"}
+            Submit
           </button>
         </div>
       </form>
@@ -198,25 +246,24 @@ const SignIn = () => {
       <button
         style={{
           backgroundColor: "black",
-
           border: "0.7em",
           color: "white",
           borderRadius: "0.3em",
         }}
         className="input-forms"
+        onClick={()=>{navigate('/pidsignin')}}
       >
         Sign in with Passcoder
       </button>
       <button
         style={{
           backgroundColor: "#66666635",
-
           border: "0.7em",
           color: "black",
           marginTop: "0.8em",
         }}
         className="input-forms"
-  onClick={googleSubmit}
+        onClick={googleSubmit}
       >
         Sign in with Google
       </button>

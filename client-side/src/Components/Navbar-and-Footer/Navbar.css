@@ -190,6 +190,10 @@ nav {
 		opacity: 1;
         
 	}
+
+    .hide-btnn{
+        display: none;
+    }
     .dropdown-p:hover{
         background-color: transparent;
         width:100%;

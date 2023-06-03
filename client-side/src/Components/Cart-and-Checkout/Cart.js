@@ -18,6 +18,7 @@ import Footer from '../Navbar-and-Footer/Footer'
 
 const Cart = (cartItem) => {
   const cart = useSelector((state) => state.cart);
+  const auth = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -304,12 +305,21 @@ const Cart = (cartItem) => {
               </div>
             
               <br /> <br />
-            <button 
+
+
+              { auth.token? (<button 
             style={{
               fontSize:'1em',
             }}
             className="checkout-btn"
-            onClick={() => navigate("/signup")}>Checkout</button>
+            onClick={() => navigate("/checkout")}>Checkout</button>)
+          :  <button 
+          style={{
+            fontSize:'1em',
+          }}
+          className="checkout-btn"
+          onClick={() => navigate("/signup")}>Sign Up to Checkout</button>}
+           
           
           </div>
         </div>

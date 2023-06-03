@@ -1,10 +1,10 @@
 import React from 'react'
 import { ErrorMessage, useField } from 'formik'
-import '../auth.css'
+import './Checkout.css'
 
-const TextField = ({label, ...props}) => {
+
+const TextFieldCheckout = ({label, ...props}) => {
    const [ field ] = useField(props)
-   const emptyOnChange = () => {};
   return (
     <div>
       <div style={{
@@ -12,23 +12,20 @@ const TextField = ({label, ...props}) => {
         flexDirection:'column'
       }}>
          <label htmlFor={field.name}>{label}</label>
-        
         <input 
-        onChange={emptyOnChange} 
-        style={{ touchAction: 'manipulation',
-      fontSize:'1em' }}
-        className='input-forms'
+        className='input-forms-checkout'
         {...field} {...props}
         placeholder={label}
        autoComplete='off'
        
-        />
+       required />
       </div>
        
        <div
           style={{
             color:'red',
-            marginTop:'-1.4em'
+            fontSize:'0.8em',
+            marginTop:'-0.3em'
         }}>
           <p>
           <ErrorMessage
@@ -43,4 +40,6 @@ const TextField = ({label, ...props}) => {
   )
 }
 
-export default TextField
+export default TextFieldCheckout
+
+

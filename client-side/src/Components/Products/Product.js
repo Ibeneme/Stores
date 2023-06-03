@@ -36,7 +36,10 @@ const Product = () => {
           <div style={{ marginTop: "2em" }}>
             <Carousels />
           </div>
-          <div className="div-style-first">
+          <div style={{
+            marginTop:"6em"
+          }}
+          className="div-style-first">
             <h2>New Arrivals</h2>
             <div className="superior-div">
               {data?.map((product) => (

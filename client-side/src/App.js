@@ -13,7 +13,15 @@ import Carousels from "./Components/Navbar-and-Footer/Carousel";
 import NextSignUp from "./Components/auth/nextSignUp";
 import Checkout from "./Components/Cart-and-Checkout/Checkout";
 import PaymentCheckout from "./Components/Cart-and-Checkout/Payment";
-import PIDSignUp from "./Components/auth/Pid";
+import Testing from "./Components/auth/Modal/SuccessModal";
+import Failed from "./Components/auth/Modal/Failed";
+import PIDSignIn from "./Components/auth/Pid";
+import PIDSignUp from "./Components/auth/PidSignUp";
+import LoginUserr from "./Components/auth/Login";
+import VendorHome from "./Components/VendorUI/VendorHome";
+
+
+
 
 function App() {
   return (
@@ -35,8 +43,15 @@ function App() {
           <Route path="/verify" element={<Verify />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<PaymentCheckout />} />
-          <Route path="/pid" element={<PIDSignUp />} />
-          <Route path="/pid-signup" element={<PIDSignUp />} />
+          <Route path="/pidsignin" element={<PIDSignIn />} />
+          <Route path="/pidsignup" element={<PIDSignUp />} />
+          <Route path="/test" element={<Testing />} />
+          <Route path="/failed" element={<Failed />} />
+          <Route path="/login" element={<LoginUserr />} />
+          <Route path="/vendor" element={<VendorHome />} />
+
+
+
 
 
 
