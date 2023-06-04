@@ -216,6 +216,7 @@ function Navbar() {
                       backgroundColor: "#386AEB",
                       cursor: "pointer",
                     }}
+                    className="btnnnn"
                     onClick={handleLogout}
                  
                   >
@@ -228,8 +229,8 @@ function Navbar() {
                   backgroundColor: "black",
                   color: "white",
                   borderRadius: "0.3em",
-                }}
-                onClick={() => navigate("/vendorHome")}
+                }}className="btnnnn"
+                onClick={() => navigate("/vendor")}
               >
                Sell
               </button>
@@ -252,6 +253,7 @@ function Navbar() {
                       backgroundColor: "#386AEB",
                       cursor: "pointer",
                     }}
+                    className="btnnnn"
                     onClick={() => navigate("/signin")}
                   >
                     Sign In
@@ -266,6 +268,7 @@ function Navbar() {
                     color: "white",
                     borderRadius: "0.3em",
                   }}
+                  className="btnnnn"
                   onClick={() => navigate("/signup")}
                 >
                   Sign Up

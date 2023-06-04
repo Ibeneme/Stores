@@ -1,19 +1,27 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser, signInWithGoogle } from "../../Slices/authSlice";
+import { loginUser } from "../../Slices/authSlice";
 
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
 
+
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+  };
 
   const [user, setUser] = useState({
     email: "",
@@ -22,7 +30,6 @@ const SignIn = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -41,22 +48,21 @@ const SignIn = () => {
     }
   };
 
-  const googleSubmit = async (e) => {
-    e.preventDefault();
+  // const googleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const result = await dispatch(signInWithGoogle(user));
-      if (result.type === signInWithGoogle.fulfilled.toString()) {
-        navigate("/cart");
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   try {
+  //     const result = await dispatch(signInWithGoogle(user));
+  //     if (result.type === signInWithGoogle.fulfilled.toString()) {
+  //       navigate("/");
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-
-   const handleTogglePassword = () => {
+  const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
 
@@ -76,7 +82,6 @@ const SignIn = () => {
         alignItems: "center",
       }}
     >
-       
       <form
         onSubmit={handleSubmit}
         style={{
@@ -156,6 +161,7 @@ const SignIn = () => {
               Email
             </label>
             <input
+
               autoComplete="off"
               name="email"
               placeholder="Email"
@@ -164,6 +170,7 @@ const SignIn = () => {
               className="input-forms"
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             />
+          
           </div>
 
           <div>
@@ -177,19 +184,25 @@ const SignIn = () => {
             </label>
             <div style={{ position: "relative" }}>
               <input
+                onFocus={handleFocusPassword}
+                onBlur={handleBlurPassword}
                 autoComplete="off"
                 name="password"
                 placeholder="Password"
                 type={showPassword ? "text" : "password"}
                 className="input-forms"
-                onChange={(e) =>
-                  setUser({ ...user, password: e.target.value })
-                }
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
-              <span
+              {isFocusedPassword ? <p style={{
+              marginTop:'-1.5em',
+              marginBottom:'1.3em',
+              fontSize:'0.8em',
+              color:'#386AEB'
+
+            }}>An Uppercase, Lowercase, Numbers & specials</p> : null}  <span
                 style={{
-                  marginTop:"-0.75em",
-                  fontSize:'0.8em',
+                  marginTop: "-0.75em",
+                  fontSize: "0.8em",
                   position: "absolute",
                   right: "1em",
                   top: "50%",
@@ -198,7 +211,7 @@ const SignIn = () => {
                 }}
                 onClick={handleTogglePassword}
               >
-               {showPassword ? <FiEyeOff /> : <FiEye />}
+                {showPassword ? <FiEyeOff /> : <FiEye />}
               </span>
             </div>
           </div>
@@ -214,12 +227,12 @@ const SignIn = () => {
             <p
               style={{
                 color: "#386aeb",
-               
+                marginTop:'1em',
                 width: "100%",
                 display: "flex",
                 justifyContent: "flex-end",
                 alignItems: "flex-end",
-                cursor:'pointer'
+                cursor: "pointer",
               }}
               onClick={() => navigate("/forgotPassword")}
             >
@@ -251,11 +264,13 @@ const SignIn = () => {
           borderRadius: "0.3em",
         }}
         className="input-forms"
-        onClick={()=>{navigate('/pidsignin')}}
+        onClick={() => {
+          navigate("/pidsignin");
+        }}
       >
         Sign in with Passcoder
       </button>
-      <button
+      {/* <button
         style={{
           backgroundColor: "#66666635",
           border: "0.7em",
@@ -266,7 +281,7 @@ const SignIn = () => {
         onClick={googleSubmit}
       >
         Sign in with Google
-      </button>
+      </button> */}
     </div>
   );
 };

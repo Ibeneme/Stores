@@ -13,6 +13,7 @@ const PIDSignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  
   const auth = useSelector((state) => state.auth);
 
 
@@ -54,13 +55,7 @@ const PIDSignIn = () => {
       alignItems: "center",
       
     }}>
- {/* {auth.loginStatus === "pending" ? 
- <div style={{
-  height:"100vh",
-  width: '100vw'
- }}>
-  <Loader />
-  </div>: */}
+
     <form
       onSubmit={handleSubmit}
       style={{

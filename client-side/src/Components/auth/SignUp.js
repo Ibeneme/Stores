@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerUser, signInWithGoogle } from "../../Slices/authSlice";
+import { registerUser,  } from "../../Slices/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
@@ -14,8 +14,74 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [isFocusedDateofBirth, setIsFocusedDateofBirth] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+  const [isFocusedFirstName, setIsFocusedFirstName] = useState(false);
+  const [isFocusedLastName, setIsFocusedLastName] = useState(false);
+  const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] = useState(false);
+  const [isFocusedGender, setIsFocusedGender] = useState(false);
+  const [isFocusedCountry, setIsFocusedCountry] = useState(false);
+
+  const handleFocusGender = () => {
+    setIsFocusedGender(true);
+  };
+
+  const handleBlurGender = () => {
+    setIsFocusedGender(false);
+  };
+
+  const handleFocusCountry = () => {
+    setIsFocusedCountry(true);
+  };
+
+  const handleBlurCountry = () => {
+    setIsFocusedCountry(false);
+  };
+
+  const handleFocusDateofBirth = () => {
+    setIsFocusedDateofBirth(true);
+  };
+
+  const handleBlurDateofBirth = () => {
+    setIsFocusedDateofBirth(false);
+  };
+
+
+
+  const handleFocusFirstName = () => {
+    setIsFocusedFirstName(true);
+  };
+
+  const handleBlurFirstName = () => {
+    setIsFocusedFirstName(false);
+  };
+
+  const handleFocusLastName = () => {
+    setIsFocusedLastName(true);
+  };
+
+  const handleBlurLastName = () => {
+    setIsFocusedLastName(false);
+  };
+
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+  };
+
+  const handleFocusConfirmPassword = () => {
+    setIsFocusedConfirmPassword(true);
+  };
+
+  const handleBlurConfirmPassword = () => {
+    setIsFocusedConfirmPassword(false);
+  };
+
   const auth = useSelector((state) => state.auth);
-console.log(auth.userLoaded)
+  console.log(auth.userLoaded);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -32,12 +98,12 @@ console.log(auth.userLoaded)
     e.preventDefault();
     try {
       const response = await dispatch(registerUser(user));
-      if (response.meta.requestStatus === "fulfilled"){
+      if (response.meta.requestStatus === "fulfilled") {
         const { email } = user;
         navigate(`/verify?email=${email}`);
       } else {
         console.log("Registration failed");
-        console.log(response)
+        console.log(response.data);
         setError("Please Re-Confirm your details");
       }
     } catch (error) {
@@ -45,19 +111,19 @@ console.log(auth.userLoaded)
     }
   };
 
-  const googleSubmit = async (e) => {
-    e.preventDefault();
+  // const googleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const result = await dispatch(signInWithGoogle(user));
-      if (result.type === signInWithGoogle.fulfilled.toString()) {
-        navigate("/cart");
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   try {
+  //     const result = await dispatch(signInWithGoogle(user));
+  //     if (result.type === signInWithGoogle.fulfilled.toString()) {
+  //       navigate("/");
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -77,7 +143,6 @@ console.log(auth.userLoaded)
         alignItems: "center",
       }}
     >
-
       <form
         onSubmit={handleSubmit}
         style={{
@@ -121,8 +186,8 @@ console.log(auth.userLoaded)
             Sign in
           </span>
         </p>
-        <br /> 
-                 <br />
+        <br />
+        <br />
         <div
           style={{
             width: "100%",
@@ -143,6 +208,8 @@ console.log(auth.userLoaded)
               First Name
             </label>
             <input
+              onFocus={handleFocusFirstName}
+              onBlur={handleBlurFirstName}
               autoComplete="on"
               name="firstname"
               placeholder="First name"
@@ -150,8 +217,19 @@ console.log(auth.userLoaded)
               className="input-forms"
               onChange={(e) => setUser({ ...user, firstname: e.target.value })}
             />
+            {isFocusedFirstName ? (
+              <p
+                style={{
+                  marginTop: "-1.5em",
+                  marginBottom: "1.3em",
+                  fontSize: "0.8em",
+                  color: "#386AEB",
+                }}
+              >
+                First Name is required
+              </p>
+            ) : null}
           </div>
-
           <div>
             {" "}
             <label
@@ -164,6 +242,8 @@ console.log(auth.userLoaded)
               Last Name
             </label>
             <input
+              onFocus={handleFocusLastName}
+              onBlur={handleBlurLastName}
               autoComplete="on"
               name="name"
               placeholder="Last Name"
@@ -171,8 +251,19 @@ console.log(auth.userLoaded)
               className="input-forms"
               onChange={(e) => setUser({ ...user, lastname: e.target.value })}
             />
+            {isFocusedLastName ? (
+              <p
+                style={{
+                  marginTop: "-1.5em",
+                  marginBottom: "1.3em",
+                  fontSize: "0.8em",
+                  color: "#386AEB",
+                }}
+              >
+                Last Name is required
+              </p>
+            ) : null}
           </div>
-
           <div>
             {" "}
             <label
@@ -193,7 +284,6 @@ console.log(auth.userLoaded)
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             />
           </div>
-
           <div>
             {" "}
             <label
@@ -206,6 +296,8 @@ console.log(auth.userLoaded)
               Gender
             </label>
             <input
+                onFocus={handleFocusGender}
+                onBlur={handleBlurGender}
               autoComplete="on"
               name="gender"
               placeholder="Gender"
@@ -213,6 +305,18 @@ console.log(auth.userLoaded)
               className="input-forms"
               onChange={(e) => setUser({ ...user, gender: e.target.value })}
             />
+              {isFocusedGender ? (
+              <p
+                style={{
+                  marginTop: "-1.5em",
+                  marginBottom: "1.3em",
+                  fontSize: "0.8em",
+                  color: "#386AEB",
+                }}
+              >
+                Either Male or Female
+              </p>
+            ) : null}
           </div>
           <div>
             {" "}
@@ -226,6 +330,8 @@ console.log(auth.userLoaded)
               Country
             </label>
             <input
+                onFocus={handleFocusCountry}
+                onBlur={handleBlurCountry}
               autoComplete="on"
               name="country"
               placeholder="Country"
@@ -233,6 +339,18 @@ console.log(auth.userLoaded)
               className="input-forms"
               onChange={(e) => setUser({ ...user, country: e.target.value })}
             />
+              {isFocusedCountry ? (
+              <p
+                style={{
+                  marginTop: "-1.5em",
+                  marginBottom: "1.3em",
+                  fontSize: "0.8em",
+                  color: "#386AEB",
+                }}
+              >
+                Service available only in Nigeria 
+              </p>
+            ) : null}
           </div>
           <div>
             {" "}
@@ -246,6 +364,8 @@ console.log(auth.userLoaded)
               Date of birth
             </label>
             <input
+               onFocus={handleFocusDateofBirth}
+               onBlur={handleBlurDateofBirth}
               autoComplete="on"
               name="dob"
               placeholder="Date of Birth"
@@ -253,9 +373,19 @@ console.log(auth.userLoaded)
               className="input-forms"
               onChange={(e) => setUser({ ...user, dob: e.target.value })}
             />
+              {isFocusedDateofBirth ? (
+              <p
+                style={{
+                  marginTop: "-1.5em",
+                  marginBottom: "1.3em",
+                  fontSize: "0.8em",
+                  color: "#386AEB",
+                }}
+              >
+                You must be above 18years of age 
+              </p>
+            ) : null}
           </div>
-
-         
           <div style={{ position: "relative" }}>
             <label
               style={{
@@ -266,13 +396,27 @@ console.log(auth.userLoaded)
               Password
             </label>
             <input
+              onFocus={handleFocusPassword}
+              onBlur={handleBlurPassword}
               autoComplete="on"
               name="password"
               placeholder="Password"
-              type={showPassword ? "text" : "password"} 
+              type={showPassword ? "text" : "password"}
               className="input-forms"
               onChange={(e) => setUser({ ...user, password: e.target.value })}
             />
+            {isFocusedPassword ? (
+              <p
+                style={{
+                  marginTop: "-1.5em",
+                  marginBottom: "1.3em",
+                  fontSize: "0.8em",
+                  color: "#386AEB",
+                }}
+              >
+                Minimum of 8 characters Uppercase, Lowercase, Numbers & special character 
+              </p>
+            ) : null}
             <button
               type="button"
               onClick={togglePasswordVisibility} // Attach onClick event handler
@@ -286,10 +430,9 @@ console.log(auth.userLoaded)
                 cursor: "pointer",
               }}
             >
-              {showPassword ? <FiEyeOff /> : <FiEye />} 
+              {showPassword ? <FiEyeOff /> : <FiEye />}
             </button>
           </div>
-
           <div style={{ position: "relative" }}>
             <label
               style={{
@@ -300,13 +443,29 @@ console.log(auth.userLoaded)
               Confirm Password
             </label>
             <input
+              onFocus={handleFocusConfirmPassword}
+              onBlur={handleBlurConfirmPassword}
               autoComplete="on"
               name="confirmPassword"
               placeholder="Confirm Password"
-              type={showPassword ? "text" : "password"} 
+              type={showPassword ? "text" : "password"}
               className="input-forms"
-              onChange={(e) => setUser({ ...user, confirmPassword: e.target.value })}
-            />
+              onChange={(e) =>
+                setUser({ ...user, confirmPassword: e.target.value })
+              }
+            />{" "}
+            {isFocusedConfirmPassword ? (
+              <p
+                style={{
+                  marginTop: "-1.5em",
+                  marginBottom: "1.3em",
+                  fontSize: "0.8em",
+                  color: "#386AEB",
+                }}
+              >
+                Both Passwords Must Match
+              </p>
+            ) : null}
             <button
               type="button"
               onClick={togglePasswordVisibility} // Attach onClick event handler
@@ -320,7 +479,7 @@ console.log(auth.userLoaded)
                 cursor: "pointer",
               }}
             >
-              {showPassword ? <FiEyeOff /> : <FiEye />} 
+              {showPassword ? <FiEyeOff /> : <FiEye />}
             </button>
           </div>
           <button
@@ -335,19 +494,24 @@ console.log(auth.userLoaded)
           >
             {auth.registerStatus === "pending" ? "Loading...." : "Submit"}
           </button>
-          <br />
-            {" "}
-            { error? <p style={{
-              backgroundColor:'#FF000029',
-              color:'#FF0000',
-              height:'2.4em',
-              display:'flex',
-              alignItems:'center',
-              paddingLeft:'1em',
-              borderLeft:'0.3em red solid',
-              marginBottom:'0.9em',
-              width:'100%'
-            }}>{error}</p> : null }
+          <br />{" "}
+          {error ? (
+            <p
+              style={{
+                backgroundColor: "#FF000029",
+                color: "#FF0000",
+                height: "2.4em",
+                display: "flex",
+                alignItems: "center",
+                paddingLeft: "1em",
+                borderLeft: "0.3em red solid",
+                marginBottom: "0.9em",
+                width: "100%",
+              }}
+            >
+              {error}
+            </p>
+          ) : null}
         </div>
       </form>
       <br />
@@ -362,11 +526,11 @@ console.log(auth.userLoaded)
           borderRadius: "0.3em",
         }}
         className="input-forms"
-        onClick={()=>navigate('/pidsignup')}
+        onClick={() => navigate("/pidsignup")}
       >
         Sign in with Passcoder
       </button>
-      <button
+      {/* <button
         style={{
           backgroundColor: "#66666635",
 
@@ -378,12 +542,9 @@ console.log(auth.userLoaded)
         onClick={googleSubmit}
       >
         Sign in with Google
-      </button>
+      </button> */}
     </div>
   );
 };
 
 export default SignUp;
-
-
-

@@ -1,11 +1,10 @@
 
-  @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 * {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	font-family: "inter";
+	font-family: "montserrat";
 }
 
 body{
@@ -41,6 +40,10 @@ a {
         margin-bottom: 0.87em;
         margin-left: -0.17em;
   
+}
+.btnnnn:hover{
+    background-color: orange;
+    color: white;
 }
 .span-others{
     

@@ -264,10 +264,10 @@
         width: 13em;
         padding: 1em;
         height: 3.6em;
-        background-color: #386aeb;
-        color: white;
+        background-color: white;
+        color: black;
         border-radius: 0.2em;
-        border: none;
+        border: 0.08em solid black;
     }
     .div-products-first{
         display: flex;

@@ -2,15 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { url, setHeaders } from "./api";
 import jwtDecode from "jwt-decode";
-import firebase from 'firebase/compat/app';
-import 'firebase/auth';
-import firebaseConfig from '../Firebase/firebaseConfig';
-
+import firebase from "firebase/compat/app";
+import "firebase/auth";
+import firebaseConfig from "../Firebase/firebaseConfig";
 
 firebase.initializeApp(firebaseConfig);
 
-const token = localStorage.getItem("token")? localStorage.getItem('token')
-: null
+const token = localStorage.getItem("token")
+  ? localStorage.getItem("token")
+  : null;
 
 const initialState = {
   token,
@@ -29,14 +29,13 @@ const initialState = {
   loginError: "",
   userLoaded: false,
   resetPassword: "",
-  pid:"",
+  pid: "",
 };
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userSignUp, { rejectWithValue }) => {
     try {
-      
       const response = await axios.post(`${url}/auth/user/signup`, {
         email: userSignUp.email,
         firstname: userSignUp.firstname,
@@ -49,10 +48,7 @@ export const registerUser = createAsyncThunk(
       });
 
       const token = response.data.token;
-      console.log(response)
-      localStorage.setItem("token", token);
-   
-
+      console.log(response);
 
       return token;
     } catch (error) {
@@ -66,17 +62,16 @@ export const registerUserViaPasscoder = createAsyncThunk(
   "auth/registerUserViaPasscoder",
   async (userSignUp, { rejectWithValue }) => {
     try {
-      
-      const response = await axios.post(`${url}/auth/user/signup/via/passcoder`, {
-        country: userSignUp.country,
-        pid: userSignUp.country,
-      });
+      const response = await axios.post(
+        `${url}/auth/user/signup/via/passcoder`,
+        {
+          country: userSignUp.country,
+          pid: userSignUp.country,
+        }
+      );
 
       const token = response.data.token;
-      console.log(response)
-      localStorage.setItem("token", token);
-   
-
+      console.log(response);
 
       return token;
     } catch (error) {
@@ -86,8 +81,6 @@ export const registerUserViaPasscoder = createAsyncThunk(
   }
 );
 
-
-
 export const sendVerificationEmail = createAsyncThunk(
   "verification/resendEmail",
   async (email, { rejectWithValue }) => {
@@ -96,9 +89,8 @@ export const sendVerificationEmail = createAsyncThunk(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/email/verify",
         { email }
       );
-      console.log(response.data)
+      console.log(response.data);
       return response.data;
-      
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.message);
@@ -110,17 +102,15 @@ export const sendPasswordResetEmail = createAsyncThunk(
   "forgotPassword/sendEmail",
   async (email, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}/user/password/reset/email`, { email });
-      return  console.log(response) 
-      
+      const response = await axios.post(`${url}/user/password/reset/email`, {
+        email,
+      });
+      return console.log(response);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
-
-
-
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -131,7 +121,7 @@ export const loginUser = createAsyncThunk(
         password: user.password,
       });
       const token = response.data.data.token;
-      console.log(response)
+      console.log(response);
       localStorage.setItem("token", token);
       return token;
     } catch (error) {
@@ -141,7 +131,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logOutUser= createAsyncThunk(
+export const logOutUser = createAsyncThunk(
   "auth/logOutUser",
   async (user, { rejectWithValue }) => {
     try {
@@ -150,7 +140,7 @@ export const logOutUser= createAsyncThunk(
         password: user.password,
       });
       const token = response.data.data.token;
-      console.log(response)
+      console.log(response);
       localStorage.setItem("token", token);
       return token;
     } catch (error) {
@@ -168,7 +158,7 @@ export const loginUserViaPasscoder = createAsyncThunk(
         pid: user.pid,
       });
       const token = response.data.data.token;
-      console.log(response)
+      console.log(response);
       localStorage.setItem("token", token);
       return token;
     } catch (error) {
@@ -178,17 +168,15 @@ export const loginUserViaPasscoder = createAsyncThunk(
   }
 );
 
-
 export const signInWithGoogle = createAsyncThunk(
-  'auth/signInWithGoogle',
+  "auth/signInWithGoogle",
   async (_, { rejectWithValue }) => {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const result = await firebase.auth().signInWithPopup(provider);
-      const { uid, displayName, email } = result.user;
-      const token = await result.user.getIdToken();
-      localStorage.setItem('token', token);
-      return { uid, displayName, email };
+     const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
+      return token;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -219,7 +207,7 @@ const authSlice = createSlice({
       const token = state.token;
       if (token) {
         const user = jwtDecode(token);
-     
+
         return {
           ...state,
           token,
@@ -229,12 +217,9 @@ const authSlice = createSlice({
           firstname: user.firstname,
           _id: user._id,
           userLoaded: true,
-      
-        };   
-        
+        };
       } else return { ...state, userLoaded: true };
-    },    
-
+    },
 
     logoutUser(state, action) {
       localStorage.removeItem("token");
@@ -246,16 +231,14 @@ const authSlice = createSlice({
     },
   },
 
-
   extraReducers: (builder) => {
-    
     builder.addCase(registerUser.pending, (state, action) => {
       return { ...state, registerStatus: "pending" };
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
-        console.log(user)
+        console.log(user);
         return {
           ...state,
           token: action.payload,
@@ -287,7 +270,7 @@ const authSlice = createSlice({
     builder.addCase(logOutUser.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
-        console.log(user)
+        console.log(user);
         return {
           ...state,
           token: action.payload,
@@ -318,7 +301,7 @@ const authSlice = createSlice({
     builder.addCase(registerUserViaPasscoder.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
-        console.log(user)
+        console.log(user);
         return {
           ...state,
           token: action.payload,
@@ -338,15 +321,13 @@ const authSlice = createSlice({
       };
     });
 
-
-
     builder.addCase(loginUser.pending, (state, action) => {
       return { ...state, loginStatus: "pending" };
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
-        console.log(user)
+        console.log(user);
         return {
           ...state,
           token: action.payload,
@@ -370,7 +351,7 @@ const authSlice = createSlice({
     builder.addCase(loginUserViaPasscoder.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
-        console.log(user)
+        console.log(user);
         return {
           ...state,
           token: action.payload,
@@ -386,7 +367,6 @@ const authSlice = createSlice({
         loginError: action.payload,
       };
     });
-
 
     builder.addCase(getUser.pending, (state, action) => {
       return {
@@ -414,60 +394,64 @@ const authSlice = createSlice({
         getUserError: action.payload,
       };
     });
-  
-      builder
-        .addCase(signInWithGoogle.pending, (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-        .addCase(signInWithGoogle.fulfilled, (state, action) => {
-          state.loading = false;
-          state.user = action.payload;
-        })
-        .addCase(signInWithGoogle.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.payload;
-        });
 
+    builder.addCase(signInWithGoogle.pending, (state, action) => {
+      return { ...state, loginStatus: "pending" };
+    });
+    builder.addCase(signInWithGoogle.fulfilled, (state, action) => {
+      if (action.payload) {
+        const user = jwtDecode(action.payload);
+        console.log(user);
+        return {
+          ...state,
+          token: action.payload,
+          email: user.email,
+          password: user.password,
 
-     
-          
-          builder.addCase(sendVerificationEmail.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-            state.success = false;
-          });
-          builder.addCase(sendVerificationEmail.fulfilled, (state) => {
-            state.loading = false;
-            state.error = null;
-            state.success = true;
-          });
-          builder.addCase(sendVerificationEmail.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message;
-            state.success = false;
-          });
+          loginStatus: "success",
+        };
+      } else return state;
+    });
+    builder.addCase(signInWithGoogle.rejected, (state, action) => {
+      return {
+        ...state,
+        loginStatus: "rejected",
+        loginError: action.payload,
+      };
+    });
 
+    builder.addCase(sendVerificationEmail.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+      state.success = false;
+    });
+    builder.addCase(sendVerificationEmail.fulfilled, (state) => {
+      state.loading = false;
+      state.error = null;
+      state.success = true;
+    });
+    builder.addCase(sendVerificationEmail.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+      state.success = false;
+    });
 
-          builder
-          .addCase(sendPasswordResetEmail.pending, (state) => {
-            state.status = "loading";
-            state.error = null;
-            state.successMessage = null;
-          })
-          .addCase(sendPasswordResetEmail.fulfilled, (state, action) => {
-            state.status = "fulfilled";
-            state.successMessage = action.payload.message;
-          })
-          .addCase(sendPasswordResetEmail.rejected, (state, action) => {
-            state.status = "failed";
-            state.error = action.payload || action.error.message;
-          });
- 
+    builder
+      .addCase(sendPasswordResetEmail.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(sendPasswordResetEmail.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.successMessage = action.payload.message;
+      })
+      .addCase(sendPasswordResetEmail.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || action.error.message;
+      });
   },
 });
 export const { loadUser, logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;
-
-
