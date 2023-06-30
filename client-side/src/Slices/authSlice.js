@@ -2,34 +2,24 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { url, setHeaders } from "./api";
 import jwtDecode from "jwt-decode";
-// import firebase from "firebase/compat/app";
-// import "firebase/auth";
-// import firebaseConfig from "../Firebase/firebaseConfig";
+import firebase from "firebase/compat/app";
+import "firebase/auth";
+import firebaseConfig from "../Firebase/firebaseConfig";
 
-// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 const token = localStorage.getItem("token")
   ? localStorage.getItem("token")
   : null;
 
+const userData = JSON.parse(localStorage.getItem("userData"))
+  ? JSON.parse(localStorage.getItem("userData"))
+  : null;
+
 const initialState = {
   token,
-  firstname: "",
-  lastname: "",
-  gender: "",
-  dob: "",
-  country: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  _id: "",
-  registerStatus: "",
-  registerError: "",
-  loginStatus: "",
-  loginError: "",
+  userData,
   userLoaded: false,
-  resetPassword: "",
-  pid: "",
 };
 
 export const registerUser = createAsyncThunk(
@@ -57,6 +47,8 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
+
 
 export const registerUserViaPasscoder = createAsyncThunk(
   "auth/registerUserViaPasscoder",
@@ -122,6 +114,8 @@ export const loginUser = createAsyncThunk(
       });
       const token = response.data.data.token;
       console.log(response);
+
+      localStorage.setItem("response", JSON.stringify(response.data.data));
       localStorage.setItem("token", token);
       return token;
     } catch (error) {
@@ -168,20 +162,20 @@ export const loginUserViaPasscoder = createAsyncThunk(
   }
 );
 
-// export const signInWithGoogle = createAsyncThunk(
-//   "auth/signInWithGoogle",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const provider = new firebase.auth.GoogleAuthProvider();
-//       const result = await firebase.auth().signInWithPopup(provider);
-//      const token = await result.user.getIdToken();
-//       localStorage.setItem("token", token);
-//       return token;
-//     } catch (error) {
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
+export const signInWithGoogle = createAsyncThunk(
+  "auth/signInWithGoogle",
+  async (_, { rejectWithValue }) => {
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      const result = await firebase.auth().signInWithPopup(provider);
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
+      return token;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const getUser = createAsyncThunk(
   "auth/getUser",
@@ -203,6 +197,18 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    signInWithGoogle(state, action) {
+      state.name = action.payload.name;
+      state.picture = action.payload.picture;
+      localStorage.setItem("name", JSON.stringify(state.name));
+      localStorage.setItem("picture", JSON.stringify(state.picture));
+    },
+    // userProfile(state, action) {
+    //   state.userData = action.payload;
+    //   localStorage.setItem("userData", JSON.parse(state.userData));
+    //   console.log(state.userData);
+    // },
+
     loadUser(state, action) {
       const token = state.token;
       if (token) {
@@ -211,15 +217,12 @@ const authSlice = createSlice({
         return {
           ...state,
           token,
-          email: user.email,
-          pid: user.pid,
-          country: user.country,
-          firstname: user.firstname,
-          _id: user._id,
           userLoaded: true,
+          userData,
         };
-      } else return { ...state, userLoaded: true };
+      } else return { ...state, userLoaded: false };
     },
+
 
     logoutUser(state, action) {
       localStorage.removeItem("token");
@@ -232,6 +235,7 @@ const authSlice = createSlice({
   },
 
   extraReducers: (builder) => {
+ 
     builder.addCase(registerUser.pending, (state, action) => {
       return { ...state, registerStatus: "pending" };
     });
@@ -241,16 +245,6 @@ const authSlice = createSlice({
         console.log(user);
         return {
           ...state,
-          token: action.payload,
-          email: user.email,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          gender: user.gender,
-          dob: user.dob,
-          country: user.country,
-          password: user.password,
-          confirmPassword: user.confirmPassword,
-          _id: user._id,
           userLoaded: true,
           registerStatus: "success",
         };
@@ -322,18 +316,16 @@ const authSlice = createSlice({
     });
 
     builder.addCase(loginUser.pending, (state, action) => {
-      return { ...state, loginStatus: "pending" };
+      return { ...state, loginStatus: "lol" };
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
+
         console.log(user);
         return {
           ...state,
           token: action.payload,
-          email: user.email,
-          password: user.password,
-
           loginStatus: "success",
         };
       } else return state;
@@ -387,6 +379,7 @@ const authSlice = createSlice({
         };
       } else return state;
     });
+
     builder.addCase(getUser.rejected, (state, action) => {
       return {
         ...state,
@@ -395,30 +388,39 @@ const authSlice = createSlice({
       };
     });
 
-    // builder.addCase(signInWithGoogle.pending, (state, action) => {
-    //   return { ...state, loginStatus: "pending" };
-    // });
-    // builder.addCase(signInWithGoogle.fulfilled, (state, action) => {
-    //   if (action.payload) {
-    //     const user = jwtDecode(action.payload);
-    //     console.log(user);
-    //     return {
-    //       ...state,
-    //       token: action.payload,
-    //       email: user.email,
-    //       password: user.password,
+ 
+    builder.addCase(signInWithGoogle.pending, (state, action) => {
+      return { ...state, loginStatus: "pending" };
+    });
 
-    //       loginStatus: "success",
-    //     };
-    //   } else return state;
-    // });
-    // builder.addCase(signInWithGoogle.rejected, (state, action) => {
-    //   return {
-    //     ...state,
-    //     loginStatus: "rejected",
-    //     loginError: action.payload,
-    //   };
-    // });
+    builder.addCase(signInWithGoogle.fulfilled, (state, action) => {
+      if (action.payload) {
+        const user = jwtDecode(action.payload);
+        const { name, picture } = user; // Extract name and picture from the decoded user object
+
+        // Save name and picture to localStorage
+        localStorage.setItem("name", name);
+        localStorage.setItem("picture", picture);
+        return {
+          ...state,
+          token: action.payload,
+          email: user.email,
+          password: user.password,
+          dob: user.dob,
+          name, // Save name to Redux state
+          picture, // Save picture to Redux state
+          loginStatus: "success",
+        };
+      } else return state;
+    });
+
+    builder.addCase(signInWithGoogle.rejected, (state, action) => {
+      return {
+        ...state,
+        loginStatus: "rejected",
+        loginError: action.payload,
+      };
+    });
 
     builder.addCase(sendVerificationEmail.pending, (state) => {
       state.loading = true;

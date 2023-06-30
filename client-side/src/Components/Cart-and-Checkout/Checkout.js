@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import "../Navbar-and-Footer/Navbar.css";
 import logo from "../../Components/Navbar-and-Footer/image/Group 12.png";
+import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 const Checkout = (cartItem) => {
   const navRef = useRef();
@@ -47,32 +48,7 @@ const Checkout = (cartItem) => {
 
   return (
     <div>
-      <header
-      >
-        <div>
-    
-          <img width="24em" alt="logo" src={logo} />
-
-          <h3
-            onClick={() => {
-              navigate("/");
-            }}
-            className="h3-for-navbar"
-          >
-           
-            Hydra
-          </h3>
-        </div>
-
-        <nav className="nav-bar" ref={navRef}>
-        
-
-          <button className="nav-btn nav-close-btn" onClick={showNavbar}>
-            <FaTimes />
-          </button>
-        </nav>
-   
-      </header>
+     <Navbarr />
       <div className="checkout-main-div">
         <div className="last-checkout-div">
           

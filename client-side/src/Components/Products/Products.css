@@ -10,25 +10,26 @@
 .product-title {
   font-size: 0.8em;
 }
-.div-style-first{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items:center;
-    gap: 1em
+.div-style-first {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
 }
-.button-to-map-productss{
-    width: 13em;
-    padding: 1em;
-    height: 3.8em;
-    background-color: #386aeb;
-    color: white;
-    border-radius: 0.2em;
-    border: none;
+.button-to-map-productss {
+  width: 13em;
+  padding: 1em;
+  height: 3.8em;
+  background-color: #386aeb;
+  color: white;
+  border-radius: 0.2em;
+  border: none;
 }
-.div-products-first{
-    display: flex;
-    justify-content: center;
+
+.div-products-first {
+  display: flex;
+  justify-content: center;
 }
 .superior-div {
   display: grid;
@@ -90,9 +91,9 @@
   width: 100%;
   height: 2.9em;
   border-radius: 0.33em;
-  border: none;
-  color: white;
-  background-color: #386aeb;
+  border: 0.08em solid black;
+  color: black;
+  background-color: white;
   margin-bottom: 0.7em;
   font-size: 0.8em;
 }
@@ -104,6 +105,185 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: baseline;
+}
+
+.categories-display-div {
+  display: grid;
+  position: relative;
+  justify-content: center;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  margin: 1em;
+}
+
+.white-div-categories {
+  background-color: white;
+  position: absolute;
+  bottom: 16px;
+  width: 90%;
+  height: 3em;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+.p-categories-display-div {
+  font-size: 0.92em;
+  font-weight: bolder;
+}
+.cat-btn-more {
+  height: 3.4em;
+  padding: 0 2em;
+  border: #386aeb 1.3px solid;
+  background-color: inherit;
+  color: #386aeb;
+  border-radius: 4px;
+}
+
+.products-displayed-home-div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.products-displayed-home {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  margin-bottom: 1.5em;
+}
+
+.products-displayed-home-h4 {
+  font-size: 0.95em;
+}
+.products-displayed-home-location {
+  font-size: 0.69em;
+}
+.products-displayed-home-price {
+  font-size: 0.95em;
+  margin-bottom: 0.8em;
+  margin-top: 0.2em;
+}
+.products-displayed-home-btn {
+  width: fit-content;
+  padding: 0.7em 1.4em;
+  background-color: inherit;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+.naira-price-span {
+  font-size: 0.65em;
+  font-weight: bolder;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap:2em;
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 2em 2em;
+  z-index: -9999
+}
+
+/* Modal header */
+.modal-content h3 {
+  margin-top: 0;
+}
+
+/* Modal buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Modal button styles */
+.modal-buttons button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  width: 100%;
+  height: 3.4em;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-buttons button:first-child {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.modal-buttons button:last-child {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+@media only screen and (max-width: 1000px) {
+  .categories-display-div {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 1em;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .categories-display-div {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 1em;
+  }
+}
+
+@media only screen and (max-width: 632px) {
+  .categories-display-div {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 1em;
+  }
+  .white-div-categories {
+    background-color: white;
+    position: absolute;
+    bottom: 24px;
+    width: 90%;
+    height: 2.4em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+  }
+  .p-categories-display-div {
+    font-size: 0.87em;
+    font-weight: bolder;
+  }
 }
 
 @media only screen and (max-width: 1664px) {
@@ -210,9 +390,9 @@
     width: 100%;
     height: 2.6em;
     border-radius: 0.33em;
-    border: none;
-    color: white;
-    background-color: #386aeb;
+    border: 0.08em solid black;
+    color: black;
+    background-color: white;
     margin-bottom: 0.7em;
     font-size: 0.75em;
   }
@@ -228,238 +408,233 @@
 }
 
 @media only screen and (max-width: 1000px) {
-    
-    .superior-div {
-      display: grid;
-      grid-template-columns:  11em 11em 11em 11em;
-      column-gap: 1em;
-      row-gap: 1em;
-      justify-content: center;
-    }
-  
+  .superior-div {
+    display: grid;
+    grid-template-columns: 11em 11em 11em 11em;
+    column-gap: 1em;
+    row-gap: 1em;
+    justify-content: center;
   }
-  
-  
-  @media only screen and (max-width: 630px) {
-    .product-name,
-    .price-to-map {
-      font-size: 1em;
-      font-weight: bolder;
-      margin-top: 1.2em;
-    }
-    .product-span {
-      font-size: 0.8em;
-    }
-    .product-title {
-      font-size: 0.8em;
-    }
-    .div-style-first{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 1em
-    }
-    .button-to-map-productss{
-        width: 13em;
-        padding: 1em;
-        height: 3.6em;
-        background-color: white;
-        color: black;
-        border-radius: 0.2em;
-        border: 0.08em solid black;
-    }
-    .div-products-first{
-        display: flex;
-        justify-content: center;
-    }
-    .superior-div {
-      display: grid;
-      grid-template-columns:   13em 13em;
-      column-gap: 0.5em;
-      row-gap: 0.8em;
-      justify-content: center;
-    }
-    
-    .div-to-map-products {
-      height: 22em;
-      width: 13em;
-      background-color: #fff;
-      padding: 0.5em;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-radius: 0.73em;
-    }
-    .Link-to-map-products {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      margin-bottom: 0.5em;
-      width: 12em;
-      padding: 0;
-    }
-    
-    .img-to-map-products {
-      height: 13em;
-      width: 12em;
-      margin-bottom: 1em;
-      /* border: 1em solid black; */
-    }
-    
-    /* cropping the top of the image off using css */
-    
-    .image-container {
-      margin-top: -0.6em;
-      position: relative;
-      width: 16em;
-      height: 13em;
-      overflow: hidden;
-    }
-    
-    .image-container img {
-      border-radius: 0.73em;
-      position: absolute;
-      top: 0;
-      left: 0;
-      clip: rect(10px, 18em, 18em, 0px);
-      /* rect(top, right, bottom, left) */
-      /* In this example, we're cropping the left half of the image */
-    }
-    
-    .button-to-map-products {
-      width: 100%;
-      height: 2.9em;
-      border-radius: 0.33em;
-      border: none;
-      color: white;
-      background-color: #386aeb;
-      margin-bottom: 0.7em;
-      font-size: 0.8em;
-    }
-    
-    .price-to-map {
-      margin-top: 0.3em;
-      margin-bottom: 0.3em;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: baseline;
-    }
-    
+}
+
+@media only screen and (max-width: 630px) {
+  .product-name,
+  .price-to-map {
+    font-size: 1em;
+    font-weight: bolder;
+    margin-top: 1.2em;
+  }
+  .product-span {
+    font-size: 0.8em;
+  }
+  .product-title {
+    font-size: 0.8em;
+  }
+  .div-style-first {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+  }
+  .button-to-map-productss {
+    width: 13em;
+    padding: 1em;
+    height: 3.6em;
+    background-color: white;
+    color: black;
+    border-radius: 0.2em;
+    border: 0.08em solid black;
+  }
+  .div-products-first {
+    display: flex;
+    justify-content: center;
+  }
+  .superior-div {
+    display: grid;
+    grid-template-columns: 13em 13em;
+    column-gap: 0.5em;
+    row-gap: 0.8em;
+    justify-content: center;
   }
 
-  @media only screen and (max-width: 480px) {
-    .product-name,
-    .price-to-map {
-      font-size: 1em;
-      font-weight:bolder;
-      margin-top: 1.2em;
-    }
-    .product-span {
-      font-size: 0.8em;
-    }
-    .product-title {
-      font-size: 0.8em;
-      color: gray;
-      margin-bottom: 1em;
-    }
-    .div-style-first{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 1em
-    }
-    .button-to-map-productss{
-        width: 13em;
-        padding: 1em;
-        height: 3.8em;
-        background-color: #386aeb;
-        color: white;
-        border-radius: 0.2em;
-        border: none;
-    }
-    .div-products-first{
-        display: flex;
-        justify-content: center;
-    }
-    .superior-div {
-      display: grid;
-      grid-template-columns:   11.5em 11.5em;
-      column-gap: 0.5em;
-      row-gap: 0.8em;
-      justify-content: center;
-    }
-    
-    .div-to-map-products {
-      height: 23.3em;
-      width: 11.5em;
-      background-color: #fff;
-      padding: 0.5em;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-radius: 0.73em;
-    }
-    .Link-to-map-products {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      margin-bottom: 0.5em;
-      width: 12em;
-      padding: 0;
-    }
-    
-    .img-to-map-products {
-      height: 13.3em;
-      width: 10.5em;
-      margin-bottom: 1em;
-      /* border: 1em solid black; */
-    }
-    
-    /* cropping the top of the image off using css */
-    
-    .image-container {
-      margin-top: -0.6em;
-      position: relative;
-      width: 16em;
-      height: 13em;
-      overflow: hidden;
-    }
-    
-    .image-container img {
-      border-radius: 0.73em;
-      position: absolute;
-      top: 0;
-      left: 0;
-      clip: rect(10px, 18em, 18em, 0px);
-      /* rect(top, right, bottom, left) */
-      /* In this example, we're cropping the left half of the image */
-    }
-    
-    .button-to-map-products {
-      width: 100%;
-      height: 3.5em;
-      border-radius: 0.33em;
-      border: none;
-      color: white;
-      background-color: #386aeb;
-      margin-bottom: 0.7em;
-      font-size: 0.8em;
-    }
-    
-    .price-to-map {
-      margin-top: 0.3em;
-      margin-bottom: 0.3em;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: baseline;
-    }
-    
+  .div-to-map-products {
+    height: 22em;
+    width: 13em;
+    background-color: #fff;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 0.73em;
   }
+  .Link-to-map-products {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 0.5em;
+    width: 12em;
+    padding: 0;
+  }
+
+  .img-to-map-products {
+    height: 13em;
+    width: 12em;
+    margin-bottom: 1em;
+    /* border: 1em solid black; */
+  }
+
+  /* cropping the top of the image off using css */
+
+  .image-container {
+    margin-top: -0.6em;
+    position: relative;
+    width: 16em;
+    height: 13em;
+    overflow: hidden;
+  }
+
+  .image-container img {
+    border-radius: 0.73em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    clip: rect(10px, 18em, 18em, 0px);
+    /* rect(top, right, bottom, left) */
+    /* In this example, we're cropping the left half of the image */
+  }
+
+  .button-to-map-products {
+    width: 100%;
+    height: 2.9em;
+    border-radius: 0.33em;
+    border: 0.08em solid black;
+    color: black;
+    background-color: white;
+    margin-bottom: 0.7em;
+    font-size: 0.8em;
+  }
+
+  .price-to-map {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: baseline;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .product-name,
+  .price-to-map {
+    font-size: 1em;
+    font-weight: bolder;
+    margin-top: 1.2em;
+  }
+  .product-span {
+    font-size: 0.8em;
+  }
+  .product-title {
+    font-size: 0.8em;
+    color: gray;
+    margin-bottom: 1em;
+  }
+  .div-style-first {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+  }
+  .button-to-map-productss {
+    width: 13em;
+    padding: 1em;
+    height: 3.8em;
+    background-color: #386aeb;
+    color: white;
+    border-radius: 0.2em;
+    border: none;
+  }
+  .div-products-first {
+    display: flex;
+    justify-content: center;
+  }
+  .superior-div {
+    display: grid;
+    grid-template-columns: 11.5em 11.5em;
+    column-gap: 0.5em;
+    row-gap: 0.8em;
+    justify-content: center;
+  }
+
+  .div-to-map-products {
+    height: 20.3em;
+    width: 11.5em;
+    background-color: #fff;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 0.73em;
+  }
+  .Link-to-map-products {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 0.5em;
+    width: 12em;
+    padding: 0;
+  }
+
+  .img-to-map-products {
+    height: 10.3em;
+    width: 10.5em;
+    margin-bottom: 1em;
+    /* border: 1em solid black; */
+  }
+
+  /* cropping the top of the image off using css */
+
+  .image-container {
+    margin-top: -0.6em;
+    position: relative;
+    width: 16em;
+    height: 10em;
+    overflow: hidden;
+  }
+
+  .image-container img {
+    border-radius: 0.73em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    clip: rect(10px, 18em, 18em, 0px);
+    /* rect(top, right, bottom, left) */
+    /* In this example, we're cropping the left half of the image */
+  }
+
+  .button-to-map-products {
+    width: 100%;
+    height: 2.9em;
+    border-radius: 0.33em;
+    border: 0.08em solid black;
+    color: black;
+    background-color: white;
+    margin-bottom: 0.7em;
+    font-size: 0.8em;
+  }
+
+  .price-to-map {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: baseline;
+  }
+}

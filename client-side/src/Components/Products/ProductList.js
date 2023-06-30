@@ -1,36 +1,34 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductDetails } from './productSlice';
-import Footer from '../Navbar-and-Footer/Footer'
+import { productsFetch } from '../../Slices/Products/productSlice';
+import Footer from '../Navbar-and-Footer/Footer';
 import Loader from '../Loader/Loader';
 
-const ProductDetailsPage = ({ id }) => {
+const ProductDetailsPage = ({ user_unique_id, unique_id }) => {
   const dispatch = useDispatch();
-  const { details, isLoading, error } = useSelector((state) => state.product);
-
+  const { items: details, status, error } = useSelector((state) => state.productsDetails);
+console.log(details)
   useEffect(() => {
-    dispatch(fetchProductDetails(id));
-  }, [dispatch, id]);
+    dispatch(productsFetch({ user_unique_id, unique_id }));
+  }, [dispatch, user_unique_id, unique_id]);
 
-  if (isLoading) {
+  if (status === 'pending') {
     return <div><Loader /></div>;
   }
 
-  if (error) {
+  if (status === 'rejected') {
     return <div>Error: {error}</div>;
   }
 
   return (
     <div>
-          <div>
-      <h1>{details.name}</h1>
-      <p>{details.description}</p>
-      <p>{details.price}</p>
-     
+      <div>
+        <h1>{details.name}</h1>
+        <p>{details.description}</p>
+        <p>{details.price}</p>
+      </div>
+      <Footer />
     </div>
-    <Footer />
-    </div>
-  
   );
 };
 

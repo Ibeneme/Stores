@@ -1,0 +1,181 @@
+.form-profile{
+    width: 38em;
+    margin-top:2em;
+    
+}
+.div-container-profile{
+    margin: 0;
+}
+
+.input-profile{
+    width:100%;
+    height: 3.3em;
+    padding-left: 1em;
+    margin-top: 0.3em;
+    margin-bottom: 1.42em;
+}
+
+.H3-profile{
+    margin-top: 1.4em;
+    margin-bottom: 0.42em;
+}
+
+.button-profile{
+width: 100%;
+height: 3.6em;
+background-color: #386aeb;
+color: white;
+border: none;
+}
+
+.back-profile{
+    width: 100%;
+    height: 3.6em;
+    background-color: #000;
+    color: white;
+    border: none;
+    }
+
+
+    .second-div-profile{
+        width:60%;
+        padding:2em;
+        display: flex;
+        background-color: white;
+
+    }
+
+    .first-div-profile{
+        width:67em;
+        padding-top:10em;
+        display: flex;
+        justify-content: center;
+        gap:1em
+
+
+    }
+    .second-div-content{
+        width:30%;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        padding-top: 2em;
+        padding-bottom: 2em;
+
+    }
+
+    .second-div-content>p{
+       font-size: 0.81em;
+       height: 3.3em;
+       display: flex;
+       flex-direction: row;
+       align-items: center;
+       padding-left: 2em;
+       gap:1em;
+       
+
+    }
+    .second-div-profile>div>div>p{
+        font-size: 0.81em;
+        height: 1.33em;
+        color:gray;
+        display: flex;
+    
+        
+ 
+     }
+    /* .second-div-content>p:hover{
+        font-size: 1.1em;
+        height: 3.3em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 2em;
+        gap:1em;
+        background-color: #386aeb36;
+        color: black;
+        transition: 0.3s;
+        
+ 
+     } */
+     .para-para{
+        font-size: 0.81em;
+        height: 3.3em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 2em;
+        gap:1em;
+        background-color: #386aeb;
+        color: white
+        
+ 
+     }
+     .para-para:hover{
+        font-size: 0.81em;
+        height: 3.3em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 2em;
+        gap:1em;
+        background-color: #386aeb;
+        color: white
+        
+ 
+     }
+     .bio-button{
+        background-color: #386aeb;
+        border: none;
+        height: 3.4em;
+        font-size: 0.89em;
+        width: 100%;
+        color: white;
+        border-radius: 0.5em;
+     }
+
+     .edit-space{
+        background-color: white;
+        padding: 3em;
+     }
+
+     .slider-web{
+        display: none;
+
+     }
+@media only screen and (max-width: 1007px) {
+    .form-profile{
+        width: 90vw;
+    }
+    .second-div-profile{
+        width:30%;
+    }
+}
+
+@media only screen and (max-width: 747px) {
+    .slider-web{
+   
+        margin-top: 8em;
+        margin-bottom: -8em;
+        display: flex;
+     
+     }
+     .second-div-content{
+        visibility: hidden;
+     }
+     .second-div-profile{
+        width:90vw;
+        margin-bottom: -20em;
+       
+    }
+    .first-div-profile{
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        width:90vw;
+        margin: 0;
+
+      
+    }
+ 
+}

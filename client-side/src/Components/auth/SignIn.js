@@ -1,8 +1,9 @@
 import React from "react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../Slices/authSlice";
-
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, signInWithGoogle } from "../../Slices/authSlice";
+import { userProfile } from "../../Slices/userSlice";
+import axios from "axios";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
@@ -11,10 +12,14 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [submitted, setSubmitted] = useState(false); 
 
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
-
-
+  const auth = useSelector((state) => state.auth);
+  const profile = useSelector((state) => state.userProfile
+  );
+  const token = auth.token;
+ 
   const handleFocusPassword = () => {
     setIsFocusedPassword(true);
   };
@@ -38,7 +43,10 @@ const SignIn = () => {
       console.log(response.meta.requestStatus);
 
       if (response.meta.requestStatus === "fulfilled") {
-        navigate("/");
+        setSubmitted(true);  
+        dispatch(userProfile(token));
+        
+        navigate("/cart");    
       } else {
         console.log(user);
         setError("Invalid Email or Password");
@@ -48,19 +56,22 @@ const SignIn = () => {
     }
   };
 
-  // const googleSubmit = async (e) => {
-  //   e.preventDefault();
+const googleSubmit = async (e) => {
+   e.preventDefault();
 
-  //   try {
-  //     const result = await dispatch(signInWithGoogle(user));
-  //     if (result.type === signInWithGoogle.fulfilled.toString()) {
-  //       navigate("/");
-  //     } else {
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  try {
+    const result = await dispatch(signInWithGoogle(user));
+     if (result.type === signInWithGoogle.fulfilled.toString()) {
+      
+       navigate("/");
+    } else {
+    }
+    } catch (error) {
+    console.log(error);
+   }
+ };
+
+ 
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -82,6 +93,11 @@ const SignIn = () => {
         alignItems: "center",
       }}
     >
+
+      
+      <div>
+
+
       <form
         onSubmit={handleSubmit}
         style={{
@@ -256,6 +272,13 @@ const SignIn = () => {
       <br />
       <p style={{ display: "flex", justifyContent: "center" }}>Or</p>
       <br /> <br />
+
+      <div style={{
+        display:'flex',
+        flexDirection:'column'
+      }}>
+
+
       <button
         style={{
           backgroundColor: "black",
@@ -270,7 +293,7 @@ const SignIn = () => {
       >
         Sign in with Passcoder
       </button>
-      {/* <button
+    <button
         style={{
           backgroundColor: "#66666635",
           border: "0.7em",
@@ -281,7 +304,10 @@ const SignIn = () => {
         onClick={googleSubmit}
       >
         Sign in with Google
-      </button> */}
+      </button> 
+          </div>
+
+        </div>
     </div>
   );
 };

@@ -1,14 +1,36 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerUser,  } from "../../Slices/authSlice";
+import { registerUser, signInWithGoogle } from "../../Slices/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import * as Yup from "yup";
 
 const SignUp = () => {
+  const validationSchema = Yup.object().shape({
+    firstname: Yup.string().required("First Name is required"),
+    lastname: Yup.string().required("Last Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    gender: Yup.string()
+      .oneOf(["Male", "Female"], "Invalid gender")
+      .required("Gender is required"),
+    country: Yup.string()
+      .oneOf(["Nigeria"], "Service available only in Nigeria")
+      .required("Country is required"),
+    dob: Yup.date()
+      .min(new Date("1900-01-01"), "You must be above 18 years of age")
+      .required("Date of Birth is required"),
+    password: Yup.string()
+      .min(8, "Minimum of 8 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -18,7 +40,8 @@ const SignUp = () => {
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [isFocusedFirstName, setIsFocusedFirstName] = useState(false);
   const [isFocusedLastName, setIsFocusedLastName] = useState(false);
-  const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] = useState(false);
+  const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] =
+    useState(false);
   const [isFocusedGender, setIsFocusedGender] = useState(false);
   const [isFocusedCountry, setIsFocusedCountry] = useState(false);
 
@@ -45,8 +68,6 @@ const SignUp = () => {
   const handleBlurDateofBirth = () => {
     setIsFocusedDateofBirth(false);
   };
-
-
 
   const handleFocusFirstName = () => {
     setIsFocusedFirstName(true);
@@ -97,6 +118,8 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      await validationSchema.validate(user, { abortEarly: false });
+      // Validation passed, continue with form submission
       const response = await dispatch(registerUser(user));
       if (response.meta.requestStatus === "fulfilled") {
         const { email } = user;
@@ -110,20 +133,36 @@ const SignUp = () => {
       console.log("Error:", error);
     }
   };
-
-  // const googleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
   //   e.preventDefault();
-
   //   try {
-  //     const result = await dispatch(signInWithGoogle(user));
-  //     if (result.type === signInWithGoogle.fulfilled.toString()) {
-  //       navigate("/");
+  //     const response = await dispatch(registerUser(user));
+  //     if (response.meta.requestStatus === "fulfilled") {
+  //       const { email } = user;
+  //       navigate(`/verify?email=${email}`);
   //     } else {
+  //       console.log("Registration failed");
+  //       console.log(response.data);
+  //       setError("Please Re-Confirm your details");
   //     }
   //   } catch (error) {
-  //     console.log(error);
+  //     console.log("Error:", error);
   //   }
   // };
+
+  const googleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const result = await dispatch(signInWithGoogle(user));
+      if (result.type === signInWithGoogle.fulfilled.toString()) {
+        navigate("/");
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -217,18 +256,6 @@ const SignUp = () => {
               className="input-forms"
               onChange={(e) => setUser({ ...user, firstname: e.target.value })}
             />
-            {isFocusedFirstName ? (
-              <p
-                style={{
-                  marginTop: "-1.5em",
-                  marginBottom: "1.3em",
-                  fontSize: "0.8em",
-                  color: "#386AEB",
-                }}
-              >
-                First Name is required
-              </p>
-            ) : null}
           </div>
           <div>
             {" "}
@@ -251,18 +278,6 @@ const SignUp = () => {
               className="input-forms"
               onChange={(e) => setUser({ ...user, lastname: e.target.value })}
             />
-            {isFocusedLastName ? (
-              <p
-                style={{
-                  marginTop: "-1.5em",
-                  marginBottom: "1.3em",
-                  fontSize: "0.8em",
-                  color: "#386AEB",
-                }}
-              >
-                Last Name is required
-              </p>
-            ) : null}
           </div>
           <div>
             {" "}
@@ -295,28 +310,18 @@ const SignUp = () => {
               {" "}
               Gender
             </label>
-            <input
-                onFocus={handleFocusGender}
-                onBlur={handleBlurGender}
+            <select
+              onFocus={handleFocusGender}
+              onBlur={handleBlurGender}
               autoComplete="on"
               name="gender"
-              placeholder="Gender"
-              type="text"
               className="input-forms"
               onChange={(e) => setUser({ ...user, gender: e.target.value })}
-            />
-              {isFocusedGender ? (
-              <p
-                style={{
-                  marginTop: "-1.5em",
-                  marginBottom: "1.3em",
-                  fontSize: "0.8em",
-                  color: "#386AEB",
-                }}
-              >
-                Either Male or Female
-              </p>
-            ) : null}
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </div>
           <div>
             {" "}
@@ -329,28 +334,17 @@ const SignUp = () => {
               {" "}
               Country
             </label>
-            <input
-                onFocus={handleFocusCountry}
-                onBlur={handleBlurCountry}
+            <select
+              onFocus={handleFocusCountry}
+              onBlur={handleBlurCountry}
               autoComplete="on"
               name="country"
-              placeholder="Country"
-              type="text"
               className="input-forms"
               onChange={(e) => setUser({ ...user, country: e.target.value })}
-            />
-              {isFocusedCountry ? (
-              <p
-                style={{
-                  marginTop: "-1.5em",
-                  marginBottom: "1.3em",
-                  fontSize: "0.8em",
-                  color: "#386AEB",
-                }}
-              >
-                Service available only in Nigeria 
-              </p>
-            ) : null}
+            >
+              <option value="">Select Country</option>
+              <option value="Nigeria">Nigeria</option>
+            </select>
           </div>
           <div>
             {" "}
@@ -364,8 +358,8 @@ const SignUp = () => {
               Date of birth
             </label>
             <input
-               onFocus={handleFocusDateofBirth}
-               onBlur={handleBlurDateofBirth}
+              onFocus={handleFocusDateofBirth}
+              onBlur={handleBlurDateofBirth}
               autoComplete="on"
               name="dob"
               placeholder="Date of Birth"
@@ -373,7 +367,7 @@ const SignUp = () => {
               className="input-forms"
               onChange={(e) => setUser({ ...user, dob: e.target.value })}
             />
-              {isFocusedDateofBirth ? (
+            {isFocusedDateofBirth ? (
               <p
                 style={{
                   marginTop: "-1.5em",
@@ -382,7 +376,7 @@ const SignUp = () => {
                   color: "#386AEB",
                 }}
               >
-                You must be above 18years of age 
+                You must be above 18years of age
               </p>
             ) : null}
           </div>
@@ -414,7 +408,8 @@ const SignUp = () => {
                   color: "#386AEB",
                 }}
               >
-                Minimum of 8 characters Uppercase, Lowercase, Numbers & special character 
+                Minimum of 8 characters Uppercase, Lowercase, Numbers & special
+                character
               </p>
             ) : null}
             <button
@@ -530,7 +525,7 @@ const SignUp = () => {
       >
         Sign in with Passcoder
       </button>
-      {/* <button
+      <button
         style={{
           backgroundColor: "#66666635",
 
@@ -542,7 +537,7 @@ const SignUp = () => {
         onClick={googleSubmit}
       >
         Sign in with Google
-      </button> */}
+      </button>
     </div>
   );
 };

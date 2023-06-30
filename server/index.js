@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.send('Ibeneme Ikenna')
 })
 
-app.get('/products', (req, res) => {
+app.post('/products', (req, res) => {
     res.send(products)
 })
 app.get('/products/:id', (req, res) => {

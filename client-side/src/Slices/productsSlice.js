@@ -12,9 +12,9 @@ const initialState ={
 
 export const fetchProductDetails = createAsyncThunk(
     "products/productsFetch", 
-    async(id = null, {rejectedWithvalue})=>{
+    async(unique_id = null, {rejectedWithvalue})=>{
         try{
-            const response = await axios.get(`https://hydra-store.onrender.com/products/${id}`)
+            const response = await axios.get(`https://us-central1-hydra-express.cloudfunctions.net/app/home/products/all/${unique_id}`)
         return response.data
         }
         catch(error){
