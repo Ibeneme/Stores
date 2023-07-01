@@ -30,7 +30,9 @@ export const searchProductSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
-    // ...your other reducers...
+    clearSearchResults: (state) => {
+      state.results = [];
+    },
   },
   extraReducers: (builder) => {
     builder

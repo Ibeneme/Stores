@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import {  useDispatch } from 'react-redux';
 import { publishProduct } from '../../Slices/Sellers/publishProductSlice';
 import { useLocation, useNavigate } from "react-router";
 
@@ -14,13 +14,13 @@ const ProductPublishPage = () => {
   console.log(unique_id)
 
   useEffect(() => {
-    // Dispatch the action when the component mounts
-    dispatch(publishProduct( unique_id ));
-  }, [dispatch]);
+    dispatch(publishProduct(unique_id));
+  }, [dispatch, unique_id]);
+  
 
   return (
     <div>
-      <h1>Product Publish Page</h1>
+      <h1 onClick={()=>navigate('/')}>Product Publish Page</h1>
       {/* Your component JSX */}
     </div>
   );

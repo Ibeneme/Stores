@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProduct, selectDeleteProduct } from '../../Slices/Sellers/deleteProductSlice';
+import { deleteProduct } from '../../Slices/Sellers/deleteProductSlice';
 import { useLocation, useNavigate } from 'react-router';
 
 const ProductDeletePage = () => {

@@ -5,7 +5,7 @@ import { fetchRatings } from "../../Slices/Ratings/AllRatingsSlices";
 const RatingsPage = () => {
   const dispatch = useDispatch();
   const ratings = useSelector((state) => state.ratings.ratings);
-  const loading = useSelector((state) => state.ratings.loading);
+
   const error = useSelector((state) => state.ratings.error);
 
   useEffect(() => {

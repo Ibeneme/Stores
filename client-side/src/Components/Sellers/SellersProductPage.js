@@ -57,7 +57,8 @@ const SellersProductPage = () => {
 
   useEffect(() => {
     dispatch(fetchProducts(unique_id));
-  }, [dispatch]);
+  }, [dispatch, unique_id]);
+  
 
   if (loading) {
     return (

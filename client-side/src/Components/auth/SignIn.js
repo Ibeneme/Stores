@@ -1,9 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, signInWithGoogle } from "../../Slices/authSlice";
+import { loginUser } from "../../Slices/authSlice";
 import { userProfile } from "../../Slices/userSlice";
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
@@ -12,17 +11,17 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [submitted, setSubmitted] = useState(false); 
+
   const location = useLocation()
 
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const auth = useSelector((state) => state.auth);
-  const profile = useSelector((state) => state.userProfile
-  );
+ 
   const token = auth.token;
  
   const handleFocusPassword = () => {
     setIsFocusedPassword(true);
+    
   };
 
   const handleBlurPassword = () => {
@@ -46,7 +45,6 @@ const SignIn = () => {
       console.log(response.meta.requestStatus);
 
       if (response.meta.requestStatus === "fulfilled") {
-        setSubmitted(true);  
         dispatch(userProfile(token));
         const previousPath = location.state?.from || "/"; // Get the previous path from location state
 

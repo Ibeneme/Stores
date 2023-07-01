@@ -151,7 +151,7 @@ const ProductListPublish = () => {
                   {filteredProducts.map((product) => (
                     <div key={product.unique_id}>
                       <div>
-                        <img src={sample} width="100%" />
+                        <img src={sample} alt="sample" width="100%" />
                         <h3>{product.name}</h3>
                         <span>
                           {product.sales_price === product.price ? (

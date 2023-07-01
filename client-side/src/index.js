@@ -9,7 +9,7 @@ import { productsApi } from "./Slices/Products/productAPI";
 import cartReducer, { getTotal } from "./Slices/cartSlice";
 import "react-toastify/dist/ReactToastify.css";
 import productsReducer from "./Slices/productsSlice";
-import authReducer, { loadUser, userProfile } from "./Slices/authSlice";
+import authReducer, { loadUser } from "./Slices/authSlice";
 import forgotPasswordReducer from "./Slices/Users/ForgotPasswordSlice";
 import { BrowserRouter } from "react-router-dom";
 import productSliceReducer from "../src/Slices/Products/productSlice";
@@ -18,7 +18,6 @@ import locationSliceReducer  from './Slices/Products/LocationSlice'
 import categoriesLocationsFetchSliceReducer from './Slices/Products/CategoriesLocationSlices'
 import searchSliceReducer from './Slices/Products/SearchAllProductsSlice';
 import userProfileReducer from './Slices/userSlice';
-import sellersproductReducer from './Slices/Sellers/productSlice'
 import addproductReducer from './Slices/Sellers/addProductSlice'
 import draftproductReducer from './Slices/Sellers/draftProductSlice';
 import sellersProductsDetailsReducer from './Slices/Sellers/SellersProductDetailsSlice';
@@ -114,7 +113,7 @@ const store = configureStore({
     specifications: specificationsReducer,
     stock: stockReducer,
     editAll: editAllReducer,
-    productImage: productImageSliceReducer,
+    productImages: productImageSliceReducer,
     deleteImage: deleteImageSliceReducer,
 
     product: productsReducer,

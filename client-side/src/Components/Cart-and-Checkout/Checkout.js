@@ -6,20 +6,14 @@ import TextFieldCheckout from "./TextFieldCheckout";
 import * as Yup from "yup";
 import "./Checkout.css";
 import Footer from "../Navbar-and-Footer/Footer";
-import { useRef } from "react";
-import {
-  FaTimes,
-} from "react-icons/fa";
+
+
 import "../Navbar-and-Footer/Navbar.css";
-import logo from "../../Components/Navbar-and-Footer/image/Group 12.png";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 const Checkout = (cartItem) => {
-  const navRef = useRef();
-
-  const showNavbar = () => {
-    navRef.current.classList.toggle("responsive_nav");
-  };
+  
+  
   const validate = Yup.object({
     
 

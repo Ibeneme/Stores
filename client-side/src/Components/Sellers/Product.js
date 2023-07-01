@@ -147,7 +147,7 @@ const ProductList = () => {
                 {rows.map((product) => (
                   <div key={product.unique_id}>
                     <div key={product.unique_id}>
-                      <img src={sample} width="100%" />
+                      <img src={sample} alt='sample' width="100%" />
                       <h3>{product.name}</h3>
                       {product.sales_price === product.price ? (
                         <p

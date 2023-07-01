@@ -46,7 +46,7 @@ const editProductSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.success = true;
-       { console.log(action.payload)}
+ 
       })
       .addCase(updateProductName.rejected, (state, action) => {
         state.loading = false;

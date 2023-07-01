@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   FaBars,
   FaRegListAlt,
-  FaSearch,
   FaShoppingCart,
   FaTimes,
   FaRegUser,
@@ -16,7 +15,6 @@ import {
   MdOutlineHelpOutline,
   MdOutlineSell,
 } from "react-icons/md";
-import logo from "./image/Group 12.png";
 import logologo from "./image/logo.png";
 import { useNavigate } from "react-router";
 
@@ -26,9 +24,7 @@ import { logOutUser } from "../../Slices/authSlice";
 
 
 function Navbarr({ token }) {
-  const userData = JSON.parse(localStorage.getItem("userData"))
-    ? JSON.parse(localStorage.getItem("userData"))
-    : null;
+
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -527,7 +523,7 @@ function Navbarr({ token }) {
                   display: "flex",
                   gap: "6em",
                   marginRight: "3em",
-                  marginRight: "3em",
+          
                 }}
               >
                 <span>

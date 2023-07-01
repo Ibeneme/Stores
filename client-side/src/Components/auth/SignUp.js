@@ -1,14 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { registerUser, signInWithGoogle } from "../../Slices/authSlice";
+import { registerUser } from "../../Slices/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import * as Yup from "yup";
-import { FaCommentsDollar } from "react-icons/fa";
+
+
 
 const SignUp = () => {
 
@@ -20,53 +20,23 @@ const SignUp = () => {
 
   const [isFocusedDateofBirth, setIsFocusedDateofBirth] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
-  const [isFocusedFirstName, setIsFocusedFirstName] = useState(false);
-  const [isFocusedLastName, setIsFocusedLastName] = useState(false);
   const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] =
     useState(false);
-  const [isFocusedGender, setIsFocusedGender] = useState(false);
-  const [isFocusedCountry, setIsFocusedCountry] = useState(false);
 
-  const handleFocusGender = () => {
-    setIsFocusedGender(true);
-  };
+
+
   const registerError = useSelector((state) => state.auth.registerError);
   console.log(registerError);
 
-  const handleBlurGender = () => {
-    setIsFocusedGender(false);
-  };
 
-  const handleFocusCountry = () => {
-    setIsFocusedCountry(true);
-  };
 
-  const handleBlurCountry = () => {
-    setIsFocusedCountry(false);
-  };
-
+ 
   const handleFocusDateofBirth = () => {
     setIsFocusedDateofBirth(true);
   };
 
   const handleBlurDateofBirth = () => {
     setIsFocusedDateofBirth(false);
-  };
-
-  const handleFocusFirstName = () => {
-    setIsFocusedFirstName(true);
-  };
-
-  const handleBlurFirstName = () => {
-    setIsFocusedFirstName(false);
-  };
-
-  const handleFocusLastName = () => {
-    setIsFocusedLastName(true);
-  };
-
-  const handleBlurLastName = () => {
-    setIsFocusedLastName(false);
   };
 
   const handleFocusPassword = () => {
@@ -215,8 +185,7 @@ const SignUp = () => {
               First Name
             </label>
             <input
-              onFocus={handleFocusFirstName}
-              onBlur={handleBlurFirstName}
+           
               autoComplete="on"
               name="firstname"
               placeholder="First name"
@@ -237,8 +206,7 @@ const SignUp = () => {
               Last Name
             </label>
             <input
-              onFocus={handleFocusLastName}
-              onBlur={handleBlurLastName}
+        
               autoComplete="on"
               name="name"
               placeholder="Last Name"
@@ -279,8 +247,7 @@ const SignUp = () => {
               Gender
             </label>
             <select
-              onFocus={handleFocusGender}
-              onBlur={handleBlurGender}
+           
               autoComplete="on"
               name="gender"
               className="input-forms"
@@ -303,8 +270,7 @@ const SignUp = () => {
               Country
             </label>
             <select
-              onFocus={handleFocusCountry}
-              onBlur={handleBlurCountry}
+            
               autoComplete="on"
               name="country"
               className="input-forms"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { productsFetch } from "../../Slices/Products/productSlice";
 import Footer from "../Navbar-and-Footer/Footer";
 import Loader from "../Loader/Loader";
@@ -11,8 +11,7 @@ import "./ProductPage.css";
 import { MdLocationOn } from "react-icons/md";
 import { BiMinus } from "react-icons/bi";
 import { RxPlus } from "react-icons/rx";
-import { removeFromCart, decreaseCart, getTotal } from "../../Slices/cartSlice";
-import { useGetAllProductsQuery } from "../../Slices/Products/productAPI";
+import { removeFromCart, getTotal } from "../../Slices/cartSlice";
 
 const ProductPage = (cartItem) => {
   const cart = useSelector((state) => state.cart);
@@ -44,8 +43,7 @@ const ProductPage = (cartItem) => {
     }
   };
 
-  const { data, newerror, isLoading } = useGetAllProductsQuery();
-
+ 
   const {
     items: details,
     status,
@@ -171,7 +169,7 @@ const ProductPage = (cartItem) => {
                 gap:'0.3em'
               }}>
                 <p >Seller</p>
-                <img  width='33em' src={details.data.user_data.photo} />
+                <img alt='alt' width='33em' src={details.data.user_data.photo} />
                 <h4>
                   {details.data.user_data.firstname}
                   {""} {details.data.user_data.lastname}

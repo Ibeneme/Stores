@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { categoryFetch } from "../../Slices/Products/CategoriesSlices";
-import Footer from "../Navbar-and-Footer/Footer";
 import Loader from "../Loader/Loader";
 import { addToCart } from "../../Slices/cartSlice";
-import Navbar from "../Navbar-and-Footer/Navbar";
 import sampleproductimage from "./images/Re.png";
 
 const Categories = () => {
@@ -23,7 +21,7 @@ const Categories = () => {
   const {
     items: details,
     status,
-    error,
+
   } = useSelector((state) => state.categories);
 
   const handleAddToCart = (cartItem) => {

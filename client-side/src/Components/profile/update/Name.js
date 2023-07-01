@@ -33,7 +33,7 @@ const ProfileForm = () => {
   const [accountName, setAccountName] = useState(""); // Add this line
   const [bankName, setBankName] = useState("");
    const [photo, setPhoto] = useState(null); // Add state for t
-  const profile = useSelector((state) => state.profile);
+
   const navigate = useNavigate();
 
   const formatName = (name) => {

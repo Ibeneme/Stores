@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoriesLocationsFetch } from '../../Slices/Products/CategoriesLocationSlices';
 import Footer from '../Navbar-and-Footer/Footer';
 import Loader from '../Loader/Loader';
@@ -17,6 +17,7 @@ const CategoriesLocations = () => {
   console.log(category_unique_id);
   const handleAddToCart = (cartItem) => {
     dispatch(addToCart(cartItem));
+    navigate('/cart')
   };
 
   const dispatch = useDispatch();

@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 
-const token = localStorage.getItem("token")
-  ? localStorage.getItem("token")
-  : null;
 
 const userData = JSON.parse(localStorage.getItem("userData"))
   ? JSON.parse(localStorage.getItem("userData"))

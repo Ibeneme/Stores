@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaBars, FaRegListAlt, FaSearch, FaShoppingCart, FaTimes, FaRegUser } from "react-icons/fa";
 import "./Navbar.css";
@@ -10,9 +10,6 @@ import { useNavigate } from "react-router";
 import { userProfile } from "../../Slices/userSlice";
 
 function Navbar() {
-  const userData = JSON.parse(localStorage.getItem("userData"))
-  ? JSON.parse(localStorage.getItem("userData"))
-  : null;
 
 
   const [searchQuery, setSearchQuery] = useState('');

@@ -6,8 +6,6 @@ import { fetchFavorite } from "../../Slices/favorites/GetFavoriteSlice";
 const FavoritePage = () => {
   const dispatch = useDispatch();
   const favorite = useSelector((state) => state.favorite.favorite);
-  const loading = useSelector((state) => state.favorite.loading);
-  const error = useSelector((state) => state.favorite.error);
 
   useEffect(() => {
     const product_unique_id = "LznHlabJ4WP2sMy0Vik7"; // Pass the actual product unique id here

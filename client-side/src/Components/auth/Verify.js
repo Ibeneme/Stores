@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+
 
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,7 +8,7 @@ import logo from "./Modal/mail with a frosted glass effect.png";
 import verify from "./Modal/restangle speech bubble with check mark.png";
 
 const MyComponent = () => {
-  const dispatch = useDispatch();
+ 
 
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);

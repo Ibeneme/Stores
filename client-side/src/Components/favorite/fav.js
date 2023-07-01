@@ -5,9 +5,7 @@ import { fetchFavorites } from "../../Slices/favorites/FavSlices";
 const FavoritesComponent = () => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.favorites);
-  const loading = useSelector((state) => state.favorites.loading);
-  const error = useSelector((state) => state.favorites.error);
-
+ 
   console.log(favorites);
   
   useEffect(() => {

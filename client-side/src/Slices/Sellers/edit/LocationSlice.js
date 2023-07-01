@@ -18,7 +18,6 @@ export const updateLocation = createAsyncThunk(
       // Get the token from the state
       const token = thunkAPI.getState().auth.token;
 
-      // Set the request headers with the token
       const headers = {
         'hydra-express-access-token': token,
       };

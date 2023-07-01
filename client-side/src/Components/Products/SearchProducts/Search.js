@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchProducts } from "../../../Slices/Products/SearchAllProductsSlice";
-import clearSearchResults from "../../../Slices/Products/SearchAllProductsSlice";
 import Footer from "../../Navbar-and-Footer/Footer";
 import Loader from "../../Loader/Loader";
 import { addToCart } from "../../../Slices/cartSlice";
-import Navbar from "../../Navbar-and-Footer/Navbar";
+
 import illustration from "../images/Plugin/Search.png";
 import Navbarr from "../../Navbar-and-Footer/Navbarr";
 import sampleproductimage from "../images/Re.png";
@@ -33,15 +32,6 @@ const Search = () => {
     }
   };
 
-  const handleCategoryClick = (category_unique_id) => {
-    navigate(`/category?category_unique_id=${category_unique_id}`);
-    console.log("cattt", category_unique_id);
-  };
-
-  const handleLocationClick = (location_unique_id) => {
-    navigate(`/location?location_unique_id=${location_unique_id}`);
-    console.log("location", location_unique_id);
-  };
 
   const handleLocationCategoriesClick = (
     category_unique_id,
@@ -66,9 +56,9 @@ const Search = () => {
     }
   }, [dispatch, searchQuery]);
 
-  const handleClearSearchResults = () => {
-    dispatch(clearSearchResults());
-  };
+  // const handleClearSearchResults = () => {
+  //   dispatch(clearSearchResults());
+  // };
 
   if (status === "pending") {
     return <Loader />;

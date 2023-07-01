@@ -49,12 +49,12 @@ const ratingSlice = createSlice({
       .addCase(fetchRating.fulfilled, (state, action) => {
         state.loading = false;
         state.rating = action.payload;
-        { console.log(action.payload)}
+
       })
       .addCase(fetchRating.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        { console.log(action.payload)}
+    
       });
   },
 });
