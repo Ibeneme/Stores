@@ -14,7 +14,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false); 
   const location = useLocation()
-  
+
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const auth = useSelector((state) => state.auth);
   const profile = useSelector((state) => state.userProfile
@@ -60,20 +60,20 @@ const SignIn = () => {
     }
   };
 
-const googleSubmit = async (e) => {
-   e.preventDefault();
+// const googleSubmit = async (e) => {
+//    e.preventDefault();
 
-  try {
-    const result = await dispatch(signInWithGoogle(user));
-     if (result.type === signInWithGoogle.fulfilled.toString()) {
+//   try {
+//     const result = await dispatch(signInWithGoogle(user));
+//      if (result.type === signInWithGoogle.fulfilled.toString()) {
       
-       navigate("/");
-    } else {
-    }
-    } catch (error) {
-    console.log(error);
-   }
- };
+//        navigate("/");
+//     } else {
+//     }
+//     } catch (error) {
+//     console.log(error);
+//    }
+//  };
 
  
 
@@ -297,7 +297,7 @@ const googleSubmit = async (e) => {
       >
         Sign in with Passcoder
       </button>
-    <button
+    {/* <button
         style={{
           backgroundColor: "#66666635",
           border: "0.7em",
@@ -308,7 +308,7 @@ const googleSubmit = async (e) => {
         onClick={googleSubmit}
       >
         Sign in with Google
-      </button> 
+      </button>  */}
           </div>
 
         </div>

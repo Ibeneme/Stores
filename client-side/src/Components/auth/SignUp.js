@@ -118,19 +118,19 @@ const SignUp = () => {
  
   
 
-  const googleSubmit = async (e) => {
-    e.preventDefault();
+  // const googleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const result = await dispatch(signInWithGoogle(user));
-      if (result.type === signInWithGoogle.fulfilled.toString()) {
-        navigate("/");
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   try {
+  //     const result = await dispatch(signInWithGoogle(user));
+  //     if (result.type === signInWithGoogle.fulfilled.toString()) {
+  //       navigate("/");
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -493,7 +493,7 @@ const SignUp = () => {
       >
         Sign in with Passcoder
       </button>
-      <button
+      {/* <button
         style={{
           backgroundColor: "#66666635",
 
@@ -505,7 +505,7 @@ const SignUp = () => {
         onClick={googleSubmit}
       >
         Sign in with Google
-      </button>
+      </button> */}
     </div>
   );
 };
