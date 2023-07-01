@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser, signInWithGoogle } from "../../Slices/authSlice";
 import { userProfile } from "../../Slices/userSlice";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -13,7 +13,8 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false); 
-
+  const location = useLocation()
+  
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const auth = useSelector((state) => state.auth);
   const profile = useSelector((state) => state.userProfile
@@ -35,18 +36,21 @@ const SignIn = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch(loginUser(user));
+      const lowercaseEmail = user.email.toLowerCase(); // Convert email to lowercase
+      const response = await dispatch(loginUser({ ...user, email: lowercaseEmail }));
       console.log(response);
       console.log(response.meta.requestStatus);
 
       if (response.meta.requestStatus === "fulfilled") {
         setSubmitted(true);  
         dispatch(userProfile(token));
-        
-        navigate("/cart");    
+        const previousPath = location.state?.from || "/"; // Get the previous path from location state
+
+        navigate(previousPath);  
       } else {
         console.log(user);
         setError("Invalid Email or Password");

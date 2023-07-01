@@ -76,6 +76,9 @@ import ProductListPublish from "./Components/Sellers/Publish";
 import ProductListDrafts from "./Components/Sellers/drafts";
 import Navbarr from "./Components/Navbar-and-Footer/Navbarr";
 
+import { useDispatch } from "react-redux";
+import { userProfile } from "./Slices/userSlice";
+
 const ScrollToTop = () => {
   const navigate = useNavigate();
 
@@ -86,10 +89,18 @@ const ScrollToTop = () => {
   return null;
 };
 
+
+
 function App() {
+  const token = localStorage.getItem('token');
+  const dispatch = useDispatch(token);
+  useEffect(() => {
+    dispatch(userProfile());
+  }, [dispatch]);
+
   return (
     <>
-    <Navbarr />
+      <Navbarr />
       <ScrollToTop />
       <ToastContainer />
       <Routes>
@@ -175,7 +186,6 @@ function App() {
         <Route path="/kyec" element={<KYCVerification/>} />
         <Route path="/car" element={<Slider/>} />
         <Route path="/sea" element={<ProductSearch/>} /> */}
-        
       </Routes>
     </>
   );

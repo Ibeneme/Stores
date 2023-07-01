@@ -40,7 +40,7 @@ export const userProfile = createAsyncThunk(
 const userProfileSlice = createSlice({
   name: 'userProfile',
   initialState: {
-    userData: null,
+    userData: userData, // 
     isLoading: false,
     error: null,
   },

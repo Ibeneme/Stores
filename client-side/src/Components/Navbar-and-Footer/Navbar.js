@@ -6,7 +6,7 @@ import { RiArrowDownSLine } from "react-icons/ri";
 import { MdOutlineHelpOutline } from "react-icons/md";
 import logo from "./image/Group 12.png";
 import { useNavigate } from "react-router";
-import { logoutUser } from "../../Slices/authSlice";
+
 import { userProfile } from "../../Slices/userSlice";
 
 function Navbar() {
@@ -35,7 +35,7 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser(null));
+  
     window.location.reload();
   };
 

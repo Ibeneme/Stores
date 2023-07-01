@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { sendVerificationEmail } from "../../Slices/authSlice";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
@@ -31,7 +31,7 @@ const MyComponent = () => {
         `https://us-central1-hydra-express.cloudfunctions.net/app/user/email/verify`,
         { email }
       );
-      dispatch(sendVerificationEmail());
+    
 
       console.log(response.data);
       console.log(response.data.message);

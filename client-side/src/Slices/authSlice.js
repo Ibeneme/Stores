@@ -21,7 +21,6 @@ const initialState = {
   userData,
   userLoaded: false,
 };
-
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userSignUp, { rejectWithValue }) => {
@@ -43,10 +42,16 @@ export const registerUser = createAsyncThunk(
       return token;
     } catch (error) {
       console.log(error);
-      return rejectWithValue(error.message);
+      throw rejectWithValue(error.message);
     }
+  },
+  {
+    rejectValue: (error) => {
+      return error.message;
+    },
   }
 );
+
 
 
 
@@ -127,22 +132,20 @@ export const loginUser = createAsyncThunk(
 
 export const logOutUser = createAsyncThunk(
   "auth/logOutUser",
-  async (user, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}/auth/user/signout`, {
-        email: user.email,
-        password: user.password,
-      });
-      const token = response.data.data.token;
-      console.log(response);
-      localStorage.setItem("token", token);
-      return token;
+      await axios.post("https://us-central1-hydra-express.cloudfunctions.net/app/auth/user/signout");
+
+      localStorage.removeItem("token");
+
+      return null;
     } catch (error) {
       console.log(error);
       return rejectWithValue(error.message);
     }
   }
 );
+
 
 export const loginUserViaPasscoder = createAsyncThunk(
   "auth/loginUserViaPasscoder",
@@ -224,71 +227,38 @@ const authSlice = createSlice({
     },
 
 
-    logoutUser(state, action) {
-      localStorage.removeItem("token");
-
-      return {
-        ...state,
-        userLoaded: false,
-      };
-    },
+    
   },
 
   extraReducers: (builder) => {
- 
-    builder.addCase(registerUser.pending, (state, action) => {
-      return { ...state, registerStatus: "pending" };
-    });
-    builder.addCase(registerUser.fulfilled, (state, action) => {
+    builder
+    .addCase(registerUser.pending, (state) => {
+      state.registerStatus = "pending";
+    })
+    .addCase(registerUser.fulfilled, (state, action) => {
       if (action.payload) {
         const user = jwtDecode(action.payload);
         console.log(user);
-        return {
-          ...state,
-          userLoaded: true,
-          registerStatus: "success",
-        };
-      } else return state;
-    });
-    builder.addCase(registerUser.rejected, (state, action) => {
-      return {
-        ...state,
-        registerStatus: "rejected",
-        registerError: action.payload,
-      };
-    });
+        state.token = action.payload;
+        state.email = user.email;
+        state.firstname = user.firstname;
+        state.lastname = user.lastname;
+        state.gender = user.gender;
+        state.dob = user.dob;
+        state.country = user.country;
+        state.password = user.password;
+        state.confirmPassword = user.confirmPassword;
+        state._id = user._id;
+        state.userLoaded = true;
+        state.registerStatus = "success";
+      }
+    })
+    .addCase(registerUser.rejected, (state, action) => {
+      state.registerStatus = "rejected";
+      state.registerError = action.payload;
+    })
+    
 
-    builder.addCase(logOutUser.pending, (state, action) => {
-      return { ...state, registerStatus: "pending" };
-    });
-    builder.addCase(logOutUser.fulfilled, (state, action) => {
-      if (action.payload) {
-        const user = jwtDecode(action.payload);
-        console.log(user);
-        return {
-          ...state,
-          token: action.payload,
-          email: user.email,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          gender: user.gender,
-          dob: user.dob,
-          country: user.country,
-          password: user.password,
-          confirmPassword: user.confirmPassword,
-          _id: user._id,
-          userLoaded: true,
-          registerStatus: "success",
-        };
-      } else return state;
-    });
-    builder.addCase(logOutUser.rejected, (state, action) => {
-      return {
-        ...state,
-        registerStatus: "rejected",
-        registerError: action.payload,
-      };
-    });
     builder.addCase(registerUserViaPasscoder.pending, (state, action) => {
       return { ...state, registerStatus: "pending" };
     });
@@ -388,7 +358,7 @@ const authSlice = createSlice({
       };
     });
 
- 
+
     builder.addCase(signInWithGoogle.pending, (state, action) => {
       return { ...state, loginStatus: "pending" };
     });
@@ -451,6 +421,19 @@ const authSlice = createSlice({
       .addCase(sendPasswordResetEmail.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload || action.error.message;
+      })
+     
+      .addCase(logOutUser.pending, (state) => {
+        // Set the loading state or perform any other required actions
+      })
+      .addCase(logOutUser.fulfilled, (state) => {
+        state.token = null;
+        state.userData = null;
+        state.userLoaded = false;
+        // Reset any other state values as needed
+      })
+      .addCase(logOutUser.rejected, (state, action) => {
+        // Handle the error state or perform any other required actions
       });
   },
 });

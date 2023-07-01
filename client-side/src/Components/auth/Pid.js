@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUserViaPasscoder } from "../../Slices/authSlice";
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
@@ -24,7 +24,7 @@ const PIDSignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch(loginUserViaPasscoder(user));
+      const response = await dispatch((user));
       console.log(response);
       console.log(response.meta.requestStatus);
 

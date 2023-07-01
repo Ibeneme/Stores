@@ -8,28 +8,10 @@ import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import * as Yup from "yup";
+import { FaCommentsDollar } from "react-icons/fa";
 
 const SignUp = () => {
-  const validationSchema = Yup.object().shape({
-    firstname: Yup.string().required("First Name is required"),
-    lastname: Yup.string().required("Last Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    gender: Yup.string()
-      .oneOf(["Male", "Female"], "Invalid gender")
-      .required("Gender is required"),
-    country: Yup.string()
-      .oneOf(["Nigeria"], "Service available only in Nigeria")
-      .required("Country is required"),
-    dob: Yup.date()
-      .min(new Date("1900-01-01"), "You must be above 18 years of age")
-      .required("Date of Birth is required"),
-    password: Yup.string()
-      .min(8, "Minimum of 8 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-  });
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,6 +30,8 @@ const SignUp = () => {
   const handleFocusGender = () => {
     setIsFocusedGender(true);
   };
+  const registerError = useSelector((state) => state.auth.registerError);
+  console.log(registerError);
 
   const handleBlurGender = () => {
     setIsFocusedGender(false);
@@ -118,8 +102,6 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await validationSchema.validate(user, { abortEarly: false });
-      // Validation passed, continue with form submission
       const response = await dispatch(registerUser(user));
       if (response.meta.requestStatus === "fulfilled") {
         const { email } = user;
@@ -133,22 +115,8 @@ const SignUp = () => {
       console.log("Error:", error);
     }
   };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await dispatch(registerUser(user));
-  //     if (response.meta.requestStatus === "fulfilled") {
-  //       const { email } = user;
-  //       navigate(`/verify?email=${email}`);
-  //     } else {
-  //       console.log("Registration failed");
-  //       console.log(response.data);
-  //       setError("Please Re-Confirm your details");
-  //     }
-  //   } catch (error) {
-  //     console.log("Error:", error);
-  //   }
-  // };
+ 
+  
 
   const googleSubmit = async (e) => {
     e.preventDefault();

@@ -19,16 +19,17 @@ import {
 import logo from "./image/Group 12.png";
 import logologo from "./image/logo.png";
 import { useNavigate } from "react-router";
-import { logoutUser } from "../../Slices/authSlice";
+
 import { userProfile } from "../../Slices/userSlice";
 import { fetchUserProfile } from "../../Slices/Users/ProfileSlice";
+import { logOutUser } from "../../Slices/authSlice";
 
 
-function Navbarr({token}) {
+function Navbarr({ token }) {
   const userData = JSON.parse(localStorage.getItem("userData"))
     ? JSON.parse(localStorage.getItem("userData"))
     : null;
-   
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e) => {
@@ -47,8 +48,7 @@ function Navbarr({token}) {
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser(null));
-    window.location.reload();
+    dispatch(logOutUser(null))
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -56,6 +56,9 @@ function Navbarr({token}) {
   const profile = useSelector((state) => state.userProfile);
 
   const auth = useSelector((state) => state.auth);
+  const userprofile = useSelector((state) => state.userProfile.data);
+
+  console.log(userprofile);
 
   const handleDropdownToggle = () => {
     const token = auth.token;
@@ -279,7 +282,7 @@ function Navbarr({token}) {
                 Orders
               </p>
               <p
-               onClick={() => navigate("/signin")}
+                onClick={() => navigate("/signin")}
                 style={{
                   display: "flex",
                   gap: "1em",
@@ -294,7 +297,7 @@ function Navbarr({token}) {
                 Favorites
               </p>
               <p
-               onClick={() => navigate("/signin")}
+                onClick={() => navigate("/signin")}
                 style={{
                   display: "flex",
                   gap: "1em",
@@ -309,8 +312,7 @@ function Navbarr({token}) {
                 History
               </p>
               <p
-               onClick={() => navigate("/signin")}
-
+                onClick={() => navigate("/signin")}
                 style={{
                   display: "flex",
                   gap: "1em",
@@ -458,11 +460,15 @@ function Navbarr({token}) {
                     }}
                     onClick={handleDropdownToggle}
                   >
-                    <img src={auth.userData.photo} />
+                    {userprofile && userprofile.photo && (
+                      <img src={userprofile.photo} alt="" />
+                    )}
                     <p>
-                      {auth.token
-                        ? ` Hi ${" "} ${auth.userData.firstname}`
-                        : " My Account"}
+                      {
+                      userprofile &&
+                      userprofile.firstname
+                        ? `Hi ${userprofile.firstname}`
+                        : "My Account"}
                     </p>
                     <span
                       style={{
@@ -520,8 +526,8 @@ function Navbarr({token}) {
                 style={{
                   display: "flex",
                   gap: "6em",
-                  marginRight:'3em',
-                  marginRight:'3em'
+                  marginRight: "3em",
+                  marginRight: "3em",
                 }}
               >
                 <span>
