@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateAllProductDetails } from '../../../Slices/Sellers/edit/editAllSlice';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateAllProductDetails } from "../../../Slices/Sellers/edit/editAllSlice";
 
 const EditAllForm = () => {
   const dispatch = useDispatch();
@@ -8,17 +8,17 @@ const EditAllForm = () => {
   const error = useSelector((state) => state.editAll.error);
   const success = useSelector((state) => state.editAll.success);
 
-  const [uniqueId, setUniqueId] = useState('');
-  const [name, setName] = useState('');
-  const [categoryUniqueId, setCategoryUniqueId] = useState('');
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
-  const [price, setPrice] = useState(0);
-  const [salesPrice, setSalesPrice] = useState(0);
-  const [color, setColor] = useState('');
-  const [size, setSize] = useState('');
-  const [quantity, setQuantity] = useState(0);
-  const [remaining, setRemaining] = useState(0);
+  const [uniqueId, setUniqueId] = useState("");
+  const [name, setName] = useState("");
+  const [categoryUniqueId, setCategoryUniqueId] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [price, setPrice] = useState("");
+  const [salesPrice, setSalesPrice] = useState("");
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [remaining, setRemaining] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,8 +31,7 @@ const EditAllForm = () => {
       location: location,
       price: price,
       sales_price: salesPrice,
-      specifications:
-      {
+      specifications: {
         color: color,
         size: size,
       },
@@ -45,10 +44,27 @@ const EditAllForm = () => {
   };
 
   return (
-    <div style={{
-      marginTop:'6em'
-    }}>
-      <form onSubmit={handleSubmit}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: "3em",
+        backgroundColor: "white",
+      }}
+    >
+      <form
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          paddingTop: "4em",
+          backgroundColor: "white",
+        }}
+        className="addproduct-first-div"
+        onSubmit={handleSubmit}
+      >
+          <h1 className="addproduct-first-h1">Edit a Product</h1>
         <input
           type="text"
           value={uniqueId}
@@ -100,7 +116,7 @@ const EditAllForm = () => {
           type="number"
           value={size}
           onChange={(e) => setSize(parseInt(e.target.value))}
-          placeholder="Size"    
+          placeholder="Size"
         />
         <input
           type="number"
@@ -115,7 +131,7 @@ const EditAllForm = () => {
           placeholder="Remaining"
         />
 
-        <button type="submit" disabled={loading}>
+        <button className="btn-add-a-product" type="submit" disabled={loading}>
           Update All
         </button>
       </form>

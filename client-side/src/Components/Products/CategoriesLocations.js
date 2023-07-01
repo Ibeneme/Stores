@@ -5,6 +5,7 @@ import { CategoriesLocationsFetch } from '../../Slices/Products/CategoriesLocati
 import Footer from '../Navbar-and-Footer/Footer';
 import Loader from '../Loader/Loader';
 import { addToCart } from "../../Slices/cartSlice";
+import Navbarr from '../Navbar-and-Footer/Navbarr';
 
 const CategoriesLocations = () => {
   const location = useLocation();
@@ -38,6 +39,7 @@ console.log(details)
 
   return (
     <div>
+      <Navbarr />
       {details && details.data && ( // Add conditional check
         <div>
           <p>{details.data.category_data.name}</p>

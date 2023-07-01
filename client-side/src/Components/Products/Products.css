@@ -201,9 +201,10 @@
   max-width: 400px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 1em;
   padding: 2em 2em;
-  z-index: -9999
+
 }
 
 /* Modal header */

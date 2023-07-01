@@ -32,7 +32,6 @@ import favoriteReducer from './Slices/favorites/GetFavoriteSlice';
 import toggleFavoriteReducer from './Slices/favorites/ToggleFavoriteSlice';
 import deleteFavoriteReducer from './Slices/favorites/DeleteSlice';
 
-
 import profileReducer from "./Slices/Users/ProfileSlice";
 import profileNameReducer from "./Slices/Users/update/NameSlice";
 import profilePhoneReducer from "./Slices/Users/update/NameSlice";
@@ -61,7 +60,7 @@ import deleteImageSliceReducer from "./Slices/Sellers/Image/deleteImageSlice";
 import kycReducer from "./Slices/KYC/KYCSlice";
 import AddkycReducer from "./Slices/KYC/AddKycSlice";
 import authSigninReducer from "./Slices/auth/signinSlice";
-
+import cartsReducer from './Slices/Cart/CartSlice'
 
 
 
@@ -78,6 +77,7 @@ const store = configureStore({
     authSignin: authSigninReducer,
     auth: authReducer,
     cart: cartReducer,
+    carts: cartsReducer,
     profile: profileReducer,
     profileName: profileNameReducer,
     profilePhone: profilePhoneReducer,

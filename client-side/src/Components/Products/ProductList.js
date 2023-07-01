@@ -22,6 +22,7 @@ console.log(details)
 
   return (
     <div>
+      
       <div>
         <h1>{details.name}</h1>
         <p>{details.description}</p>

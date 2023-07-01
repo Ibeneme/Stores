@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router";
 import { publishProduct } from "../../Slices/Sellers/publishProductSlice";
 import sample from "../Products/images/Rectangle 15.png";
 import Loader from "../Loader/Loader";
+import Navbarr from "../Navbar-and-Footer/Navbarr";
+import { deleteProduct } from "../../Slices/Sellers/deleteProductSlice";
 
 const SellersProductPage = () => {
   const product = useSelector((state) => state.sellersProductsDetails.products);
@@ -20,10 +22,23 @@ const SellersProductPage = () => {
   const unique_id = queryParams.get("unique_id");
 
   const navigate = useNavigate();
+
+
+
   const handlePublish = () => {
-    dispatch(publishProduct(unique_id));
-    setIsOpen(false);
+    dispatch(publishProduct(unique_id))
+      .then(() => {
+        // Product successfully deleted
+        // Navigate to the success page
+        navigate(`/success?message=Product%20successfully%Added`);
+      })
+      .catch((error) => {
+        navigate(`/errorpage?message=Error%20Adding%20this%20Product`);
+    
+      });
+    console.log("working delete", unique_id);
   };
+
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -34,7 +49,17 @@ const SellersProductPage = () => {
   };
 
   const handleDeleteConfirmation = () => {
-    setDeleteModalOpen(false);
+    dispatch(deleteProduct(unique_id))
+      .then(() => {
+        // Product successfully deleted
+        // Navigate to the success page
+        navigate(`/success?message=Product%20successfully%20deleted`);
+      })
+      .catch((error) => {
+        navigate(`/errorpage?message=Delete%20Failed`);
+        console.log(error)
+      });
+    console.log("working delete", unique_id);
   };
 
   const handleCancelDelete = () => {
@@ -47,18 +72,11 @@ const SellersProductPage = () => {
 
   const handleClickDelete = (unique_id) => {
     setDeleteModalOpen(true);
-    console.log("del", unique_id);
   };
-
-  // const handleClickDelete = (unique_id) => {
-  //   navigate(`/deleteproduct?unique_id=${unique_id}`);
-  //   console.log("del", unique_id);
-  // };
 
   useEffect(() => {
     dispatch(fetchProducts(unique_id));
   }, [dispatch, unique_id]);
-  
 
   if (loading) {
     return (
@@ -74,6 +92,7 @@ const SellersProductPage = () => {
 
   return (
     <div>
+      <Navbarr />
       {product && product.data && (
         <div>
           {console.log(product.data.quantity)}
@@ -179,7 +198,9 @@ const SellersProductPage = () => {
                           </button>
 
                           {isOpen && (
-                            <div className="modal">
+                            <div  style={{
+                              zIndex: '999',
+                            }} className="modal">
                               <div className="modal-content">
                                 <h3>
                                   Confirm You want to Publish this Product
@@ -188,12 +209,12 @@ const SellersProductPage = () => {
                                   Are you sure you want to publish this product?
                                 </p>
                                 <div className="modal-buttons">
-                                  
-                                  <button 
-                                  style={{
-                                    backgroundColor:'#064bde'
-                                  }}
-                                  onClick={handlePublish}>
+                                  <button
+                                    style={{
+                                      backgroundColor: "#064bde",
+                                    }}
+                                    onClick={handlePublish}
+                                  >
                                     Publish
                                   </button>
                                   <button onClick={handleCancel}>Cancel</button>
@@ -233,7 +254,9 @@ const SellersProductPage = () => {
                       </button>
 
                       {isDeleteModalOpen && (
-                        <div className="modal">
+                        <div  style={{
+                          zIndex: '999',
+                        }} className="modal">
                           <div className="modal-content">
                             <h3>Confirm Delete</h3>
                             <p>Are you sure you want to delete this product?</p>

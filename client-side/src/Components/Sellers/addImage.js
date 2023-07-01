@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductImage } from '../../Slices/Sellers/Image/AddImageSlice';
+import Navbarr from '../Navbar-and-Footer/Navbarr';
 
 const ProductImageForm = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const ProductImageForm = () => {
 
   return (
     <div>
+      <Navbarr />
       <form onSubmit={handleSubmit}>
         <input
           type="text"

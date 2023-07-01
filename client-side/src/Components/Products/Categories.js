@@ -5,6 +5,7 @@ import { categoryFetch } from "../../Slices/Products/CategoriesSlices";
 import Loader from "../Loader/Loader";
 import { addToCart } from "../../Slices/cartSlice";
 import sampleproductimage from "./images/Re.png";
+import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 const Categories = () => {
   const location = useLocation();
@@ -145,6 +146,7 @@ const Categories = () => {
 
   return (
     <div>
+      <Navbarr/>
       <div className="div-style-first">
         {console.log("lls", category_unique_id)}
         {content}

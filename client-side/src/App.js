@@ -55,10 +55,12 @@ import KYCForm from "./Components/Kyc/Kyc";
 import AddKYCForm from "./Components/Kyc/AddKYC";
 import ProductListPublish from "./Components/Sellers/Publish";
 import ProductListDrafts from "./Components/Sellers/drafts";
-import Navbarr from "./Components/Navbar-and-Footer/Navbarr";
 
 import { useDispatch } from "react-redux";
 import { userProfile } from "./Slices/userSlice";
+import SuccessPage from "./Components/Sellers/Pages/Success";
+import CartComponent from "./Components/Cart-and-Checkout/Cart/Cart";
+import AddToCartComponent from "./Slices/Cart/AddCart";
 
 const ScrollToTop = () => {
   const navigate = useNavigate();
@@ -81,13 +83,17 @@ function App() {
 
   return (
     <>
-      <Navbarr />
+    
       <ScrollToTop />
       <ToastContainer />
       <Routes>
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/addcart" element={< AddToCartComponent/>} />
 
         <Route path="/editprofile" element={<ProfileNameForm />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/errorpage007aff" element={<SuccessPage />} />
+        <Route path="/newcart" element={<CartComponent />} />
 
         <Route path="/" element={<Product />} />
         <Route path="/carousel" element={<Carousels />} />

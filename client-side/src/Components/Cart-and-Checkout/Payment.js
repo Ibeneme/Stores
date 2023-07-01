@@ -7,14 +7,10 @@ import * as Yup from "yup";
 import "./Checkout.css";
 import Footer from "../Navbar-and-Footer/Footer";
 
-
 import "../Navbar-and-Footer/Navbar.css";
-
+import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 const PaymentCheckout = (cartItem) => {
-
-
-  
   const validate = Yup.object({
     cardNumber: Yup.string()
       .max(15, "Must be 15 Characters or less")
@@ -34,7 +30,7 @@ const PaymentCheckout = (cartItem) => {
   const navigate = useNavigate();
   return (
     <div>
-
+      <Navbarr />
       <div className="checkout-main-div">
         <div className="last-checkout-div">
           <h3>Cart Summary</h3>
@@ -96,8 +92,8 @@ const PaymentCheckout = (cartItem) => {
             }}
             type="submit"
             onClick={() => {
-                navigate("/cart");
-              }}
+              navigate("/cart");
+            }}
           >
             Modify Cart
           </button>

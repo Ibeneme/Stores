@@ -3,6 +3,7 @@ import { useGetAllProductsQuery } from "../../Slices/Sellers/productSlice";
 import Loader from "../Loader/Loader";
 import "./styles/product.css";
 import sample from "../../Components/Products/images/Re.png";
+import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const ProductList = () => {
 
   return (
     <div className="first-sellers-product-div">
+      <Navbarr />
       <div
         style={{
           marginTop: "7.5em",

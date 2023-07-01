@@ -3,6 +3,7 @@ import { useGetAllProductsQuery } from "../../Slices/Sellers/productSlice";
 import Loader from "../Loader/Loader";
 import "./styles/product.css";
 import sample from "../../Components/Products/images/Rectangle 15.png";
+import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 const ProductListPublish = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const ProductListPublish = () => {
 
   return (
     <div className="first-sellers-product-div">
+        <Navbarr />
       <div
         style={{
           marginTop: "7.5em",
@@ -148,67 +150,70 @@ const ProductListPublish = () => {
             <div>
               <div>
                 <div className="container-mapping">
-                  {filteredProducts.map((product) => (
-                    <div key={product.unique_id}>
-                      <div>
-                        <img src={sample} alt="sample" width="100%" />
-                        <h3>{product.name}</h3>
-                        <span>
-                          {product.sales_price === product.price ? (
-                            <p
-                              style={{
-                                display: "flex",
-                                gap: "1em",
-                              }}
-                            >
-                              <span>
-                                {" "}
-                                <span>&#8358;</span>
-                                {product.price}
-                              </span>{" "}
-                            </p>
-                          ) : (
-                            <p
-                              style={{
-                                display: "flex",
-                                gap: "1em",
-                              }}
-                            >
-                              <span
-                                style={{
-                                  textDecoration: "line-through",
-                                  color: "red",
-                                }}
-                              >
-                                {" "}
-                                <span>&#8358;</span>
-                                {product.price}
-                              </span>{" "}
-                              <span>&#8358;{product.sales_price}</span>
-                            </p>
-                          )}
-                        </span>
+                {filteredProducts.length === 0 ? (
+  <p>No products available.</p>
+) : (
+  filteredProducts.map((product) => (
+    <div key={product.unique_id}>
+      <div>
+        <img src={sample} alt="sample" width="100%" />
+        <h3>{product.name}</h3>
+        <span>
+          {product.sales_price === product.price ? (
+            <p
+              style={{
+                display: "flex",
+                gap: "1em",
+              }}
+            >
+              <span>
+                <span>&#8358;</span>
+                {product.price}
+              </span>{" "}
+            </p>
+          ) : (
+            <p
+              style={{
+                display: "flex",
+                gap: "1em",
+              }}
+            >
+              <span
+                style={{
+                  textDecoration: "line-through",
+                  color: "red",
+                }}
+              >
+                <span>&#8358;</span>
+                {product.price}
+              </span>{" "}
+              <span>&#8358;{product.sales_price}</span>
+            </p>
+          )}
+        </span>
 
-                        <div
-                          style={{
-                            margin: "0.8em 0",
-                            fontSize: "0.85em",
-                          }}
-                        >
-                          <p>In-Stock: {product.remaining}</p>
-                        </div>
+        <div
+          style={{
+            margin: "0.8em 0",
+            fontSize: "0.85em",
+          }}
+        >
+          <p>In-Stock: {product.remaining}</p>
+        </div>
 
-                        <div className="container-for-btns-sellers">
-                          <button
-                            className="btn-btn-div-publish"
-                            onClick={() => handleClick(product.unique_id)}
-                          >
-                            View Product
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+        <div className="container-for-btns-sellers">
+          <button
+            className="btn-btn-div-publish"
+            onClick={() => handleClick(product.unique_id)}
+          >
+            View Product
+          </button>
+        </div>
+      </div>
+    </div>
+  ))
+)}
+
                 </div>
               </div>
             </div>

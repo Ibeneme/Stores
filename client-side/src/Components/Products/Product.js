@@ -55,6 +55,7 @@ const Product = () => {
         backgroundColor: "white",
       }}
     >
+      
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -213,6 +214,9 @@ const Product = () => {
                       </p>
                     </div>
                     <button
+                    style={{
+                      color:'black'
+                    }}
                       className="products-displayed-home-btn"
                       onClick={() => handleAddToCart(product)}
                     >

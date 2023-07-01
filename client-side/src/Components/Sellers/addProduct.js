@@ -4,6 +4,7 @@ import { addProduct } from "../../Slices/Sellers/addProductSlice";
 import { sendProductDraft } from "../../Slices/Sellers/draftProductSlice";
 import "./styles/addProduct.css";
 import Footer from "../Navbar-and-Footer/Footer";
+import { useNavigate } from "react-router";
 
 const AddProductForm = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,49 @@ const AddProductForm = () => {
     sales_price: "",
     location: "",
   });
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(addProduct(parseProductData(productData)));
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showDraftModal, setShowDraftModal] = useState(false);
+
+  const handleSubmit = () => {
+    dispatch(addProduct(parseProductData(productData)))
+      .then(() => {
+        navigate(`/success?message=Product%20successfully%20Published`);
+      })
+      .catch((error) => {
+        navigate(`/errorpage?message=%20Failed%20to%Publish%20Product`);
+        console.log(error);
+      });
   };
 
-  const handleDraft = (e) => {
-    e.preventDefault();
-    dispatch(sendProductDraft(parseProductData(productData)));
+  const handleDraft = () => {
+    dispatch(sendProductDraft(parseProductData(productData)))
+      .then(() => {
+        navigate(
+          `/success?message=Product%20successfully%20Added%20to%20Drafts`
+        );
+      })
+      .catch((error) => {
+        navigate(`/errorpage?message=Draft%20Failed%20to%20Add`);
+        console.log(error);
+      });
+  };
+
+  const openAddModal = () => {
+    setShowAddModal(true);
+  };
+
+  const closeAddModal = () => {
+    setShowAddModal(false);
+  };
+
+  const openDraftModal = () => {
+    setShowDraftModal(true);
+  };
+
+  const closeDraftModal = () => {
+    setShowDraftModal(false);
   };
 
   const handleChange = (e) => {
@@ -71,8 +106,8 @@ const AddProductForm = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        paddingTop:'6em',
-        backgroundColor:'white'
+        paddingTop: "6em",
+        backgroundColor: "white",
       }}
     >
       <div
@@ -81,8 +116,7 @@ const AddProductForm = () => {
           display: "flex",
           flexDirection: "column",
           paddingTop: "4em",
-          backgroundColor:'white'
-          
+          backgroundColor: "white",
         }}
       >
         <h1 className="addproduct-first-h1">Sell a Product</h1>
@@ -282,14 +316,82 @@ const AddProductForm = () => {
           onChange={handleChange}
           placeholder="Enter Product Location"
         /> */}
-        <button className="btn-add-a-product" onClick={handleSubmit}>
+        <button className="btn-add-a-product" onClick={openAddModal}>
           Add Product
         </button>
-        <button className="btn-draft-a-product" onClick={handleDraft}>
+        <button className="btn-draft-a-product" onClick={openDraftModal}>
           Draft
         </button>
       </div>
+
       <Footer />
+      {/* Add Product Modal */}
+      {showAddModal && (
+        <div  style={{
+          zIndex: '999',
+        }}
+        className="modal">
+          <div  className="modal-content">
+            <h2>Add this Product</h2>
+            <p>Are you sure you want to add this product?</p>
+
+            <div className="modal-buttons">
+              <button
+                style={{
+                  backgroundColor: "#d9d9d945",
+                  color: "#000",
+                }}
+                onClick={closeAddModal}
+              >
+                Close
+              </button>
+
+              <button
+                style={{
+                  backgroundColor: "#064bde",
+                  color: "white",
+                }}
+                onClick={handleSubmit}
+              >
+                Add{" "}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Draft Modal */}
+      {showDraftModal && (
+        <div style={{
+          zIndex: '999',
+        }} className="modal">
+          <div className="modal-content">
+            <h2>Draft this Product?</h2>
+            <p>Are you sure you want to draft this product.</p>
+
+            <div className="modal-buttons">
+              <button
+                style={{
+                  backgroundColor: "#d9d9d945",
+                  color: "#000",
+                }}
+                onClick={closeDraftModal}
+              >
+                Cancel
+              </button>
+              <button
+                style={{
+                  backgroundColor: "#064bde",
+                  color: "white",
+                }}
+                onClick={handleDraft}
+              >
+                Save as Draft
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

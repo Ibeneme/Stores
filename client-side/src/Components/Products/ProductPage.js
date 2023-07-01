@@ -4,16 +4,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { productsFetch } from "../../Slices/Products/productSlice";
 import Footer from "../Navbar-and-Footer/Footer";
 import Loader from "../Loader/Loader";
-import { addToCart } from "../../Slices/cartSlice";
+import { addItemToCart } from "../../Slices/Cart/CartSlice";
 import sample from "./images/Rectangle 15.png";
-import Navbar from "../Navbar-and-Footer/Navbar";
 import "./ProductPage.css";
 import { MdLocationOn } from "react-icons/md";
 import { BiMinus } from "react-icons/bi";
 import { RxPlus } from "react-icons/rx";
 import { removeFromCart, getTotal } from "../../Slices/cartSlice";
+import Navbarr from "../Navbar-and-Footer/Navbarr";
 
-const ProductPage = (cartItem) => {
+
+const ProductPage = () => { // Remove unused cartItem parameter
   const cart = useSelector((state) => state.cart);
 
   const location = useLocation();
@@ -29,13 +30,6 @@ const ProductPage = (cartItem) => {
 
   const [cartQuantity, setCartQuantity] = useState(0);
 
-  const handleAddToCart = (cartItem) => {
-    if (cartQuantity < details.data.quantity) {
-      dispatch(addToCart(cartItem));
-      setCartQuantity(cartQuantity + 1);
-    }
-  };
-
   const handleRemoveFromCart = (cartItem) => {
     if (cartQuantity > 0) {
       dispatch(removeFromCart(cartItem));
@@ -43,12 +37,38 @@ const ProductPage = (cartItem) => {
     }
   };
 
- 
-  const {
-    items: details,
-    status,
-    error,
-  } = useSelector((state) => state.productsDetails);
+  const { items: details, status, error } = useSelector(
+    (state) => state.productsDetails
+  );
+
+  const box = details?.data?.unique_id; // Use optional chaining to handle undefined values
+  console.log(box);
+  const shipping_id = details?.data?.price;
+  console.log('shipping', shipping_id);
+  const Shipping_location = details?.data?.location;
+  console.log(Shipping_location);
+  const sellers = details?.data?.user_data?.seller_location;
+  console.log("track", unique_id);
+
+
+
+  const [itemData, setItemData] = useState({
+
+    product_unique_id: unique_id,
+    shipping_fee: shipping_id,
+    from_address: sellers,
+    to_address: Shipping_location,
+    quantity: 1,
+  });
+
+  console.log("jer", itemData);
+
+  const handleAddToCart = () => {
+    setItemData(itemData);
+    dispatch(addItemToCart(itemData));
+    navigate('/newcart')
+    console.log("done", itemData);
+  };
 
   useEffect(() => {
     console.log(user_unique_id);
@@ -65,7 +85,7 @@ const ProductPage = (cartItem) => {
 
   return (
     <div>
-      <Navbar />
+      <Navbarr />
       {details && details.data && (
         <div>
           {console.log(details.data.quantity)}
@@ -107,37 +127,33 @@ const ProductPage = (cartItem) => {
                     <div>
                       <div className="product-page-btns">
                         <div className="product-page-add-and-remove-button-div">
-                          {" "}
                           <button
                             className="product-page-add-or-remove-btn"
                             onClick={() => handleRemoveFromCart(details.data)}
                           >
-                            {" "}
                             <BiMinus />
-                          </button>{" "}
+                          </button>
                           <p className="product-page-quantity">
-                            {" "}
                             {cartQuantity}
                           </p>
                           <button
                             onClick={() => handleAddToCart(details.data)}
                             className="product-page-add-or-remove-btn"
                           >
-                            <RxPlus />
+                            <RxPlus /> {/* Fix component name */}
                           </button>
                         </div>
                         <button className="product-page-add-to-cart-btn">
                           {cartQuantity > 0 ? (
                             <p onClick={() => navigate("/cart")}>
-                              {" "}
                               View your Cart
                             </p>
                           ) : (
-                            <p onClick={() => handleAddToCart(details.data)}>
+                            <p onClick={() => handleAddToCart()}>
                               Add to Cart
                             </p>
                           )}
-                        </button>{" "}
+                        </button>
                       </div>
 
                       <button className="product-page-buy-now-btn">
@@ -163,26 +179,31 @@ const ProductPage = (cartItem) => {
                   orci pretium non. Etiam ipsum nisl ipsum egestas sed.
                 </p>
               </div>
-              <div style={{
-                display:'flex',
-                flexDirection:'column',
-                gap:'0.3em'
-              }}>
-                <p >Seller</p>
-                <img alt='alt' width='33em' src={details.data.user_data.photo} />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.3em",
+                }}
+              >
+                <p>Seller</p>
+                <img
+                  alt="alt"
+                  width="33em"
+                  src={details.data.user_data.photo}
+                />
                 <h4>
                   {details.data.user_data.firstname}
                   {""} {details.data.user_data.lastname}
                   {""} {details.data.user_data.middlename}
                 </h4>
-                <p >{details.data.user_data.email}</p>
-                <p >{details.data.user_data.phone_number}</p>
+                <p>{details.data.user_data.email}</p>
+                <p>{details.data.user_data.phone_number}</p>
               </div>
               <div className="Product-page-product-full-description-div">
                 <h4>More Items Like this</h4>
                 <p className="Product-page-long-description">View More items</p>
               </div>
-             
             </div>
           </div>
         </div>
@@ -193,3 +214,4 @@ const ProductPage = (cartItem) => {
 };
 
 export default ProductPage;
+
