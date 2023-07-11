@@ -1,26 +1,42 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addToCart } from "../../Slices/cartSlice";
 import { useGetAllProductsQuery } from "../../Slices/Products/productAPI";
 import Carousels from "../Navbar-and-Footer/Carousel";
-
 import Footer from "../Navbar-and-Footer/Footer";
 import Loader from "../Loader/Loader";
 import "./Products.css";
 import sampleimage from "./images/Frame 212.png";
 import sampleproductimage from "./images/Re.png";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
+import { addItemToCart } from "../../Slices/Cart/CartSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
- 
-  const handleAddToCart = (cartItem) => {
-    dispatch(addToCart(cartItem));
-    navigate("/cart");
-  };
 
+
+  const handleAddThisToCart = async (unique_id, location) => {
+    const itemData = {
+      product_unique_id: unique_id,
+      to_address: location,
+      quantity: 1,
+    };
+    try {
+      const response = await dispatch(addItemToCart(itemData));
+      console.log("Item added to cart:", response.payload);
+      toast.success(response.payload.message, {
+      
+      });
+    } catch (error) {
+      console.log("Error adding item to cart:", error);
+      toast.error(error.payload.message, {
+      
+      });
+    }
+  };
   const handleClick = (user_unique_id, unique_id) => {
     if (user_unique_id && unique_id) {
       navigate(
@@ -34,8 +50,6 @@ const Product = () => {
     navigate(`/category?category_unique_id=${category_unique_id}`);
     console.log("cattt", category_unique_id);
   };
-
-  
 
   const handleLocationCategoriesClick = (
     category_unique_id,
@@ -55,7 +69,6 @@ const Product = () => {
         backgroundColor: "white",
       }}
     >
-      
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -214,11 +227,17 @@ const Product = () => {
                       </p>
                     </div>
                     <button
-                    style={{
-                      color:'black'
-                    }}
+                      style={{
+                        color: "black",
+                      }}
                       className="products-displayed-home-btn"
-                      onClick={() => handleAddToCart(product)}
+                      onClick={() =>
+                        handleAddThisToCart(
+                          product.unique_id,
+                          product.location,
+                          product.quantity
+                        )
+                      }
                     >
                       Add to Cart
                     </button>
@@ -227,7 +246,7 @@ const Product = () => {
               </div>
             </div>
           </div>
-        
+
           <Footer />
         </>
       )}

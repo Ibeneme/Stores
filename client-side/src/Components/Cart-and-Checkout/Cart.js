@@ -1,16 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  removeFromCart,
-  decreaseCart,
-  addToCart,
-  // clearCart,
-  getTotal,
-} from "../../Slices/cartSlice";
 import "../Products/ProductPage.css";
-import { fetchCartData } from "../../Slices/Cart/CartSlice";
-import { useEffect } from "react";
 import "./Cart.css";
 import { BiMinus } from "react-icons/bi";
 import logo from "./images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
@@ -23,51 +14,138 @@ import imagge from "./images/Group 36684.png";
 import { AiFillShop } from "react-icons/ai";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdBroadcastOnHome } from "react-icons/md";
+import { fetchCartData } from "../../Slices/Cart/CartSlice";
+import {
+  deleteCartItem,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
+  clearCart,
+} from "../../Slices/Cart/CartSlice";
+import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 
-const Cart = (cartItem) => {
-  const cart = useSelector((state) => state.cart);
+const Cart = () => {
   const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
+  const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
+  console.log(shippingPrice, "authhh");
 
+  const data = useSelector((state) => state.carts);
+  console.log(data);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [displayModal, setDisplayModal] = useState(false);
 
-  useEffect(() => {
-    dispatch(fetchCartData());
-  }, [dispatch]);
+  const testAddress = data?.data?.data?.rows[0].product_data.location;
 
+  const toAddress =
+    data?.data?.data?.rows.length > 0 ? <p>{testAddress}</p> : null;
 
+  console.log(testAddress, "biggg");
 
-  const cartData = useSelector((state) => state.carts.data.data);
+  const handleShipping = () => {
+    dispatch(
+      fetchShippingPrice({
+        fromAddress: "Port Harcourt",
+        toAddress: "Port harcourt",
+      })
+    )
+      .then((action) => {
+        console.log(action);
+        console.log(action.payload);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  console.log(cartData)
+  const handleDeleteButtonClick = () => {
+    setDisplayModal(true);
+  };
+
+  const handleDeleteConfirmation = () => {
+    setDisplayModal(false);
+  };
+
+  useEffect(
+    (data) => {
+      dispatch(fetchCartData(data));
+    },
+    [dispatch]
+  );
+
   const handleCheckout = () => {
     setShowModal(true);
+    handleShipping();
+    console.log(data);
   };
 
   const closeModal = () => {
     setShowModal(false);
   };
 
-  const navigate = useNavigate();
- 
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    dispatch(getTotal());
-  }, [cart, dispatch]);
-
-  const handleRemoveFromCart = (cartItem) => {
-    dispatch(removeFromCart(cartItem));
+  const handleClearCartClick = () => {
+    setIsModalOpen(true);
   };
 
-  const decreaseInCart = (cartItem) => {
-    dispatch(decreaseCart(cartItem));
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
-  const increaseInCart = (cartItem) => {
-    dispatch(addToCart(cartItem));
+
+  const handleClearCart = async () => {
+    try {
+      const response = await dispatch(clearCart());
+      dispatch(fetchCartData(data));
+      setIsModalOpen(false);
+      console.log("Item added to cart:", response.payload);
+    } catch (error) {
+      console.log("Error adding item to cart:", error);
+    }
   };
-  // const handleclearCart = (cartItem) => {
-  //   dispatch(clearCart(cartItem));
-  // };
+
+  const handleDeleteThisToCart = async (unique_id) => {
+    try {
+      const response = await dispatch(dispatch(deleteCartItem(unique_id)));
+      dispatch(fetchCartData(data));
+
+      console.log("Item added to cart:", response.payload);
+    } catch (error) {
+      console.log("Error adding item to cart:", error);
+    }
+  };
+
+  const handledecrease = async (unique_id) => {
+    const itemData = unique_id;
+
+    try {
+      const response = await dispatch(decreaseCartItemQuantity(itemData));
+      dispatch(fetchCartData());
+
+      console.log("Item added to cart:", response.payload);
+    } catch (error) {
+      console.log("Error adding item to cart:", error);
+    }
+  };
+  console.log(data?.data?.data?.rows, "here cart");
+
+  const grandTotal = data?.data?.data?.rows.reduce((total, cartItem) => {
+    const itemTotal = cartItem.product_data.price * cartItem.quantity;
+    return total + itemTotal;
+  }, 0);
+
+  const handleIncrease = async (unique_id) => {
+    const itemData = unique_id;
+    try {
+      const response = await dispatch(increaseCartItemQuantity(itemData));
+      dispatch(fetchCartData());
+
+      console.log("Item added to cart:", response.payload);
+    } catch (error) {
+      console.log("Error adding item to cart:", error);
+    }
+  };
+  console.log(data);
 
   return (
     <div>
@@ -77,7 +155,7 @@ const Cart = (cartItem) => {
           marginTop: "7em",
         }}
       >
-        {cart.cartItems.length === 0 ? (
+        {data?.data === null ? (
           <div
             style={{
               display: "flex",
@@ -112,9 +190,74 @@ const Cart = (cartItem) => {
         ) : (
           <div className="spread">
             <div>
-              {cart.cartItems.map((cartItem) => {
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <div
+                  onClick={handleClearCartClick}
+                  style={{
+                    height: "50px",
+                    padding: "0 1em",
+                    border: "1px solid black",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: "1em",
+                    cursor: "pointer",
+                  }}
+                >
+                  Clear Cart
+                </div>
+              </div>
+              {isModalOpen && (
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    zIndex: 9999,
+                  }}
+                >
+                  <div
+                    style={{
+                      background: "white",
+                      padding: "2em",
+                      borderRadius: "5px",
+                      maxWidth: "400px",
+                      textAlign: "center",
+                    }}
+                  >
+                    <h3>Clear your Cart?</h3>
+                    <p
+                      style={{
+                        marginBottom: "2.4em",
+                        marginTop: "0.11em",
+                        color: "gray",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Are you sure you want to clear your cart?
+                    </p>
+                    <div className="modal-buttons">
+                      <button onClick={handleClearCart}>Clear Cart</button>
+                      <button onClick={handleModalClose}>Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {data?.data?.data?.rows.map((cartItem) => {
                 return (
                   <div className="cart-first-div" key={cartItem.unique_id}>
+                    {console.log(cartItem.unique_id)}
                     <div className="div-cart-first-div">
                       <img
                         className="img-cart-first-div"
@@ -142,14 +285,16 @@ const Cart = (cartItem) => {
                             flexDirection: "column",
                           }}
                         >
-                          <h3 className="Product-page-h1">{cartItem.name}</h3>
+                          <h3 className="Product-page-h1">
+                            {cartItem.product_data.name}
+                          </h3>
                           <p
                             style={{
                               marginTop: "0",
                             }}
                             className="Product-page-Short-description"
                           >
-                            {cartItem.description}
+                            {cartItem.product_data.description}
                           </p>
                           <h3
                             style={{
@@ -160,7 +305,15 @@ const Cart = (cartItem) => {
                             className="Product-page-price"
                           >
                             <span>&#8358;</span>
-                            {cartItem.price}
+                            {cartItem.product_data.price}{" "}
+                            <span
+                              style={{
+                                fontSize: "0.6em",
+                                color: "gray",
+                              }}
+                            >
+                              Unit Price
+                            </span>
                           </h3>
 
                           <div
@@ -178,17 +331,22 @@ const Cart = (cartItem) => {
                               {" "}
                               <button
                                 className="product-page-add-or-remove-btn"
-                                onClick={() => decreaseInCart(cartItem)}
+                                onClick={() =>
+                                  handledecrease(cartItem.unique_id)
+                                }
                               >
                                 {" "}
                                 <BiMinus />
                               </button>{" "}
                               <p className="product-page-quantity">
                                 {" "}
-                                {cartItem.cartQuantity}
+                                {cartItem.quantity}
                               </p>
+                              {console.log(cartItem.quantity, "trialll")}
                               <button
-                                onClick={() => increaseInCart(cartItem)}
+                                onClick={() =>
+                                  handleIncrease(cartItem.unique_id)
+                                }
                                 className="product-page-add-or-remove-btn"
                               >
                                 <RxPlus />
@@ -196,30 +354,114 @@ const Cart = (cartItem) => {
                             </div>
                           </div>
                         </div>
-
-                        <button
+                        <div
                           style={{
-                            backgroundColor: "white",
-                            border: "gray 1px solid",
                             display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            padding: "0.3em",
-                            borderRadius: "2em",
-                            width: "2.4em",
-                            height: "2.4em",
+                            flexDirection: "column",
+                            alignItems: "flex-end",
+                            gap: "2.8em",
                           }}
-                          onClick={() => handleRemoveFromCart(cartItem)}
                         >
-                          <span
+                          <button
                             style={{
-                              fontSize: "1.3em",
-                              marginTop: "0.1em",
+                              backgroundColor: "white",
+                              border: "gray 1px solid",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              padding: "0.3em",
+                              borderRadius: "2em",
+                              width: "2.4em",
+                              height: "2.4em",
+                            }}
+                            onClick={handleDeleteButtonClick}
+                          >
+                            {" "}
+                            {console.log(cartItem.unique_id, "uniqueiddd")}
+                            <span
+                              style={{
+                                fontSize: "1.3em",
+                                marginTop: "0.1em",
+                              }}
+                            >
+                              <RiDeleteBin6Line />{" "}
+                            </span>
+                          </button>
+                          <h3
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              textAlign: "right",
                             }}
                           >
-                            <RiDeleteBin6Line />{" "}
-                          </span>
-                        </button>
+                            {" "}
+                            <span
+                              style={{
+                                fontSize: "0.5em",
+                                color: "gray",
+                              }}
+                            >
+                              {" "}
+                              Total Price{" "}
+                            </span>{" "}
+                            <span>
+                              {" "}
+                              <span>&#8358;</span>
+                              {cartItem.product_data.price * cartItem.quantity}
+                            </span>
+                          </h3>
+                        </div>
+                        {displayModal && (
+                          <div
+                            style={{
+                              position: "fixed",
+                              top: 0,
+                              left: 0,
+                              width: "100%",
+                              height: "100%",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              backgroundColor: "rgba(0, 0, 0, 0.5)",
+                              zIndex: 9999,
+                            }}
+                          >
+                            <div
+                              style={{
+                                background: "white",
+                                padding: "2em",
+                                borderRadius: "5px",
+                                maxWidth: "400px",
+                                textAlign: "center",
+                              }}
+                            >
+                              <h3>Delete Item from Cart</h3>
+                              <p
+                                style={{
+                                  marginBottom: "2.4em",
+                                  marginTop: "0.11em",
+                                  color: "gray",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                Are you sure you want to delete this item from
+                                the cart?
+                              </p>
+                              <div className="modal-buttons">
+                                <button
+                                  onClick={() =>
+                                    handleDeleteThisToCart(cartItem.unique_id)
+                                  }
+                                >
+                                  Delete
+                                </button>
+                                <button onClick={handleDeleteConfirmation}>
+                                  Cancel
+                                </button>
+                              </div>{" "}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       <p
@@ -267,21 +509,9 @@ const Cart = (cartItem) => {
                   </p>
                 </div>
                 <h2>
-                  <span
-                    style={{
-                      fontSize: "0.5em",
-                    }}
-                  >
-                    <span>&#8358;</span>
-                  </span>
-                  {cart.cartTotalAmount}
-                  <span
-                    style={{
-                      fontSize: "0.5em",
-                    }}
-                  >
-                    .00
-                  </span>
+                  <span>&#8358;</span>
+                  {grandTotal}
+                  <span>.00</span>
                 </h2>
               </div>
               <br /> <br />
@@ -344,7 +574,7 @@ const Cart = (cartItem) => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            marginTop:'0.5em'
+                            marginTop: "0.5em",
                           }}
                         >
                           <span
@@ -420,18 +650,28 @@ const Cart = (cartItem) => {
                             marginBottom: "1em",
                           }}
                         >
-                          <p style={{ marginRight: "auto", textAlign: "left" }}>
-                            {auth.userData.address} {auth.userData.street}
-                            {auth.userData.city}
+                          <p
+                            style={{
+                              marginRight: "auto",
+                              textAlign: "left",
+                              width: "100%",
+                            }}
+                          >
+                            {auth.userData.city} {auth.userData.state}
                           </p>
 
-                          <p style={{ marginLeft: "auto", textAlign: "right" }}>
-                            {auth.userData.address} {auth.userData.street}
-                            {auth.userData.city}
+                          <p
+                            style={{
+                              marginLeft: "auto",
+                              textAlign: "right",
+                              width: "100%",
+                            }}
+                          >
+                            {toAddress}
                           </p>
                         </div>
                         <h2>
-                          <span>&#8358;</span> {cart.cartTotalAmount / 10}
+                          <span>&#8358;</span> {shippingPrice?.data?.price}
                         </h2>
                         <button
                           style={{

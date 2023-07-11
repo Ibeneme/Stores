@@ -22,10 +22,7 @@ import { userProfile } from "../../Slices/userSlice";
 import { fetchUserProfile } from "../../Slices/Users/ProfileSlice";
 import { logOutUser } from "../../Slices/authSlice";
 
-
 function Navbarr({ token }) {
-
-
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e) => {
@@ -44,18 +41,22 @@ function Navbarr({ token }) {
   };
 
   const handleLogout = () => {
-    dispatch(logOutUser(null))
+    dispatch(logOutUser(null));
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  const { cartTotalQuantity } = useSelector((state) => state.cart);
+
   const profile = useSelector((state) => state.userProfile);
+  const storedItem = localStorage.getItem("carts");
+  const cartData = JSON.parse(storedItem);
+  console.log(JSON.parse(storedItem));
+
 
   const auth = useSelector((state) => state.auth);
   const userprofile = useSelector((state) => state.userProfile.data);
 
-  console.log(userprofile);
 
+console.log(cartData)
   const handleDropdownToggle = () => {
     const token = auth.token;
     setIsOpen(!isOpen);
@@ -460,9 +461,7 @@ function Navbarr({ token }) {
                       <img src={userprofile.photo} alt="" />
                     )}
                     <p>
-                      {
-                      userprofile &&
-                      userprofile.firstname
+                      {userprofile && userprofile.firstname
                         ? `Hi ${userprofile.firstname}`
                         : "My Account"}
                     </p>
@@ -523,7 +522,6 @@ function Navbarr({ token }) {
                   display: "flex",
                   gap: "6em",
                   marginRight: "3em",
-          
                 }}
               >
                 <span>
@@ -550,7 +548,7 @@ function Navbarr({ token }) {
                 fontSize: "2em",
               }}
             />
-            {cartTotalQuantity >= 1 ? (
+            {cartData?.rows?.length >= 1 ? (
               <span
                 style={{
                   backgroundColor: "red",
@@ -566,7 +564,7 @@ function Navbarr({ token }) {
                   marginTop: "-2em",
                 }}
               >
-                {cartTotalQuantity}
+                {cartData?.rows.length}
               </span>
             ) : null}
 

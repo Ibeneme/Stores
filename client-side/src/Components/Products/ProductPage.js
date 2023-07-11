@@ -10,7 +10,7 @@ import "./ProductPage.css";
 import { MdLocationOn } from "react-icons/md";
 import { BiMinus } from "react-icons/bi";
 import { RxPlus } from "react-icons/rx";
-import { removeFromCart, getTotal } from "../../Slices/cartSlice";
+import { removeFromCart } from "../../Slices/cartSlice";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 
@@ -24,9 +24,6 @@ const ProductPage = () => { // Remove unused cartItem parameter
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getTotal());
-  }, [cart, dispatch]);
 
   const [cartQuantity, setCartQuantity] = useState(0);
 
@@ -88,7 +85,7 @@ const ProductPage = () => { // Remove unused cartItem parameter
       <Navbarr />
       {details && details.data && (
         <div>
-          {console.log(details.data.quantity)}
+
           <div className="Product-page-first-div">
             <div className="Product-page-second-div">
               <div className="Product-page-third-div">

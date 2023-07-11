@@ -61,6 +61,7 @@ import { userProfile } from "./Slices/userSlice";
 import SuccessPage from "./Components/Sellers/Pages/Success";
 import CartComponent from "./Components/Cart-and-Checkout/Cart/Cart";
 import AddToCartComponent from "./Slices/Cart/AddCart";
+import SignupComponent from "./Components/Shipping/Shipping";
 
 const ScrollToTop = () => {
   const navigate = useNavigate();
@@ -94,6 +95,8 @@ function App() {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/errorpage007aff" element={<SuccessPage />} />
         <Route path="/newcart" element={<CartComponent />} />
+        <Route path="/shipping" element={<SignupComponent />} />
+
 
         <Route path="/" element={<Product />} />
         <Route path="/carousel" element={<Carousels />} />
