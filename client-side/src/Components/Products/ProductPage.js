@@ -13,9 +13,9 @@ import { RxPlus } from "react-icons/rx";
 import { removeFromCart } from "../../Slices/cartSlice";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
 
-
-const ProductPage = () => { // Remove unused cartItem parameter
-  const cart = useSelector((state) => state.cart);
+const ProductPage = () => {
+  // Remove unused cartItem parameter
+  // const cart = useSelector((state) => state.cart);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -23,7 +23,6 @@ const ProductPage = () => { // Remove unused cartItem parameter
   const unique_id = queryParams.get("unique_id");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const [cartQuantity, setCartQuantity] = useState(0);
 
@@ -34,23 +33,22 @@ const ProductPage = () => { // Remove unused cartItem parameter
     }
   };
 
-  const { items: details, status, error } = useSelector(
-    (state) => state.productsDetails
-  );
+  const {
+    items: details,
+    status,
+    error,
+  } = useSelector((state) => state.productsDetails);
 
   const box = details?.data?.unique_id; // Use optional chaining to handle undefined values
   console.log(box);
   const shipping_id = details?.data?.price;
-  console.log('shipping', shipping_id);
+  console.log("shipping", shipping_id);
   const Shipping_location = details?.data?.location;
   console.log(Shipping_location);
   const sellers = details?.data?.user_data?.seller_location;
   console.log("track", unique_id);
 
-
-
   const [itemData, setItemData] = useState({
-
     product_unique_id: unique_id,
     shipping_fee: shipping_id,
     from_address: sellers,
@@ -63,7 +61,7 @@ const ProductPage = () => { // Remove unused cartItem parameter
   const handleAddToCart = () => {
     setItemData(itemData);
     dispatch(addItemToCart(itemData));
-    navigate('/newcart')
+    navigate("/newcart");
     console.log("done", itemData);
   };
 
@@ -85,7 +83,6 @@ const ProductPage = () => { // Remove unused cartItem parameter
       <Navbarr />
       {details && details.data && (
         <div>
-
           <div className="Product-page-first-div">
             <div className="Product-page-second-div">
               <div className="Product-page-third-div">
@@ -125,6 +122,7 @@ const ProductPage = () => { // Remove unused cartItem parameter
                       <div className="product-page-btns">
                         <div className="product-page-add-and-remove-button-div">
                           <button
+                           
                             className="product-page-add-or-remove-btn"
                             onClick={() => handleRemoveFromCart(details.data)}
                           >
@@ -140,20 +138,28 @@ const ProductPage = () => { // Remove unused cartItem parameter
                             <RxPlus /> {/* Fix component name */}
                           </button>
                         </div>
-                        <button className="product-page-add-to-cart-btn">
+                        <button
+                          style={{
+                            height: "50px",
+                          }}
+                          className="product-page-add-to-cart-btn"
+                        >
                           {cartQuantity > 0 ? (
                             <p onClick={() => navigate("/cart")}>
                               View your Cart
                             </p>
                           ) : (
-                            <p onClick={() => handleAddToCart()}>
-                              Add to Cart
-                            </p>
+                            <p onClick={() => handleAddToCart()}>Add to Cart</p>
                           )}
                         </button>
                       </div>
 
-                      <button className="product-page-buy-now-btn">
+                      <button
+                        style={{
+                          height: "50px",
+                        }}
+                        className="product-page-buy-now-btn"
+                      >
                         Buy Now
                       </button>
                     </div>
@@ -211,4 +217,3 @@ const ProductPage = () => { // Remove unused cartItem parameter
 };
 
 export default ProductPage;
-

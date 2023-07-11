@@ -6,7 +6,7 @@ export const CartsApi = createApi({
     baseUrl:
       "https://us-central1-hydra-express.cloudfunctions.net/app/user/carts",
     prepareHeaders: (headers, { getState }) => {
-        
+
         const token = getState().auth.token;
       if (token) {
         headers.set("hydra-express-access-token", token);
@@ -23,7 +23,3 @@ export const CartsApi = createApi({
 
 export const { useGetAllCartsQuery } = CartsApi;
 
-
-{
-  console.log(useGetAllCartsQuery);
-}
