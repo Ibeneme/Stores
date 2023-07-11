@@ -248,16 +248,23 @@ const Cart = () => {
                       Are you sure you want to clear your cart?
                     </p>
                     <div className="modal-buttons">
-                      <button onClick={handleClearCart}>Clear Cart</button>
+                      <button
+                        style={{
+                          height: "50px",
+                        }}
+                        onClick={handleClearCart}
+                      >
+                        Clear Cart
+                      </button>
                       <button onClick={handleModalClose}>Cancel</button>
                     </div>
                   </div>
                 </div>
               )}
+
               {data?.data?.data?.rows.map((cartItem) => {
                 return (
                   <div className="cart-first-div" key={cartItem.unique_id}>
-                    {console.log(cartItem.unique_id)}
                     <div className="div-cart-first-div">
                       <img
                         className="img-cart-first-div"
@@ -283,24 +290,26 @@ const Cart = () => {
                           style={{
                             display: "flex",
                             flexDirection: "column",
+                            width: "100%",
                           }}
                         >
-                          <h3 className="Product-page-h1">
+                          <h3
+                            style={{
+                              fontSize: "14px",
+                            }}
+                            className="Product-page-h1"
+                          >
                             {cartItem.product_data.name}
                           </h3>
-                          <p
-                            style={{
-                              marginTop: "0",
-                            }}
-                            className="Product-page-Short-description"
-                          >
-                            {cartItem.product_data.description}
-                          </p>
-                          <h3
+
+                          {/* <h3
                             style={{
                               border: "none",
                               margin: "0px",
                               padding: "0px",
+                              fontSize: "12px",
+                              color: "gray",
+                              marginTop: "0.56em",
                             }}
                             className="Product-page-price"
                           >
@@ -314,12 +323,50 @@ const Cart = () => {
                             >
                               Unit Price
                             </span>
-                          </h3>
-
+                          </h3> */}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "baseline",
+                              gap: "2.8em",
+                            }}
+                          >
+                            <h3
+                              style={{
+                                display: "flex",
+                                alignItems: "baseline",
+                                color: "gray",
+                                marginTop: "0.3em",
+                              }}
+                            >
+                              {" "}
+                              <span
+                                style={{
+                                  fontSize: "12px",
+                                  color: "gray",
+                                }}
+                              >
+                                {" "}
+                                Total Price:{" "}
+                              </span>{" "}
+                              <span
+                                style={{
+                                  fontSize: "14px",
+                                }}
+                              >
+                                {" "}
+                                <span>&#8358;</span>
+                                {cartItem.product_data.price *
+                                  cartItem.quantity}
+                              </span>
+                            </h3>
+                          </div>
                           <div
                             style={{
                               display: "flex",
                               justifyContent: "space-between",
+                              width: "100%",
+                              alignItems: "baseline",
                             }}
                           >
                             <div
@@ -352,65 +399,35 @@ const Cart = () => {
                                 <RxPlus />
                               </button>
                             </div>
+                            <button
+                              style={{
+                                backgroundColor: "white",
+                                border: "gray 1px solid",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                padding: "0.3em",
+                                borderRadius: "2em",
+                                width: "2.4em",
+                                height: "2.4em",
+                                marginLeft: "1.4em",
+                              }}
+                              onClick={handleDeleteButtonClick}
+                            >
+                              {" "}
+                              {console.log(cartItem.unique_id, "uniqueiddd")}
+                              <span
+                                style={{
+                                  fontSize: "1.3em",
+                                  marginTop: "0.1em",
+                                }}
+                              >
+                                <RiDeleteBin6Line />{" "}
+                              </span>
+                            </button>
                           </div>
                         </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "flex-end",
-                            gap: "2.8em",
-                          }}
-                        >
-                          <button
-                            style={{
-                              backgroundColor: "white",
-                              border: "gray 1px solid",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              padding: "0.3em",
-                              borderRadius: "2em",
-                              width: "2.4em",
-                              height: "2.4em",
-                            }}
-                            onClick={handleDeleteButtonClick}
-                          >
-                            {" "}
-                            {console.log(cartItem.unique_id, "uniqueiddd")}
-                            <span
-                              style={{
-                                fontSize: "1.3em",
-                                marginTop: "0.1em",
-                              }}
-                            >
-                              <RiDeleteBin6Line />{" "}
-                            </span>
-                          </button>
-                          <h3
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              textAlign: "right",
-                            }}
-                          >
-                            {" "}
-                            <span
-                              style={{
-                                fontSize: "0.5em",
-                                color: "gray",
-                              }}
-                            >
-                              {" "}
-                              Total Price{" "}
-                            </span>{" "}
-                            <span>
-                              {" "}
-                              <span>&#8358;</span>
-                              {cartItem.product_data.price * cartItem.quantity}
-                            </span>
-                          </h3>
-                        </div>
+
                         {displayModal && (
                           <div
                             style={{
@@ -449,13 +466,21 @@ const Cart = () => {
                               </p>
                               <div className="modal-buttons">
                                 <button
+                                  style={{
+                                    height: "50px",
+                                  }}
                                   onClick={() =>
                                     handleDeleteThisToCart(cartItem.unique_id)
                                   }
                                 >
                                   Delete
                                 </button>
-                                <button onClick={handleDeleteConfirmation}>
+                                <button
+                                  style={{
+                                    height: "50px",
+                                  }}
+                                  onClick={handleDeleteConfirmation}
+                                >
                                   Cancel
                                 </button>
                               </div>{" "}
@@ -681,8 +706,9 @@ const Cart = () => {
                             padding: "1em 0.3em",
                             border: "none",
                             marginTop: "1em",
+                            height: "50px",
                           }}
-                          onClick={() => navigate("/checkout")}
+                          // onClick={() => navigate("/checkout")}
                         >
                           Accept Fare
                         </button>

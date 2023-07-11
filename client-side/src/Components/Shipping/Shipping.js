@@ -35,35 +35,20 @@ const SignupComponent = () => {
       .then((data) => {
         console.log(data);
         setFormData({
-          country: '',
-          firstname: '',
-          middlename: '',
-          lastname: '',
-          email: '',
-          phone_number: '',
-          gender: '',
-          dob: '',
-          password: '',
-          confirmPassword: '',
+          country: "",
+          firstname: "",
+          middlename: "",
+          lastname: "",
+          email: "",
+          phone_number: "",
+          gender: "",
+          dob: "",
+          password: "",
+          confirmPassword: "",
         });
         setFormErrors({});
       })
-      .catch((error) => {
-        if (error.payload && Array.isArray(error.payload)) {
-          const errors = error.payload.reduce((acc, err) => {
-            acc[err.param] = err.msg;
-            return acc;
-          }, {});
-          console.log(errors, 'comperrr');
-          setFormErrors(errors);
-        } else {
-          console.log(error, 'comperr');
-          setFormErrors({ general: error });
-        }
-      });
   };
-  
-  
 
   return (
     <div>
@@ -79,9 +64,9 @@ const SignupComponent = () => {
             placeholder="Country"
             // required
           />
-            {formErrors[0] && formErrors[0].param === 'country' && (
-          <div className="error">{formErrors[0].msg}</div>
-        )}
+          {formErrors[0] && formErrors[0].param === "country" && (
+            <div className="error">{formErrors[0].msg}</div>
+          )}
         </div>
         <div>
           <input

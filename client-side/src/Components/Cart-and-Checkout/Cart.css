@@ -43,13 +43,12 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin-right: 2em;
+        margin-right: 1em;
         align-items: center;
    
 }
 .cart-first-div{
     display: flex;
-    align-items: center;
     margin-bottom: 1em;
     border: none;
     border-radius: 0.9em;
@@ -130,7 +129,6 @@
     }
     .cart-first-div{
         display: flex;
-        align-items: center;
         margin-bottom: 1em;
         border: none;
         border-radius: 0.9em;
@@ -146,18 +144,17 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 2em;
+    padding: 1em;
     gap:0.7em
 }
 .cart-first-div{
     display: flex;
-    align-items: center;
     margin-bottom: 1em;
     border: none;
     border-radius: 0.9em;
     background-color: white;
     width: 95vw;
-    padding:0.3em
+    padding:0.1em
 }
 
 .img-cart-first-div{
