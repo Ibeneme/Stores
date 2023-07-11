@@ -26,7 +26,7 @@ import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 const Cart = () => {
   const auth = useSelector((state) => state.auth);
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
-  console.log(shippingPrice, "authhh")
+  console.log(shippingPrice, "authhh");
   const data = useSelector((state) => state.carts);
   console.log(data);
   const navigate = useNavigate();
@@ -248,12 +248,21 @@ const Cart = () => {
                       <button
                         style={{
                           height: "50px",
+                          fontSize: "16px",
                         }}
                         onClick={handleClearCart}
                       >
                         Clear Cart
                       </button>
-                      <button onClick={handleModalClose}>Cancel</button>
+                      <button
+                        style={{
+                          height: "50px",
+                          fontSize: "16px",
+                        }}
+                        onClick={handleModalClose}
+                      >
+                        Cancel
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -364,6 +373,7 @@ const Cart = () => {
                               justifyContent: "space-between",
                               width: "100%",
                               alignItems: "baseline",
+                              color: "black",
                             }}
                           >
                             <div
@@ -465,6 +475,7 @@ const Cart = () => {
                                 <button
                                   style={{
                                     height: "50px",
+                                    fontSize: "16px",
                                   }}
                                   onClick={() =>
                                     handleDeleteThisToCart(cartItem.unique_id)
@@ -475,6 +486,7 @@ const Cart = () => {
                                 <button
                                   style={{
                                     height: "50px",
+                                    fontSize: "16px",
                                   }}
                                   onClick={handleDeleteConfirmation}
                                 >
@@ -704,6 +716,7 @@ const Cart = () => {
                             border: "none",
                             marginTop: "1em",
                             height: "50px",
+                            fontSize: "16px",
                           }}
                           // onClick={() => navigate("/checkout")}
                         >
