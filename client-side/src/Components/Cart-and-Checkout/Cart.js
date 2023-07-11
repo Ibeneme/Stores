@@ -26,8 +26,7 @@ import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 const Cart = () => {
   const auth = useSelector((state) => state.auth);
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
-  console.log(shippingPrice, "authhh");
-
+  console.log(shippingPrice, "authhh")
   const data = useSelector((state) => state.carts);
   console.log(data);
   const navigate = useNavigate();
@@ -36,12 +35,10 @@ const Cart = () => {
   const [displayModal, setDisplayModal] = useState(false);
 
   const testAddress = data?.data?.data?.rows[0].product_data.location;
-
   const toAddress =
     data?.data?.data?.rows.length > 0 ? <p>{testAddress}</p> : null;
 
   console.log(testAddress, "biggg");
-
   const handleShipping = () => {
     dispatch(
       fetchShippingPrice({

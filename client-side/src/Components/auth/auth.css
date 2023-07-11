@@ -7,7 +7,12 @@
     margin-bottom: 1.7em;
     border: black 0.12em solid;
 }
-
+.error{
+    color: red;
+    font-size: 14px;
+    margin-top: -1.3em;
+    margin-bottom: 1.2em;
+}
 @media only screen and (max-width: 570px){
     .input-forms {
         padding-left: 1em;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Slices/Products/productAPI";
 import Carousels from "../Navbar-and-Footer/Carousel";
@@ -16,14 +16,17 @@ import "react-toastify/dist/ReactToastify.css";
 const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
 
-
+  console.log(auth)
   const handleAddThisToCart = async (unique_id, location) => {
     const itemData = {
       product_unique_id: unique_id,
       to_address: location,
       quantity: 1,
     };
+
+
     try {
       const response = await dispatch(addItemToCart(itemData));
       console.log("Item added to cart:", response.payload);

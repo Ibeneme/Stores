@@ -1,5 +1,3 @@
-
-
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
@@ -8,17 +6,13 @@ import logo from "./Modal/mail with a frosted glass effect.png";
 import verify from "./Modal/restangle speech bubble with check mark.png";
 
 const MyComponent = () => {
- 
-
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isNewModalOpen, setNewModalOpen] = useState(false);
 
-
   const handleCloseModal = () => {
     setModalOpen(false);
   };
- 
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -31,7 +25,6 @@ const MyComponent = () => {
         `https://us-central1-hydra-express.cloudfunctions.net/app/user/email/verify`,
         { email }
       );
-    
 
       console.log(response.data);
       console.log(response.data.message);
@@ -48,38 +41,37 @@ const MyComponent = () => {
         );
         setError(`Email Already Verified`);
       } else {
-        console.log(response.data.message)
+        console.log(response.data.message);
       }
     } catch (error) {
       console.log(error.response.data);
-      navigate("/");
     }
   };
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection:'column',
-      justifyContent: "center",
-      alignItems: "center",
-      textAlign:'center',
-      backgroundColor:'white',
-      width:'100vw',
-      height:'100vh'
-
-    }}>
-      <div  style={{
-            display: "flex",
-            flexDirection:'column',
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop:'',
-            backgroundColor:'white',
-          
-          
-  
-          }}>
-      {/* <img
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        backgroundColor: "white",
+        width: "100vw",
+        height: "100vh",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "",
+          backgroundColor: "white",
+        }}
+      >
+        {/* <img
           style={{
             display: "flex",
             justifyContent: "center",
@@ -98,11 +90,12 @@ const MyComponent = () => {
             alignItems: "center",
             marginTop: "0.5em",
           }}
-        ><br />
+        >
+          <br />
           Click to Verify your account on Hydra Express
         </h2>
         <p style={{ marginTop: "0.9em" }}>
-          Having any issues? {" "}
+          Having any issues?{" "}
           <span
             style={{ color: "#386AEB", cursor: "pointer" }}
             onClick={() => navigate("/signup")}
@@ -110,34 +103,34 @@ const MyComponent = () => {
             Sign up
           </span>
         </p>
-        <img 
-      style={{
-        width:'250px',
-        padding:'3em',
-      }}
-      src={verify} alt={verify} />
-       <br />  <br />
-      <button 
-     
-        style={{
-          backgroundColor: "#386aeb",
-          marginTop: "0.3em",
-          color: "white",
-          padding: "1em",
-          border: "none",
-          width:'90%',
-          fontSize: "0.9em",
-          borderRadius: "0.3em",
-        }}
-
-    
-      onClick={handleResendVerification}>
-        Click to Verify
-      </button>
+        <img
+          style={{
+            width: "250px",
+            padding: "3em",
+          }}
+          src={verify}
+          alt={verify}
+        />
+        <br /> <br />
+        <button
+          style={{
+            backgroundColor: "#386aeb",
+            marginTop: "0.3em",
+            color: "white",
+            padding: "1em",
+            border: "none",
+            width: "90%",
+            fontSize: "0.9em",
+            borderRadius: "0.3em",
+          }}
+          onClick={handleResendVerification}
+        >
+          Click to Verify
+        </button>
       </div>
 
-      <br /> 
-     
+      <br />
+
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div
           style={{
@@ -227,7 +220,8 @@ const MyComponent = () => {
               width: "200px",
               margin: "2.4em 0",
             }}
-            src={logo} alt={verify}
+            src={logo}
+            alt={verify}
           />
           <button
             style={{

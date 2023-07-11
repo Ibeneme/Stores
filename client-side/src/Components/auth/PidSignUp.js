@@ -1,190 +1,171 @@
-
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {  } from "../../Slices/authSlice";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
+import { signupPasscoder } from "../../Slices/auth/signUpSlice";
 
 const PIDSignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const auth = useSelector((state) => state.auth);
-
-
-  const [user, setUser] = useState({
+  const [formErrors, setFormErrors] = useState({});
+  const [formData, setFormData] = useState({
     country: "",
     pid: "",
   });
-  const [error, setError] = useState("");
-  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch((user));
-      if (response.meta.requestStatus === "fulfilled"){
-        navigate(`/pidsignin`);
-      } else {
-        console.log("Registration failed");
-        console.log(response)
-        setError("Please Re-Confirm your details");
-      }
+      const data = await dispatch(signupPasscoder(formData)).unwrap();
+      console.log(data, "Signup successful");
+      setFormData({
+        country: "",
+        pid: "",
+      });
+      setFormErrors({});
     } catch (error) {
-      console.log("Error:", error);
+      console.log(error, "comperr");
+      setFormErrors(error.data);
     }
   };
 
   return (
     <div
-    style={{
-      backgroundColor: "white",
-      height: "100vh",
-      weight: "100vw",
-      display: "flex",
-      flexDirection: "column",
-      paddingLeft: "2em",
-      paddingRight: "2em",
-      paddingTop: "19em",
-      paddingBottom: "12em",
-      justifyContent: "center",
-      alignItems: "center",
-    }}>
-
-   
-    <form
-      onSubmit={handleSubmit}
       style={{
         backgroundColor: "white",
         height: "100vh",
         weight: "100vw",
         display: "flex",
-        flexDirection: "column",  
+        flexDirection: "column",
+        paddingLeft: "2em",
+        paddingRight: "2em",
+        paddingTop: "19em",
+        paddingBottom: "12em",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <img
+      <form
+        onSubmit={handleSubmit}
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "3em",
-        }}
-        src={logo}
-        alt="logo"
-      />
-      <h2
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "0.5em",
-        }}
-      >
-       Create an account with Passcoder
-      </h2>
-      <p style={{ marginTop: "0.5em" }}>
-       Already have an account?{" "}
-        <span
-          style={{ color: "#386AEB", cursor: "pointer" }}
-          onClick={() => navigate("/pidsignin")}
-        >
-          Sign In with Passcoder
-        </span>
-      </p>
-      <br />{" "}
-      <div
-        style={{
-          width: "100%",
+          backgroundColor: "white",
+          height: "100vh",
+          weight: "100vw",
           display: "flex",
           flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
         }}
       >
-    <br />   {error ? (
-              <p
-                style={{
-                  backgroundColor: "#FF000029",
-                  color: "#FF0000",
-                  height: "2.4em",
-                  display: "flex",
-                  alignItems: "center",
-                  paddingLeft: "1em",
-                  width:'100%',
-                  borderLeft: "0.3em red solid",
-                  marginBottom: "0.9em",
-                }}
-              >
-                {error}
-              </p>
-            ) : null}<br />
-
-        <div>
-          {" "}
-          <label
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-            }}
+        <img
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "3em",
+          }}
+          src={logo}
+          alt="logo"
+        />
+        <h2
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "0.5em",
+          }}
+        >
+          Create an account with Passcoder
+        </h2>
+        <p style={{ marginTop: "0.5em", marginBottom: "3em" }}>
+          Already have an account?{" "}
+          <span
+            style={{ color: "#386AEB", cursor: "pointer" }}
+            onClick={() => navigate("/pidsignin")}
           >
-            {" "}
-            Country
-          </label>
-          <input
+            Sign In with Passcoder
+          </span>
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <label htmlFor="country">Country</label>
+          <select
+            id="country"
             name="country"
-            placeholder="Country"
-            type="text"
+            value={formData.country}
+            onChange={handleChange}
             className="input-forms"
-            onChange={(e) => setUser({ ...user, country: e.target.value })}
-          />
-        </div>
-
-    
-
-        <div>
-          {" "}
-          <label
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-            }}
           >
-            {" "}
-            Passcoder ID
-          </label>
-          <input
-            name="pid"
-            placeholder="Enter Passcoder ID"
-            type="text"
-            className="input-forms"
-            onChange={(e) => setUser({ ...user, pid: e.target.value })}
-          />
+            <option value="">Select Country</option>
+            <option value="Nigeria">Nigeria</option>
+          </select>
+          {formErrors &&
+            Object.values(formErrors).map((error) => {
+              if (error.param === "country") {
+                return <div key={error.param} className="error">{error.msg}</div>;
+              }
+              return null;
+            })}
         </div>
-   
-
-    <button 
-        style={{
-          backgroundColor:'#386aeb',
-          color:'white',
-          border:'none',
-          borderRadius:'0.5em',
-          marginTop:'2em'
-        }}
-        className="input-forms">
-          {auth.registerStatus === "pending" ? "Loading...." : "Submit"}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <label htmlFor="pid">PID</label>
+          <input
+            type="text"
+            id="pid"
+            name="pid"
+            className="input-forms"
+            value={formData.pid}
+            onChange={handleChange}
+            placeholder="Passcoder ID"
+          />
+          {formErrors &&
+            Object.values(formErrors).map((error) => {
+              if (error.param === "pid") {
+                return <div key={error.param} className="error">{error.msg}</div>;
+              }
+              return null;
+            })}
+        </div>
+        <button
+          style={{
+            backgroundColor: "#386aeb",
+            color: "white",
+            border: "none",
+            borderRadius: "0.5em",
+            marginTop: "2em",
+          }}
+          className="input-forms"
+          type="submit"
+        >
+          Signup
         </button>
-      </div>
-    </form>
-    <br/>
-  
-                  <br/> <br/>
-     
-                     </div>
-     
+      </form>
+      <br />
+      <br /> <br />
+    </div>
   );
 };
 

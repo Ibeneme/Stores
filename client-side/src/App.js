@@ -5,7 +5,6 @@ import Product from "./Components/Products/Product";
 import ProductPage from "./Components/Products/ProductPage";
 import { ToastContainer } from "react-toastify";
 import SignIn from "./Components/auth/SignIn";
-import SignUp from "./Components/auth/SignUp";
 import ForgotPassword from "./Components/auth/ForgotPassword";
 import Verify from "./Components/auth/Verify";
 import Carousels from "./Components/Navbar-and-Footer/Carousel";
@@ -95,7 +94,7 @@ function App() {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/errorpage007aff" element={<SuccessPage />} />
         <Route path="/newcart" element={<CartComponent />} />
-        <Route path="/shipping" element={<SignupComponent />} />
+        <Route path="/Signup" element={<SignupComponent />} />
 
 
         <Route path="/" element={<Product />} />
@@ -122,7 +121,6 @@ function App() {
 
         <Route path="/productdd" element={<ProductPage />} />
         <Route path="/Signin" element={<SignIn />} />
-        <Route path="/Signup" element={<SignUp />} />
         <Route path="/Signupnext" element={<NextSignUp />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/verify" element={<Verify />} />

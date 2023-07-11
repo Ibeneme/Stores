@@ -15,17 +15,17 @@ const Loader = () => {
     >
       <div
         style={{
-          marginTop: "-12em",
+  
         }}
       >
         <img
           src={loaderGif}
           alt="Loading"
           style={{
-            width: "350px",
-            height: "350px",
+            width: "200px",
+            height: "200px",
             objectFit: "cover",
-            paddingTop: "12em",
+            paddingTop: "3em",
           }}
         />
       </div>

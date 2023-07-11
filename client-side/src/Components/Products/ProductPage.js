@@ -12,10 +12,11 @@ import { BiMinus } from "react-icons/bi";
 import { RxPlus } from "react-icons/rx";
 import { removeFromCart } from "../../Slices/cartSlice";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const ProductPage = () => {
-  // Remove unused cartItem parameter
-  // const cart = useSelector((state) => state.cart);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -25,6 +26,23 @@ const ProductPage = () => {
   const dispatch = useDispatch();
 
   const [cartQuantity, setCartQuantity] = useState(0);
+
+  const handleAddThisToCart = async (unique_id, location) => {
+    const itemData = {
+      product_unique_id: unique_id,
+      to_address: location,
+      quantity: 1,
+    };
+
+    try {
+      const response = await dispatch(addItemToCart(itemData));
+      console.log("Item added to cart:", response.payload);
+      toast.success(response.payload.message, {});
+    } catch (error) {
+      console.log("Error adding item to cart:", error);
+      toast.error(error.payload.message, {});
+    }
+  };
 
   const handleRemoveFromCart = (cartItem) => {
     if (cartQuantity > 0) {
@@ -122,7 +140,6 @@ const ProductPage = () => {
                       <div className="product-page-btns">
                         <div className="product-page-add-and-remove-button-div">
                           <button
-                           
                             className="product-page-add-or-remove-btn"
                             onClick={() => handleRemoveFromCart(details.data)}
                           >
@@ -149,7 +166,17 @@ const ProductPage = () => {
                               View your Cart
                             </p>
                           ) : (
-                            <p onClick={() => handleAddToCart()}>Add to Cart</p>
+                            <p
+                              onClick={() =>
+                                handleAddThisToCart(
+                                  details.data.unique_id,
+                                  details.data.location,
+                                  details.data.quantity
+                                )
+                              }
+                            >
+                              Add to Cart
+                            </p>
                           )}
                         </button>
                       </div>

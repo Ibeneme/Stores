@@ -29,7 +29,6 @@ const SignUp = () => {
   console.log(registerError);
 
 
-
  
   const handleFocusDateofBirth = () => {
     setIsFocusedDateofBirth(true);
