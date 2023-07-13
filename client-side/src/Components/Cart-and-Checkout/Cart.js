@@ -5,7 +5,6 @@ import "../Products/ProductPage.css";
 import "./Cart.css";
 import { BiMinus } from "react-icons/bi";
 import logo from "./images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
-import Footer from "../Navbar-and-Footer/Footer";
 import cartItemimage from "../Products/images/Rectangle 15.png";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxPlus } from "react-icons/rx";
@@ -520,6 +519,101 @@ const Cart = () => {
               <br />
               <div
                 style={{
+                  backgroundColor: "#F5F5F5",
+                  padding: "1em",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: "12px",
+                    }}
+                  >
+                    {/* <span>
+                      <MdLocationOn
+                        style={{
+                          fontSize: "16px",
+                          color: "#666",
+                        }}
+                      />
+                    </span> */}
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "900",
+                        color: "#666",
+                      }}
+                    >
+                      {" "}
+                      Delivery Address
+                    </p>
+                  </div>
+                  {auth.userData.address ? (
+                    <p
+                      style={{
+                        backgroundColor: "#064BDE16",
+                        color: "#064BDE",
+                        padding: "6px 12px",
+                        borderRadius: "152px",
+                        fontSize: "14px",
+                        width: "fit-content",
+                        textAlign: "center",
+                        height: "31px",
+                      }}
+                      onClick={() => navigate("/deliverydetails")}
+                    >
+                      Edit Address{" "}
+                    </p>
+                  ) : (
+                    <p
+                      style={{
+                        backgroundColor: "#064BDE16",
+                        color: "#064BDE",
+                        padding: "6px 12px",
+                        borderRadius: "152px",
+                        fontSize: "14px",
+                      }}
+                      onClick={() => navigate("/profile")}
+                    >
+                      Add an Address
+                    </p>
+                  )}
+                </div>
+
+                {auth.userData.address ? (
+                  <span>
+                    {" "}
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      {" "}
+                      {auth.userData.address}{" "}
+                    </p>
+                    {/* <button>Send to another Address</button> */}
+                  </span>
+                ) : (
+                  <p
+                    style={{
+                      fontSize: "14px",
+                    }}
+                  >
+                    null
+                  </p>
+                )}
+              </div>
+              <div
+                style={{
                   display: "flex",
                   justifyContent: "space-between",
                   borderTop: "0.03em solid #66666635",
@@ -691,7 +785,7 @@ const Cart = () => {
                               width: "100%",
                             }}
                           >
-                            {auth.userData.city} {auth.userData.state}
+                            {auth.userData.address}
                           </p>
 
                           <p
@@ -741,7 +835,6 @@ const Cart = () => {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

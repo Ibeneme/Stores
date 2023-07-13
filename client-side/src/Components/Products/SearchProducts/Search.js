@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchProducts } from "../../../Slices/Products/SearchAllProductsSlice";
-import Footer from "../../Navbar-and-Footer/Footer";
 import Loader from "../../Loader/Loader";
 import { addToCart } from "../../../Slices/cartSlice";
 
@@ -31,7 +30,6 @@ const Search = () => {
       console.log("see", user_unique_id, unique_id);
     }
   };
-
 
   const handleLocationCategoriesClick = (
     category_unique_id,
@@ -208,7 +206,6 @@ const Search = () => {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

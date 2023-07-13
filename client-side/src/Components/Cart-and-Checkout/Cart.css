@@ -53,7 +53,7 @@
     border: none;
     border-radius: 0.9em;
     background-color: white;
-    width: 65vw;
+    width: 55vw;
     padding:0.3em;
     height: fit-content;
 }
@@ -94,7 +94,7 @@
 
 .last-checkout-div{
     background-color: white;
-    width: 30vw;
+    width: 40vw;
     height: fit-content;
     padding:1.2em;
     border-radius: 1em;

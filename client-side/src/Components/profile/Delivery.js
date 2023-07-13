@@ -10,35 +10,20 @@ import { RiBankFill, RiLockPasswordFill } from "react-icons/ri";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FcFaq } from "react-icons/fc";
 import { useNavigate } from "react-router";
-import { RiFileCopy2Line } from "react-icons/ri";
-import Loader from "../Loader/Loader";
 
-// ...
-const UserProfile = () => {
+
+const UserProfileDelivery = () => {
   const dispatch = useDispatch();
   const { loading, profile, error } = useSelector((state) => state.profile);
 
   const navigate = useNavigate();
-  function copyToClipboard(text) {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        console.log("Text copied to clipboard");
-      })
-      .catch((error) => {
-        console.error("Error copying text to clipboard:", error);
-      });
-  }
+  
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
 
   if (loading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
   if (error) {
@@ -49,7 +34,6 @@ const UserProfile = () => {
     <div>
       {profile && (
         <div>
-          <div></div>
           <div
             style={{
               display: "flex",
@@ -62,10 +46,7 @@ const UserProfile = () => {
               }}
               className="mobile-hide-profile"
             >
-              <p
-                className="p-profile p-active-profile"
-                onClick={() => navigate("/profile")}
-              >
+              <p className="p-profile " onClick={() => navigate("/profile")}>
                 {" "}
                 <FaUserEdit
                   style={{
@@ -74,7 +55,7 @@ const UserProfile = () => {
                 />
                 Personal Details
               </p>
-              <p className="p-profile">
+              <p className="p-profile p-active-profile">
                 {" "}
                 <MdDeliveryDining
                   style={{
@@ -207,7 +188,7 @@ const UserProfile = () => {
               <div className="div-p-profile">
                 <div>
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>First Name:</strong>
+                    <strong>Address:</strong>
                     <div
                       style={{
                         border: "gray 1px solid",
@@ -215,17 +196,17 @@ const UserProfile = () => {
                         marginBottom: "20px",
                         marginTop: "3px",
                         color: "gray",
-                        height: "50px",
+                        height: "80px",
                         display: "flex",
-                        alignItems: "center",
+                        alignItems: "baseline",
                       }}
                       className="div-lines-display"
                     >
-                      {profile.firstname}
+                      {profile.address}
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Last Name:</strong>{" "}
+                    <strong>City:</strong>{" "}
                     <div
                       style={{
                         border: "gray 1px solid",
@@ -239,67 +220,31 @@ const UserProfile = () => {
                       }}
                       className="div-lines-display"
                     >
-                      {profile.lastname}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Middle Name:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.middlename}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Email:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.email}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Date of Birth:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.dob}
+                      {profile.city}
                     </div>
                   </div>
                 </div>
                 <div>
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Gender:</strong>{" "}
+                    <strong>Street:</strong>{" "}
+                    <div
+                      style={{
+                        border: "gray 1px solid",
+                        padding: "12px 16px",
+                        marginBottom: "20px",
+                        marginTop: "3px",
+                        color: "gray",
+                        height: "80px",
+                        display: "flex",
+                        alignItems: "baseline",
+                      }}
+                      className="div-lines-display"
+                    >
+                      {profile.street}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <strong>State:</strong>{" "}
                     <div
                       style={{
                         border: "gray 1px solid",
@@ -313,102 +258,7 @@ const UserProfile = () => {
                       }}
                       className="div-lines-display"
                     >
-                      {profile.gender}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Phone Number:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.phone_number}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Referral Count:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.referral_count}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Referral ID: </strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.referral_id}
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Referral Link:</strong>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        position: "relative",
-                      }}
-                    >
-                      <input
-                        style={{
-                          border: "gray 1px solid",
-                          padding: "12px 16px",
-                          marginBottom: "20px",
-                          marginTop: "3px",
-                          color: "gray",
-                          height: "50px",
-                        }}
-                        className="div-lines-display"
-                        type="text"
-                        value={profile.referral_link}
-                        readOnly
-                      />
-                      <button
-                        style={{
-                          marginLeft: "10px",
-                          padding: "8px 12px",
-                          background: "transparent",
-                          border: "none",
-                          color: "blue",
-                          cursor: "pointer",
-                          position: "absolute",
-                          right: 0,
-                        }}
-                        onClick={() => copyToClipboard(profile.referral_link)}
-                      >
-                        <RiFileCopy2Line />
-                      </button>
+                      {profile.state}
                     </div>
                   </div>
                 </div>
@@ -423,7 +273,7 @@ const UserProfile = () => {
                   color: "white",
                   borderRadius: "4px",
                 }}
-                onClick={() => navigate("/editdetails")}
+                onClick={() => navigate("/editdelivery")}
               >
                 Edit Profile
               </button>
@@ -439,4 +289,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default UserProfileDelivery;

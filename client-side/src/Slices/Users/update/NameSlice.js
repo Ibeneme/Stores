@@ -24,9 +24,10 @@ export const updateProfileName = createAsyncThunk(
         nameData,
         { headers }
       );
-
+     
       return response.data;
     } catch (error) {
+    
       return rejectWithValue(error.response.data);
     }
   }
@@ -76,9 +77,10 @@ export const updateProfileDetails = createAsyncThunk(
         detailsData,
         { headers }
       );
-
+    
       return response.data;
     } catch (error) {
+
       return rejectWithValue(error.response.data);
     }
   }
@@ -148,10 +150,10 @@ export const updateProfilePhoto = createAsyncThunk(
         photo,
         { headers }
       );
-      console.log(response.data)
+      console.log(response.data);
       return response.data;
     } catch (error) {
-        console.log(error)
+      console.log(error);
       return rejectWithValue(error.response.data);
     }
   }
@@ -175,7 +177,7 @@ const profileNameSlice = createSlice({
       .addCase(updateProfileName.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.success = false;
+   
       })
       .addCase(updateProfilePhone.pending, (state) => {
         state.loading = true;
@@ -189,7 +191,6 @@ const profileNameSlice = createSlice({
       .addCase(updateProfilePhone.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.success = false;
       })
       .addCase(updateProfileDetails.pending, (state) => {
         state.loading = true;
@@ -203,7 +204,7 @@ const profileNameSlice = createSlice({
       .addCase(updateProfileDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.success = false;
+       
       })
       .addCase(updateProfileAddress.pending, (state) => {
         state.loading = true;
@@ -217,7 +218,6 @@ const profileNameSlice = createSlice({
       .addCase(updateProfileAddress.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.success = false;
       })
       .addCase(updateProfileBankAccount.pending, (state) => {
         state.loading = true;
@@ -246,7 +246,7 @@ const profileNameSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.success = false;
-        console.log(action.payload)
+      
       });
   },
 });

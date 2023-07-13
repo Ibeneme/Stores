@@ -3,15 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Slices/Products/productAPI";
 import Carousels from "../Navbar-and-Footer/Carousel";
-import Footer from "../Navbar-and-Footer/Footer";
 import Loader from "../Loader/Loader";
 import "./Products.css";
 import sampleimage from "./images/Frame 212.png";
-import sampleproductimage from "./images/Re.png";
-import Navbarr from "../Navbar-and-Footer/Navbarr";
 import { addItemToCart } from "../../Slices/Cart/CartSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import sampleproductimage from "./images/Re.png";
 
 const Product = () => {
   const dispatch = useDispatch();
@@ -78,7 +76,7 @@ const Product = () => {
         <p>An error occurred...</p>
       ) : (
         <>
-          <Navbarr />
+ 
           <div style={{ paddingTop: "2em" }}>
             <Carousels />
           </div>
@@ -250,7 +248,7 @@ const Product = () => {
             </div>
           </div>
 
-          <Footer />
+
         </>
       )}
     </div>

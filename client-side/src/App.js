@@ -61,6 +61,12 @@ import SuccessPage from "./Components/Sellers/Pages/Success";
 import CartComponent from "./Components/Cart-and-Checkout/Cart/Cart";
 import AddToCartComponent from "./Slices/Cart/AddCart";
 import SignupComponent from "./Components/Shipping/Shipping";
+import Navbarr from "./Components/Navbar-and-Footer/Navbarr";
+import UserProfileEdit from "./Components/profile/DetailsEdit";
+import Footer from "./Components/Navbar-and-Footer/Footer";
+import UpdateNameForm from "./Components/auth/nextSignUp";
+import UserProfileDelivery from "./Components/profile/Delivery";
+import UserProfileEditDelivery from "./Components/profile/update/DeliveryEdit";
 
 const ScrollToTop = () => {
   const navigate = useNavigate();
@@ -72,10 +78,8 @@ const ScrollToTop = () => {
   return null;
 };
 
-
-
 function App() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const dispatch = useDispatch(token);
   useEffect(() => {
     dispatch(userProfile());
@@ -83,19 +87,20 @@ function App() {
 
   return (
     <>
-    
       <ScrollToTop />
       <ToastContainer />
+      <Navbarr />
       <Routes>
         <Route path="/profile" element={<UserProfile />} />
-        <Route path="/addcart" element={< AddToCartComponent/>} />
-
+        <Route path="/addcart" element={<AddToCartComponent />} />
         <Route path="/editprofile" element={<ProfileNameForm />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/errorpage007aff" element={<SuccessPage />} />
         <Route path="/newcart" element={<CartComponent />} />
         <Route path="/Signup" element={<SignupComponent />} />
-
+        <Route path="/editdetails" element={<UserProfileEdit />} />
+        <Route path="/deliverydetails" element={<UserProfileDelivery />} />
+        <Route path="/editdelivery" element={<UserProfileEditDelivery />} />
 
         <Route path="/" element={<Product />} />
         <Route path="/carousel" element={<Carousels />} />
@@ -158,7 +163,7 @@ function App() {
         <Route path="/kyc" element={<KYCForm />} />
         <Route path="/addkyc" element={<AddKYCForm />} />
 
-        {/* <Route path="/profile" element={<UpdateNameForm/>} /> */}
+        <Route path="/lesss" element={<UpdateNameForm />} />
         {/* <Route path="/editprofile" element={<UpdateNameFormEdit/>} />
        
         <Route path="/testin" element={<UpdateNameFormTesting/>} />
@@ -175,6 +180,7 @@ function App() {
         <Route path="/car" element={<Slider/>} />
         <Route path="/sea" element={<ProductSearch/>} /> */}
       </Routes>
+      <Footer />
     </>
   );
 }

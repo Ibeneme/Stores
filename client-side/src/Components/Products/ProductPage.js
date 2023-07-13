@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { productsFetch } from "../../Slices/Products/productSlice";
-import Footer from "../Navbar-and-Footer/Footer";
 import Loader from "../Loader/Loader";
 import { addItemToCart } from "../../Slices/Cart/CartSlice";
 import sample from "./images/Rectangle 15.png";
@@ -15,9 +14,7 @@ import Navbarr from "../Navbar-and-Footer/Navbarr";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const ProductPage = () => {
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const user_unique_id = queryParams.get("user_unique_id");
@@ -101,7 +98,9 @@ const ProductPage = () => {
       <Navbarr />
       {details && details.data && (
         <div>
-          <div className="Product-page-first-div">
+          <div  style={{
+            marginBottom:'64px'
+          }}className="Product-page-first-div">
             <div className="Product-page-second-div">
               <div className="Product-page-third-div">
                 <div>
@@ -238,7 +237,6 @@ const ProductPage = () => {
           </div>
         </div>
       )}
-      <Footer />
     </div>
   );
 };

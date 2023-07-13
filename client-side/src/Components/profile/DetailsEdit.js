@@ -1,8 +1,6 @@
-// App.js (or any other component where you want to access the Redux store)
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile } from "../../Slices/Users/ProfileSlice";
-// import { useNavigate } from "react-router";
 import "./profile.css";
 import { FaUserEdit } from "react-icons/fa";
 import { MdDeliveryDining, MdMail, MdVerified, MdHelp } from "react-icons/md";
@@ -10,25 +8,63 @@ import { RiBankFill, RiLockPasswordFill } from "react-icons/ri";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FcFaq } from "react-icons/fc";
 import { useNavigate } from "react-router";
-import { RiFileCopy2Line } from "react-icons/ri";
+import {
+  updateProfileName,
+  updateProfileDetails,
+} from "../../Slices/Users/update/NameSlice.js";
 import Loader from "../Loader/Loader";
 
-// ...
-const UserProfile = () => {
+const UserProfileEdit = () => {
   const dispatch = useDispatch();
-  const { loading, profile, error } = useSelector((state) => state.profile);
+  const { loading, profile } = useSelector((state) => state.profile);
+  const { error: nameError } = useSelector((state) => state.profileName) || {};
 
   const navigate = useNavigate();
-  function copyToClipboard(text) {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        console.log("Text copied to clipboard");
-      })
-      .catch((error) => {
-        console.error("Error copying text to clipboard:", error);
-      });
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
+  const [dob, setDob] = useState("");
+ 
+  const formatName = (name) => {
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const nameData = {
+      firstname: formatName(firstName),
+      middlename: formatName(middleName),
+      lastname: formatName(lastName),
+  };
+  
+  try {
+      const response = await dispatch(updateProfileName(nameData));
+      if (response.success) {
+        navigate("/profile");
+      }
+  } catch (error) {
+      console.error("Error updating name:", error);
   }
+  
+  };
+
+  const handleDetailsSubmit = async (e) => {
+    e.preventDefault();
+
+    const detailsData = {
+      gender: formatName(gender),
+      dob: dob,
+    };
+
+    try {
+      await dispatch(updateProfileDetails(detailsData));
+    } catch (error) {
+      console.error("Error updating profile details:", error);
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
@@ -40,16 +76,32 @@ const UserProfile = () => {
       </div>
     );
   }
+  const nameErrors = nameError && nameError.data ? nameError.data : [];
+  console.log(nameErrors, "here");
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  const firstnameError = nameErrors.find(
+    (error) => error.param === "firstname"
+  );
+  console.log(firstnameError);
+
+  const middlenameError = nameErrors.find(
+    (error) => error.param === "middlename"
+  );
+  console.log(middlenameError);
+
+  const lastnameError = nameErrors.find((error) => error.param === "lastname");
+  console.log(lastnameError);
+
+  const genderError = nameErrors.find((error) => error.param === "gender");
+  console.log(genderError);
+
+  const dobError = nameErrors.find((error) => error.param === "dob");
+  console.log(dobError);
 
   return (
     <div>
       {profile && (
         <div>
-          <div></div>
           <div
             style={{
               display: "flex",
@@ -66,7 +118,6 @@ const UserProfile = () => {
                 className="p-profile p-active-profile"
                 onClick={() => navigate("/profile")}
               >
-                {" "}
                 <FaUserEdit
                   style={{
                     fontSize: "24px",
@@ -75,7 +126,6 @@ const UserProfile = () => {
                 Personal Details
               </p>
               <p className="p-profile">
-                {" "}
                 <MdDeliveryDining
                   style={{
                     fontSize: "24px",
@@ -86,7 +136,6 @@ const UserProfile = () => {
                 Delivery Details
               </p>
               <p className="p-profile">
-                {" "}
                 <RiBankFill
                   style={{
                     fontSize: "24px",
@@ -97,7 +146,6 @@ const UserProfile = () => {
                 Bank Details
               </p>
               <p className="p-profile">
-                {" "}
                 <RiLockPasswordFill
                   style={{
                     fontSize: "24px",
@@ -116,7 +164,6 @@ const UserProfile = () => {
                 Change Phone Number
               </p>
               <p className="p-profile">
-                {" "}
                 <MdMail
                   style={{
                     fontSize: "24px",
@@ -136,7 +183,6 @@ const UserProfile = () => {
                 Verify Account
               </p>
               <p className="p-profile">
-                {" "}
                 <MdHelp
                   style={{
                     fontSize: "24px",
@@ -146,7 +192,6 @@ const UserProfile = () => {
                 Help Desk
               </p>
               <p className="p-profile">
-                {" "}
                 <FcFaq
                   style={{
                     fontSize: "24px",
@@ -190,25 +235,17 @@ const UserProfile = () => {
               </div>
               <h4
                 style={{
-                  marginBottom: "18px",
-                  textAlign: "center",
+                  marginBottom:'3em'
                 }}
+                className="h4-details"
               >
                 Personal Details
               </h4>
-              {/* <p>Account Name: {profile.account_name}</p>
-            <p>Account Number: {profile.account_number}</p>
-            <p>Address: {profile.address}</p>
-            <p>Bank: {profile.bank}</p>
-            <p>City: {profile.city}</p>
-            <p>State: {profile.state}</p>
-            <p>Street: {profile.street}</p> */}
-              {/* <p>Photo: {profile.photo}</p> */}
               <div className="div-p-profile">
-                <div>
+                <form onSubmit={handleSubmit}>
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <strong>First Name:</strong>
-                    <div
+                    <input
                       style={{
                         border: "gray 1px solid",
                         padding: "12px 16px",
@@ -216,17 +253,18 @@ const UserProfile = () => {
                         marginTop: "3px",
                         color: "gray",
                         height: "50px",
-                        display: "flex",
-                        alignItems: "center",
                       }}
                       className="div-lines-display"
-                    >
-                      {profile.firstname}
-                    </div>
+                      type="text"
+                      placeholder="Enter a First Name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                    <p className="error">{firstnameError?.msg}</p>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Last Name:</strong>{" "}
-                    <div
+                    <strong>Last Name:</strong>
+                    <input
                       style={{
                         border: "gray 1px solid",
                         padding: "12px 16px",
@@ -234,17 +272,18 @@ const UserProfile = () => {
                         marginTop: "3px",
                         color: "gray",
                         height: "50px",
-                        display: "flex",
-                        alignItems: "center",
                       }}
                       className="div-lines-display"
-                    >
-                      {profile.lastname}
-                    </div>
+                      type="text"
+                      placeholder="Enter a Last Name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                    <p className="error">{lastnameError?.msg}</p>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Middle Name:</strong>{" "}
-                    <div
+                    <strong>Middle Name:</strong>
+                    <input
                       style={{
                         border: "gray 1px solid",
                         padding: "12px 16px",
@@ -252,17 +291,35 @@ const UserProfile = () => {
                         marginTop: "3px",
                         color: "gray",
                         height: "50px",
-                        display: "flex",
-                        alignItems: "center",
                       }}
                       className="div-lines-display"
-                    >
-                      {profile.middlename}
-                    </div>
+                      type="text"
+                      placeholder="Enter a Middle Name"
+                      value={middleName}
+                      onChange={(e) => setMiddleName(e.target.value)}
+                    />
+                    <p className="error">{middlenameError?.msg}</p>
                   </div>
+
+                  <button
+                    style={{
+                      height: "50px",
+                      padding: "12px 16px",
+                      backgroundColor: "#000",
+                      border: "none",
+                      color: "white",
+                      borderRadius: "4px",
+                      marginBottom: "5em",
+                    }}
+                    type="submit"
+                  >
+                    Save Changes
+                  </button>
+                </form>
+                <form onSubmit={handleDetailsSubmit}>
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Email:</strong>{" "}
-                    <div
+                    <strong>Date of Birth:</strong>
+                    <input
                       style={{
                         border: "gray 1px solid",
                         padding: "12px 16px",
@@ -270,167 +327,54 @@ const UserProfile = () => {
                         marginTop: "3px",
                         color: "gray",
                         height: "50px",
-                        display: "flex",
-                        alignItems: "center",
                       }}
                       className="div-lines-display"
-                    >
-                      {profile.email}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Date of Birth:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.dob}
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Gender:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.gender}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Phone Number:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.phone_number}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Referral Count:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.referral_count}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Referral ID: </strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.referral_id}
-                    </div>
+                      type="date"
+                      placeholder={profile.dob}
+                      value={dob}
+                      onChange={(e) => setDob(e.target.value)}
+                    />
+                    <p className="error">{dobError?.msg}</p>
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Referral Link:</strong>
-                    <div
+                    <strong>Gender:</strong>
+                    <select
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        position: "relative",
+                        border: "gray 1px solid",
+                        padding: "12px 16px",
+                        marginBottom: "20px",
+                        marginTop: "3px",
+                        color: "gray",
+                        height: "50px",
                       }}
+                      className="div-lines-display"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
                     >
-                      <input
-                        style={{
-                          border: "gray 1px solid",
-                          padding: "12px 16px",
-                          marginBottom: "20px",
-                          marginTop: "3px",
-                          color: "gray",
-                          height: "50px",
-                        }}
-                        className="div-lines-display"
-                        type="text"
-                        value={profile.referral_link}
-                        readOnly
-                      />
-                      <button
-                        style={{
-                          marginLeft: "10px",
-                          padding: "8px 12px",
-                          background: "transparent",
-                          border: "none",
-                          color: "blue",
-                          cursor: "pointer",
-                          position: "absolute",
-                          right: 0,
-                        }}
-                        onClick={() => copyToClipboard(profile.referral_link)}
-                      >
-                        <RiFileCopy2Line />
-                      </button>
-                    </div>
+                      <option value="">Select an Option</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
                   </div>
-                </div>
+                  <p className="error">{genderError?.msg}</p>
+
+                  <button
+                    style={{
+                      height: "50px",
+                      padding: "12px 16px",
+                      backgroundColor: "#000",
+                      border: "none",
+                      color: "white",
+                      borderRadius: "4px",
+                      marginBottom: "5em",
+                    }}
+                    type="submit"
+                  >
+                    Save Changes
+                  </button>
+                </form>
               </div>
-
-              <button
-                style={{
-                  height: "50px",
-                  padding: "12px 16px",
-                  backgroundColor: "#064BDE",
-                  border: "none",
-                  color: "white",
-                  borderRadius: "4px",
-                }}
-                onClick={() => navigate("/editdetails")}
-              >
-                Edit Profile
-              </button>
-
-              {/* <p>
-              Two-Factor Authentication: {profile.two_factor_authentication}
-            </p> */}
             </div>
           </div>
         </div>
@@ -439,4 +383,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default UserProfileEdit;
