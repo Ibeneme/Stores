@@ -91,7 +91,6 @@ const SignIn = () => {
         paddingBottom: "12em",
         justifyContent: "center",
         alignItems: "center",
-    
       }}
     >
       <div>
@@ -105,7 +104,6 @@ const SignIn = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            
           }}
         >
           <img
@@ -175,6 +173,9 @@ const SignIn = () => {
                 Email
               </label>
               <input
+                style={{
+                  height: "50px",
+                }}
                 autoComplete="off"
                 name="email"
                 placeholder="Email"
@@ -196,6 +197,9 @@ const SignIn = () => {
               </label>
               <div style={{ position: "relative" }}>
                 <input
+                  style={{
+                    height: "50px",
+                  }}
                   onFocus={handleFocusPassword}
                   onBlur={handleBlurPassword}
                   autoComplete="off"
@@ -266,6 +270,7 @@ const SignIn = () => {
                 border: "none",
                 borderRadius: "0.5em",
                 marginTop: "2em",
+                height:'50px'
               }}
               className="input-forms"
             >
@@ -287,6 +292,7 @@ const SignIn = () => {
               backgroundColor: "black",
               border: "0.7em",
               color: "white",
+              height:'50px',
               borderRadius: "0.3em",
             }}
             className="input-forms"

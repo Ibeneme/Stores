@@ -4,9 +4,6 @@ import { url, setHeaders } from "./api";
 import jwtDecode from "jwt-decode";
 import firebase from "firebase/compat/app";
 import "firebase/auth";
-import firebaseConfig from "../Firebase/firebaseConfig";
-
-firebase.initializeApp(firebaseConfig);
 
 const token = localStorage.getItem("token")
   ? localStorage.getItem("token")
@@ -214,9 +211,9 @@ const authSlice = createSlice({
       const token = state.token;
       if (token) {
         const user = jwtDecode(token);
-     
-          console.log(user);
-        
+
+        console.log(user);
+
         return {
           ...state,
           token,

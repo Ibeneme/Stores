@@ -10,20 +10,20 @@ import { RiBankFill, RiLockPasswordFill } from "react-icons/ri";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FcFaq } from "react-icons/fc";
 import { useNavigate } from "react-router";
-
+import Loader from "../Loader/Loader";
 
 const UserProfileDelivery = () => {
   const dispatch = useDispatch();
   const { loading, profile, error } = useSelector((state) => state.profile);
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><Loader /></div>;
   }
 
   if (error) {
@@ -138,44 +138,37 @@ const UserProfileDelivery = () => {
               </p>
             </div>
             <div className="profile-div-right">
-              <div className="profile-menu-container">
-                <p
-                  className="p-profile-overflow"
-                  onClick={() => navigate("/profile")}
-                >
-                  Personal Details
-                </p>
-                <p
-                  className="p-profile-overflow"
-                  onClick={() => navigate("/deliverydetails")}
-                >
-                  Delivery Details
-                </p>
-                <p
-                  className="p-profile-overflow"
-                  onClick={() => navigate("/bankdetails")}
-                >
-                  Bank Details
-                </p>
-                <p className="p-profile-overflow">Change Password</p>
-                <p className="p-profile-overflow">Change Phone Number</p>
-                <p className="p-profile-overflow">Change Email Address</p>
-                <p
-                  className="p-profile-overflow"
-                  onClick={() => navigate("/kyc")}
-                >
-                  Verify Account
-                </p>
-                <p className="p-profile-overflow">Help Desk</p>
-                <p className="p-profile-overflow">FAQ</p>
+              <div className="functions-hider">
+                <div className="div-display-functions">
+                  <div
+                    onClick={() => navigate("/profile")}
+                    className="div-display-slider"
+                  >
+                    Personal Details
+                  </div>
+                  <div
+                    onClick={() => navigate("/deliverydetails")}
+                    className="div-display-slider active-div-display-slider"
+                  >
+                    Delivery Details
+                  </div>
+                  <div
+                    onClick={() => navigate("/bankdetails")}
+                    className="div-display-slider"
+                  >
+                    Bank Details
+                  </div>
+                  <div className="div-display-slider">Verify</div>
+                </div>
               </div>
               <h4
                 style={{
                   marginBottom: "18px",
                   textAlign: "center",
                 }}
+                className="mobile-hide-profile"
               >
-                Personal Details
+                Delivery Details
               </h4>
               {/* <p>Account Name: {profile.account_name}</p>
             <p>Account Number: {profile.account_number}</p>
@@ -196,7 +189,7 @@ const UserProfileDelivery = () => {
                         marginBottom: "20px",
                         marginTop: "3px",
                         color: "gray",
-                        height: "80px",
+                        height: "50px",
                         display: "flex",
                         alignItems: "baseline",
                       }}

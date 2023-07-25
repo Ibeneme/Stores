@@ -2,7 +2,7 @@
   padding: 16px 32px;
   display: flex;
   gap: 16px;
-  color:gray;
+  color: gray;
   align-items: center;
 }
 
@@ -50,7 +50,6 @@
 }
 
 .profile-icons {
-  
 }
 .mobile-hide-profile {
   display: flex;
@@ -59,6 +58,11 @@
 .div-lines-display {
   width: 368px;
 }
+
+.functions-hider {
+  display: none;
+}
+
 @media (max-width: 1200px) {
   .mobile-hide-profile {
     display: none;
@@ -78,6 +82,11 @@
     background-color: white;
     padding: 2em;
   }
+  .functions-hider {
+    display: flex;
+  }
+
+  
 }
 
 @media (max-width: 600px) {
@@ -93,7 +102,10 @@
     width: 95vw;
   }
   .h4-details {
-    width:100%;
+    width: 100%;
     text-align: center;
+  }
+  .functions-hider {
+    display: flex;
   }
 }

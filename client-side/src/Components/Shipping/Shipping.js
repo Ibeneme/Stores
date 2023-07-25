@@ -44,20 +44,13 @@ const SignupComponent = () => {
   };
 
   const formatPhoneNumber = (phoneNumber) => {
-
     const numericValue = phoneNumber.replace(/\D/g, "");
-
-  
     if (numericValue.startsWith("234")) {
       return `+${numericValue}`;
     }
-
-    // Check if the numeric value starts with "0" and has a length of 11
     if (numericValue.startsWith("0") && numericValue.length === 11) {
       return `+234${numericValue.slice(1)}`;
     }
-
-    // Return the original input value if it doesn't match the required format
     return phoneNumber;
   };
 
@@ -168,7 +161,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "country") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}
@@ -193,7 +190,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "firstname") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}
@@ -217,7 +218,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "middlename") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}
@@ -241,7 +246,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "lastname") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}
@@ -265,7 +274,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "email") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}{" "}
@@ -289,7 +302,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "phone_number") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}
@@ -316,7 +333,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "gender") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}
@@ -340,7 +361,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "dob") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}{" "}
@@ -383,7 +408,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "confirmPassword") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}
@@ -427,7 +456,11 @@ const SignupComponent = () => {
           {formErrors &&
             Object.values(formErrors).map((error) => {
               if (error.param === "confirmPassword") {
-                return <div key={error.param} className="error">{error.msg}</div>;
+                return (
+                  <div key={error.param} className="error">
+                    {error.msg}
+                  </div>
+                );
               }
               return null;
             })}

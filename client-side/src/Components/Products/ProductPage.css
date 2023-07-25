@@ -16,14 +16,17 @@
 .Product-page-third-div {
   display: flex;
   flex-direction: row;
-
-  width: 100%;
+  width:100%;
+  gap:3em;
 }
 .Product-image-first-image {
-  width: 400px;
+  width: 100%;
+  height: 300px
+  
 }
 .Product-flex-on-web-right {
-  width: 60%;
+  width: 100%;
+  
 }
 .Product-page-h1 {
   margin-top: 2em;
@@ -86,8 +89,8 @@
   border-radius: 1em;
   padding: 0.2em 0.62em;
 }
-.product-page-quantity{
-  width: 1em
+.product-page-quantity {
+  width: 1em;
 }
 .product-page-add-or-remove-btn {
   background-color: inherit;
@@ -122,21 +125,18 @@
   margin-top: 4em;
 }
 
-
-
 @media only screen and (max-width: 998px) {
   .Product-page-second-div {
     display: flex;
     flex-direction: column;
     background-color: white;
     width: 100vw;
-   
   }
-  
+
   .Product-page-third-div {
     display: flex;
     flex-direction: column;
-  
+
     width: 100%;
   }
   .Product-flex-on-web-right {
@@ -145,19 +145,22 @@
   .Product-page-first-div {
     margin-top: 4em;
     margin-bottom: -5em;
-
   }
-  
+  .Product-image-first-image {
+    width: 100%;
+    height: 500px
+    
+  }
 }
 
 @media only screen and (max-width: 498px) {
   .Product-image-first-image {
-    width: 200px;
-    padding-top: 5em;
+    width: 100%;
+    height: 400px
+
   }
   .Product-page-second-div {
     display: flex;
     padding: 1em 1em;
   }
-  
 }

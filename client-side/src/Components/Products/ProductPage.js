@@ -24,6 +24,10 @@ const ProductPage = () => {
 
   const [cartQuantity, setCartQuantity] = useState(0);
 
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
   const handleAddThisToCart = async (unique_id, location) => {
     const itemData = {
       product_unique_id: unique_id,
@@ -53,7 +57,14 @@ const ProductPage = () => {
     status,
     error,
   } = useSelector((state) => state.productsDetails);
+  const [selectedImage, setSelectedImage] = useState(null);
 
+  useEffect(() => {
+    // Set the first image from the product_images_data as the selectedImage by default
+    if (details?.data?.product_images_data?.length > 0) {
+      setSelectedImage(details.data.product_images_data[0].image.url || null);
+    }
+  }, [details]);
   const box = details?.data?.unique_id; // Use optional chaining to handle undefined values
   console.log(box);
   const shipping_id = details?.data?.price;
@@ -98,17 +109,65 @@ const ProductPage = () => {
       <Navbarr />
       {details && details.data && (
         <div>
-          <div  style={{
-            marginBottom:'64px'
-          }}className="Product-page-first-div">
+          <div
+            style={{
+              marginBottom: "64px",
+            }}
+            className="Product-page-first-div"
+          >
             <div className="Product-page-second-div">
               <div className="Product-page-third-div">
-                <div>
-                  <img
-                    src={sample}
-                    alt="im"
-                    className="Product-image-first-image"
-                  />
+                <div
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    <img
+                      className="Product-image-first-image"
+                      key={0}
+                      src={selectedImage}
+                      alt="Selected"
+                      style={{
+                        marginRight: "10px",
+                        marginBottom: "10px",
+                        border: "none",
+                      }}
+                    />
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(3, 100px)",
+                        gap: "10px",
+                      }}
+                    >
+                      {details.data.product_images_data
+                        ? details.data.product_images_data.map(
+                            (data, index) => (
+                              <img
+                                className="Product-image-first-image"
+                                key={index}
+                                src={data.image.url}
+                                alt={`yeah ${index}`}
+                                style={{
+                                  width: "100%",
+                                  height: "100px",
+                                  border: "none",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => handleImageClick(data.image.url)}
+                              />
+                            )
+                          )
+                        : null}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="Product-flex-on-web-right">

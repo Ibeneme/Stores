@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router";
 import { publishProduct } from "../../Slices/Sellers/publishProductSlice";
 import sample from "../Products/images/Rectangle 15.png";
 import Loader from "../Loader/Loader";
-import Navbarr from "../Navbar-and-Footer/Navbarr";
 import { deleteProduct } from "../../Slices/Sellers/deleteProductSlice";
 
 const SellersProductPage = () => {
@@ -15,6 +14,16 @@ const SellersProductPage = () => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    if (product?.data?.product_images_data?.length > 0) {
+      setSelectedImage(product.data.product_images_data[0].image.url || null);
+    }
+  }, [product]);
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -22,8 +31,6 @@ const SellersProductPage = () => {
   const unique_id = queryParams.get("unique_id");
 
   const navigate = useNavigate();
-
-
 
   const handlePublish = () => {
     dispatch(publishProduct(unique_id))
@@ -34,11 +41,9 @@ const SellersProductPage = () => {
       })
       .catch((error) => {
         navigate(`/errorpage?message=Error%20Adding%20this%20Product`);
-    
       });
     console.log("working delete", unique_id);
   };
-
 
   const handleCancel = () => {
     setIsOpen(false);
@@ -57,7 +62,7 @@ const SellersProductPage = () => {
       })
       .catch((error) => {
         navigate(`/errorpage?message=Delete%20Failed`);
-        console.log(error)
+        console.log(error);
       });
     console.log("working delete", unique_id);
   };
@@ -92,7 +97,6 @@ const SellersProductPage = () => {
 
   return (
     <div>
-      <Navbarr />
       {product && product.data && (
         <div>
           {console.log(product.data.quantity)}
@@ -100,11 +104,52 @@ const SellersProductPage = () => {
             <div className="Product-page-second-div">
               <div className="Product-page-third-div">
                 <div>
-                  <img
-                    src={sample}
-                    alt="im"
-                    className="Product-image-first-image"
-                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    <img
+                      className="Product-image-first-image"
+                      key={0}
+                      src={selectedImage}
+                      alt="Selected"
+                      style={{
+                        marginRight: "10px",
+                        marginBottom: "10px",
+                        border: "none",
+                      }}
+                    />
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(3, 100px)",
+                        gap: "10px",
+                      }}
+                    >
+                      {product.data.product_images_data
+                        ? product.data.product_images_data.map(
+                            (data, index) => (
+                              <img
+                                className="Product-image-first-image"
+                                key={index}
+                                src={data.image.url}
+                                alt={`yeah ${index}`}
+                                style={{
+                                  width: "100%",
+                                  height: "100px",
+                                  border: "none",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => handleImageClick(data.image.url)}
+                              />
+                            )
+                          )
+                        : null}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="Product-flex-on-web-right">
@@ -198,9 +243,12 @@ const SellersProductPage = () => {
                           </button>
 
                           {isOpen && (
-                            <div  style={{
-                              zIndex: '999',
-                            }} className="modal">
+                            <div
+                              style={{
+                                zIndex: "999",
+                              }}
+                              className="modal"
+                            >
                               <div className="modal-content">
                                 <h3>
                                   Confirm You want to Publish this Product
@@ -254,9 +302,12 @@ const SellersProductPage = () => {
                       </button>
 
                       {isDeleteModalOpen && (
-                        <div  style={{
-                          zIndex: '999',
-                        }} className="modal">
+                        <div
+                          style={{
+                            zIndex: "999",
+                          }}
+                          className="modal"
+                        >
                           <div className="modal-content">
                             <h3>Confirm Delete</h3>
                             <p>Are you sure you want to delete this product?</p>

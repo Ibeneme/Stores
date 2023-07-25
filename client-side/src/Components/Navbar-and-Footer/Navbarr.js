@@ -114,7 +114,10 @@ console.log(cartData)
             className="Logo-top-left"
             width="24em"
             alt="logo"
+
+
             src={logologo}
+
           />
 
           <h3
@@ -457,9 +460,7 @@ console.log(cartData)
                     }}
                     onClick={handleDropdownToggle}
                   >
-                    {userprofile && userprofile.photo && (
-                      <img src={userprofile.photo} alt="" />
-                    )}
+                   
                     <p>
                       {userprofile && userprofile.firstname
                         ? `Hi ${userprofile.firstname}`

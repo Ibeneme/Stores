@@ -9,14 +9,13 @@ import sampleimage from "./images/Frame 212.png";
 import { addItemToCart } from "../../Slices/Cart/CartSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import sampleproductimage from "./images/Re.png";
 
 const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
-  console.log(auth)
+  console.log(auth);
   const handleAddThisToCart = async (unique_id, location) => {
     const itemData = {
       product_unique_id: unique_id,
@@ -24,18 +23,13 @@ const Product = () => {
       quantity: 1,
     };
 
-
     try {
       const response = await dispatch(addItemToCart(itemData));
       console.log("Item added to cart:", response.payload);
-      toast.success(response.payload.message, {
-      
-      });
+      toast.success(response.payload.message, {});
     } catch (error) {
       console.log("Error adding item to cart:", error);
-      toast.error(error.payload.message, {
-      
-      });
+      toast.error(error.payload.message, {});
     }
   };
   const handleClick = (user_unique_id, unique_id) => {
@@ -76,7 +70,6 @@ const Product = () => {
         <p>An error occurred...</p>
       ) : (
         <>
- 
           <div style={{ paddingTop: "2em" }}>
             <Carousels />
           </div>
@@ -174,20 +167,27 @@ const Product = () => {
                     className="products-displayed-home"
                     key={`${product.id}-${index}`}
                   >
-                    <div className="products-displayed">
-                      <img
-                        onClick={() =>
-                          handleClick(
-                            product.user_data.user_unique_id,
-                            product.unique_id
-                          )
-                        }
-                        className=""
-                        src={sampleproductimage}
-                        alt={product.name}
-                        width="100%"
-                      />
+                    <div
+                      className="products-displayed"
+                      onClick={() =>
+                        handleClick(
+                          product.user_data.user_unique_id,
+                          product.unique_id
+                        )
+                      }
+                    >
+                      {product.product_images_data &&
+                        product.product_images_data[0] && (
+                          <img
+                            key={0} // Since there's only one image, you can use a fixed key value
+                            src={product.product_images_data[0]?.image?.url}
+                            alt={`Product Image 0`}
+                            width="100%"
+                            height="180px"
+                          />
+                        )}
                     </div>
+                    {}
                     <div
                       className="products-displayed-home-div"
                       onClick={() =>
@@ -247,8 +247,6 @@ const Product = () => {
               </div>
             </div>
           </div>
-
-
         </>
       )}
     </div>

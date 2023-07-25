@@ -157,7 +157,7 @@ const UserProfile = () => {
               </p>
             </div>
             <div className="profile-div-right">
-              <div className="profile-menu-container">
+              {/* <div className="profile-menu-container">
                 <p
                   className="p-profile-overflow"
                   onClick={() => navigate("/profile")}
@@ -187,14 +187,38 @@ const UserProfile = () => {
                 </p>
                 <p className="p-profile-overflow">Help Desk</p>
                 <p className="p-profile-overflow">FAQ</p>
+              </div> */}
+            <div className="functions-hider">
+            <div className="div-display-functions">
+              <div
+                onClick={() => navigate("/profile")}
+                className="div-display-slider active-div-display-slider"
+              >
+                  Personal Details
               </div>
-              <h4
+              <div
+                onClick={() => navigate("/deliverydetails")}
+                className="div-display-slider"
+              >
+                 Delivery Details
+              </div>
+              <div
+                onClick={() => navigate("/bankdetails")}
+                className="div-display-slider"
+              >
+                   Bank Details
+              </div>
+              <div className="div-display-slider">Verify</div>
+            </div>
+              </div>
+            <h4
                 style={{
                   marginBottom: "18px",
                   textAlign: "center",
                 }}
+                className="mobile-hide-profile"
               >
-                Personal Details
+              Personal Details
               </h4>
               {/* <p>Account Name: {profile.account_name}</p>
             <p>Account Number: {profile.account_number}</p>

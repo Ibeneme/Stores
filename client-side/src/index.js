@@ -55,12 +55,23 @@ import productImageReducer from "./Slices/Sellers/Image/AddImageSlice";
 import productImageSliceReducer from "./Slices/Sellers/Image/EditImageSlice";
 
 import deleteImageSliceReducer from "./Slices/Sellers/Image/deleteImageSlice";
-import kycReducer from "./Slices/KYC/KYCSlice";
-import AddkycReducer from "./Slices/KYC/AddKycSlice";
 import authSigninReducer from "./Slices/auth/signinSlice";
 import authSignUpReducer from "./Slices/auth/signUpSlice";
 import cartsReducer from "./Slices/Cart/CartSlice";
 import shippingReducer from "./Slices/Shipping/Shipping";
+import shippingSliceReducer, {
+  fetchAllShippingData,
+} from "./Slices/Shipping/ShippingSlice";
+
+import usersReducer from "../src/Slices/orders/OrderSlice";
+import disputeSliceReducer, {
+  fetchAllDisputes,
+  fetchDisputesByOrderUniqueId,
+  createNewDispute,
+} from "./Slices/Disputes/Disputes";
+import ordersInternalSliceReducer from "./Slices/orders/SellersOrders/OrdersSellersSlice";
+import transactionSliceReducer from "./Slices/Transaction/TransactionSlice";
+import kycSliceReducer from './Slices/KYC/KYCSlice'
 
 const saveStateMiddleware = (store) => (next) => (action) => {
   const result = next(action);
@@ -72,6 +83,11 @@ const saveStateMiddleware = (store) => (next) => (action) => {
 const store = configureStore({
   reducer: {
     shipping: shippingReducer,
+    shippingSlice: shippingSliceReducer,
+    disputeSlice: disputeSliceReducer,
+    ordersInternalSlice: ordersInternalSliceReducer,
+    transactionSlice: transactionSliceReducer,
+
     authSignin: authSigninReducer,
     authSignUp: authSignUpReducer,
     auth: authReducer,
@@ -82,16 +98,16 @@ const store = configureStore({
     details: addressReducer,
     address: detailsReducer,
     account: accountReducer,
-    kyc: kycReducer,
-    Addkyc: AddkycReducer,
+    kyc: kycSliceReducer,
 
+    users: usersReducer,
     ratings: ratingsReducer,
     rating: ratingReducer,
     addrating: addRatingReducer,
     editratings: editratingsReducer,
 
     addproduct: addproductReducer,
-    draftproduct: draftproductReducer,
+    draftProduct: draftproductReducer,
     sellersProductsDetails: sellersProductsDetailsReducer,
     productPublish: productPublishReducer,
     deleteProduct: deleteProductReducer,
