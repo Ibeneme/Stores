@@ -72,6 +72,7 @@ import disputeSliceReducer, {
 import ordersInternalSliceReducer from "./Slices/orders/SellersOrders/OrdersSellersSlice";
 import transactionSliceReducer from "./Slices/Transaction/TransactionSlice";
 import kycSliceReducer from './Slices/KYC/KYCSlice'
+import cartReducer from './Slices/cartSlice'
 
 const saveStateMiddleware = (store) => (next) => (action) => {
   const result = next(action);
@@ -82,6 +83,8 @@ const saveStateMiddleware = (store) => (next) => (action) => {
 
 const store = configureStore({
   reducer: {
+    cart: cartReducer, 
+
     shipping: shippingReducer,
     shippingSlice: shippingSliceReducer,
     disputeSlice: disputeSliceReducer,

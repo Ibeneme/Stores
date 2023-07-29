@@ -49,7 +49,7 @@ function Navbarr({ token }) {
   const profile = useSelector((state) => state.userProfile);
   const storedItem = localStorage.getItem("carts");
   const cartData = JSON.parse(storedItem);
-  console.log(JSON.parse(storedItem));
+  console.log(JSON.parse(storedItem),'loll');
 
 
   const auth = useSelector((state) => state.auth);

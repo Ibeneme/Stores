@@ -3,7 +3,7 @@ import { useGetAllProductsQuery } from "../../Slices/Sellers/productSlice";
 import Loader from "../Loader/Loader";
 import "./styles/product.css";
 import sample from "../../Components/Products/images/Re.png";
-
+import logo from '../Cart-and-Checkout/images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png'
 const ProductList = () => {
   const navigate = useNavigate();
   const handleClick = (unique_id) => {
@@ -11,8 +11,7 @@ const ProductList = () => {
     console.log("see", unique_id);
   };
   const { data, isLoading, isError, error } = useGetAllProductsQuery();
-  
-  
+
   console.log(data);
   if (isLoading) {
     return (
@@ -24,7 +23,49 @@ const ProductList = () => {
 
   if (isError) {
     console.log(error);
-    return <div>No products available</div>;
+    return (
+      <div
+        style={{
+          height: "100vh",
+          weight: "100vw",
+          display: "flex",
+          justifyContent: "center",
+          alignItems:'center'
+        }}
+      >
+         <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div className="no-product">
+              <p>You have no Products for Sale</p>
+              <br />
+              <img src={logo} alt="shopping" />
+              <br /> <br />
+              <button
+                style={{
+                  width: "17em",
+                  height: "3.8em",
+                  borderRadius: "0.4em",
+                  border: "none",
+                  backgroundColor: "#386AEB",
+                  color: "white",
+
+                  fontSize: "1em",
+                }}
+                onClick={() => navigate("/addProducts")}
+              >
+                Start Selling
+              </button>
+              <br />
+            </div>
+          </div>
+      </div>
+    );
   }
 
   const { rows } = data.data;
@@ -35,7 +76,6 @@ const ProductList = () => {
 
   return (
     <div className="first-sellers-product-div">
-
       <div
         style={{
           marginTop: "7.5em",
@@ -148,7 +188,7 @@ const ProductList = () => {
                 {rows.map((product) => (
                   <div key={product.unique_id}>
                     <div key={product.unique_id}>
-                      <img src={sample} alt='sample' width="100%" />
+                      <img src={sample} alt="sample" width="100%" />
                       <h3>{product.name}</h3>
                       {product.sales_price === product.price ? (
                         <p

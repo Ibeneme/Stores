@@ -26,6 +26,64 @@
     margin-bottom:0.4em;
     padding-left: 1em;
 }
+
+.payment-page {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .payment-option {
+    position: relative;
+    padding-left: 32px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .payment-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    border: 1px solid #00000065;
+    border-radius: 50%;
+    font-size: 8px;
+  }
+  
+  .payment-option input:checked ~ .checkmark {
+    background-color: #064BDE;
+    color:#064BDE;
+  }
+  
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  .payment-option input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  .payment-option .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+
+  
 @media only screen and (max-width: 980px){
     .checkout-main-div{
         display: flex;

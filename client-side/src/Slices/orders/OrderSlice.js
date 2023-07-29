@@ -1,6 +1,6 @@
 // Import necessary dependencies
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios'; 
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Define the initial state for the slice
 const initialState = {
@@ -11,21 +11,21 @@ const initialState = {
 
 // Create an async thunk to fetch user orders
 const fetchUserOrders = createAsyncThunk(
-  'user/fetchUserOrders',
+  "user/fetchUserOrders",
   async (_, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
     try {
       // Make the API call to fetch user orders
       const response = await axios.get(
-        'https://us-central1-hydra-express.cloudfunctions.net/app/user/orders',
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders",
         config
       );
       // Return the data from the response
@@ -39,14 +39,14 @@ const fetchUserOrders = createAsyncThunk(
 
 // Create an async thunk to fetch user orders by tracking number
 const fetchUserOrdersByTrackingNumber = createAsyncThunk(
-  'user/fetchUserOrdersByTrackingNumber',
+  "user/fetchUserOrdersByTrackingNumber",
   async (trackingNumber, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
@@ -67,21 +67,21 @@ const fetchUserOrdersByTrackingNumber = createAsyncThunk(
 
 // Create an async thunk to fetch shipped user orders
 const fetchShippedUserOrders = createAsyncThunk(
-  'user/fetchShippedUserOrders',
+  "user/fetchShippedUserOrders",
   async (_, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
     try {
       // Make the API call to fetch shipped user orders
       const response = await axios.get(
-        'https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/shipped?shipped=true',
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/shipped?shipped=true",
         config
       );
       // Return the data from the response
@@ -95,14 +95,14 @@ const fetchShippedUserOrders = createAsyncThunk(
 
 // Create an async thunk to fetch a user order by unique_id
 const fetchUserOrderByUniqueId = createAsyncThunk(
-  'user/fetchUserOrderByUniqueId',
+  "user/fetchUserOrderByUniqueId",
   async (uniqueId, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
@@ -123,22 +123,43 @@ const fetchUserOrderByUniqueId = createAsyncThunk(
 
 // Create an async thunk to checkout a single product
 const checkoutSingleProduct = createAsyncThunk(
-  'user/checkoutSingleProduct',
-  async ({ product_unique_id, quantity, payment_method, shipping_unique_id, shipping_fee, to_address, duration, distance }, { getState }) => {
+  "user/checkoutSingleProduct",
+  async (
+    {
+      product_unique_id,
+      quantity,
+      payment_method,
+      shipping_unique_id,
+      shipping_fee,
+      to_address,
+      duration,
+      distance,
+    },
+    { getState }
+  ) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
     try {
       // Make the API call to checkout a single product
       const response = await axios.post(
-        'https://us-central1-hydra-express.cloudfunctions.net/app/user/order/checkout',
-        { product_unique_id, quantity, payment_method, shipping_unique_id, shipping_fee, to_address, duration, distance },
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/checkout",
+        {
+          product_unique_id,
+          quantity,
+          payment_method,
+          shipping_unique_id,
+          shipping_fee,
+          to_address,
+          duration,
+          distance,
+        },
         config
       );
       // Return the data from the response
@@ -152,21 +173,23 @@ const checkoutSingleProduct = createAsyncThunk(
 
 // Create an async thunk to checkout multiple products
 const checkoutMultipleProducts = createAsyncThunk(
-  'user/checkoutMultipleProducts',
+  "user/checkoutMultipleProducts",
   async ({ cart_unique_ids, payment_method }, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
-    // Set the headers with the access token
+    const { token } = getState().auth;
+
+    // Set the headers with the access token and hydra-express-access-key
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
+        "hydra-express-access-key": "passcoder_1853cef81fea126373d2", // Add the static access key here
       },
     };
 
     try {
       // Make the API call to checkout multiple products
       const response = await axios.post(
-        'https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/checkout',
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/checkout",
         { cart_unique_ids, payment_method },
         config
       );
@@ -181,21 +204,21 @@ const checkoutMultipleProducts = createAsyncThunk(
 
 // Create an async thunk to create an order dispute
 const createOrderDispute = createAsyncThunk(
-  'user/createOrderDispute',
+  "user/createOrderDispute",
   async ({ unique_id }, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
     try {
       // Make the API call to create an order dispute
       const response = await axios.post(
-        'https://us-central1-hydra-express.cloudfunctions.net/app/user/order/dispute',
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/dispute",
         { unique_id },
         config
       );
@@ -210,21 +233,21 @@ const createOrderDispute = createAsyncThunk(
 
 // Create an async thunk to update order payment method
 const updateOrderPaymentMethod = createAsyncThunk(
-  'user/updateOrderPaymentMethod',
+  "user/updateOrderPaymentMethod",
   async ({ tracking_number, payment_method }, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
     try {
       // Make the API call to update order payment method
       const response = await axios.put(
-        'https://us-central1-hydra-express.cloudfunctions.net/app/user/order/update/payment/method',
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/update/payment/method",
         { tracking_number, payment_method },
         config
       );
@@ -239,14 +262,14 @@ const updateOrderPaymentMethod = createAsyncThunk(
 
 // Create an async thunk to check order payment status
 const checkOrderPaymentStatus = createAsyncThunk(
-  'user/checkOrderPaymentStatus',
+  "user/checkOrderPaymentStatus",
   async (tracking_number, { getState }) => {
     // Get the authentication token from the state
-    const { token } = getState().auth; 
+    const { token } = getState().auth;
     // Set the headers with the access token
     const config = {
       headers: {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       },
     };
 
@@ -267,7 +290,7 @@ const checkOrderPaymentStatus = createAsyncThunk(
 
 // Export the users slice, including all the async thunks and endpoints
 const usersSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -346,13 +369,14 @@ const usersSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(checkoutMultipleProducts.fulfilled, (state) => {
+      .addCase(checkoutMultipleProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
+        state.action = action.payload;
       })
       .addCase(checkoutMultipleProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // Handle createOrderDispute
       .addCase(createOrderDispute.pending, (state) => {

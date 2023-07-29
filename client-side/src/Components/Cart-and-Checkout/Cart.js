@@ -26,12 +26,16 @@ const Cart = () => {
   const auth = useSelector((state) => state.auth);
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
   console.log(shippingPrice, "authhh");
-  const data = useSelector((state) => state.carts);
-  console.log(data);
+  // const data = useSelector((state) => state.carts);
+ 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [displayModal, setDisplayModal] = useState(false);
+
+  const storedItem = localStorage.getItem("carts");
+  const data = JSON.parse(storedItem);
+  console.log(JSON.parse(storedItem),'loll');
 
   const testAddress = data?.data?.data?.rows[0].product_data.location;
   const toAddress =
@@ -812,7 +816,7 @@ const Cart = () => {
                             height: "50px",
                             fontSize: "16px",
                           }}
-                          // onClick={() => navigate("/checkout")}
+                      onClick={() => navigate("/checkout")}
                         >
                           Accept Fare
                         </button>

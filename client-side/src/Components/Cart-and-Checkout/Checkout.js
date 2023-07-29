@@ -1,57 +1,284 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Formik, Form } from "formik";
-import TextFieldCheckout from "./TextFieldCheckout";
-import * as Yup from "yup";
-import "./Checkout.css";
-import Footer from "../Navbar-and-Footer/Footer";
-
-import "../Navbar-and-Footer/Navbar.css";
+import { useSelector, useDispatch } from "react-redux";
+import "../Products/ProductPage.css";
+import "./Cart.css";
+import { BiMinus } from "react-icons/bi";
+import logo from "./images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
+import cartItemimage from "../Products/images/Rectangle 15.png";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { RxPlus } from "react-icons/rx";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
+import imagge from "./images/Group 36684.png";
+import { AiFillShop } from "react-icons/ai";
+import { TbTruckDelivery } from "react-icons/tb";
+import { MdBroadcastOnHome } from "react-icons/md";
+import { fetchCartData } from "../../Slices/Cart/CartSlice";
+import {
+  deleteCartItem,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
+  clearCart,
+} from "../../Slices/Cart/CartSlice";
+import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
+import { checkoutMultipleProducts } from "../../Slices/orders/OrderSlice";
 
-const Checkout = (cartItem) => {
-  const validate = Yup.object({
-    houseNumber: Yup.string()
-      .max(45, "Must be 12 Characters or less")
-      .required("Your House Address is required"),
-    streetAddress: Yup.string()
-      .max(45, "Must be 12 Characters or less")
-      .required("Your street address is required"),
-    nearestBustop: Yup.string()
-      .max(45, "Must be 12 Characters or less")
-      .required("Your Nearest Bus-stop is required"),
-    townOfDelivery: Yup.string()
-      .max(45, "Must be 12 Characters or less")
-      .required("Your Town of Delivery is required"),
-    cityOfDelivery: Yup.string()
-      .max(45, "Must be 12 Characters or less")
-      .required("Your City of Delivery is required"),
-    stateOfDelivery: Yup.string()
-      .max(45, "Must be 12 Characters or less")
-      .required("Your State of Delivery is required"),
-  });
-  const cart = useSelector((state) => state.cart);
-
+const Cart = () => {
+  const auth = useSelector((state) => state.auth);
+  const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
+  console.log(shippingPrice, "authhh");
+  const data = useSelector((state) => state.carts);
+  console.log(data, "nana");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const [displayModal, setDisplayModal] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+    console.log(`Selected option: ${event.target.value}`);
+  };
+
+  const cart_unique_ids = data?.data?.rows?.map((item) => item.cart_unique_id);
+  console.log(cart_unique_ids, "cccc");
+
+  const [shipPrice, setShipPrice] = useState(null);
+  const [thisError, setError] = useState(null);
+
+  useEffect(() => {
+    const handleShipping = () => {
+      dispatch(
+        fetchShippingPrice({
+          fromAddress: "Port Harcourt",
+          toAddress: "Port harcourt",
+        })
+      )
+        .then((action) => {
+          console.log("Shipping price action:", action);
+          console.log("Shipping price payload:", action.payload);
+          console.log("Shipping response data:", action.payload?.data);
+          setShipPrice(action.payload?.data?.price); // Logging the response data
+        })
+        .catch((error) => {
+          console.log("Error fetching shipping price:", error);
+        });
+    };
+
+    handleShipping();
+  }, [dispatch]);
+
+  console.log(selectedOption, "selectedNannn");
+  const handleCheckouts = () => {
+    if (selectedOption) {
+      const payment_method = selectedOption;
+      dispatch(checkoutMultipleProducts({ cart_unique_ids, payment_method }))
+        .then((response) => {
+          console.log("Checkout response:", response);
+        })
+        .catch((error) => {});
+    } else {
+      setError("Please select a payment method.");
+      console.log("Please select a payment method.");
+    }
+  };
+
+  const [cartUniqueIds, setCartUniqueIds] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchCartData())
+      .then((response) => {
+        if (response.payload?.data?.rows) {
+          const newCartUniqueIds = response.payload.data.rows.map(
+            (item) => item.cart_unique_id
+          );
+          setCartUniqueIds(newCartUniqueIds);
+          console.log(newCartUniqueIds, "cart_unique_ids");
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching cart data:", error);
+      });
+  }, [dispatch]);
+
+  const grandTotal = data?.data?.data?.rows.reduce((total, cartItem) => {
+    const itemTotal = cartItem.product_data.price * cartItem.quantity;
+    return total + itemTotal;
+  }, 0);
+
+  const checkoutTotal = grandTotal + shipPrice;
 
   return (
     <div>
       <Navbarr />
-
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          marginTop:'12em'
+          marginTop: "7em",
         }}
       >
-        <div> {cart.cartItem}</div>
-     {console.log(cart.cartItem)}
-        <div className="checkout-main-div">
+        <div className="spread">
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            ></div>
+
+            {data?.data?.data?.rows.map((cartItem) => {
+              return (
+                <div className="cart-first-div" key={cartItem.unique_id}>
+                  <div className="div-cart-first-div">
+                    <img
+                      className="img-cart-first-div"
+                      src={cartItemimage}
+                      alt="cartitem"
+                    />
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginRight: "2em",
+                        alignItems: "baseline",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: "100%",
+                        }}
+                      >
+                        <h3
+                          style={{
+                            fontSize: "14px",
+                          }}
+                          className="Product-page-h1"
+                        >
+                          {cartItem.product_data.name}
+                        </h3>
+
+                        {/* <h3
+                            style={{
+                              border: "none",
+                              margin: "0px",
+                              padding: "0px",
+                              fontSize: "12px",
+                              color: "gray",
+                              marginTop: "0.56em",
+                            }}
+                            className="Product-page-price"
+                          >
+                            <span>&#8358;</span>
+                            {cartItem.product_data.price}{" "}
+                            <span
+                              style={{
+                                fontSize: "0.6em",
+                                color: "gray",
+                              }}
+                            >
+                              Unit Price
+                            </span>
+                          </h3> */}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "baseline",
+                            gap: "2.8em",
+                          }}
+                        >
+                          <h3
+                            style={{
+                              display: "flex",
+                              alignItems: "baseline",
+                              color: "gray",
+                              marginTop: "0.3em",
+                            }}
+                          >
+                            {" "}
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                color: "gray",
+                              }}
+                            >
+                              {" "}
+                              Total Price:{" "}
+                            </span>{" "}
+                            <span
+                              style={{
+                                fontSize: "14px",
+                              }}
+                            >
+                              {" "}
+                              <span>&#8358;</span>
+                              {cartItem.product_data.price * cartItem.quantity}
+                            </span>
+                          </h3>
+                        </div>
+                        <h3
+                          style={{
+                            display: "flex",
+                            alignItems: "baseline",
+                            color: "gray",
+                            marginTop: "0.3em",
+                          }}
+                        >
+                          {" "}
+                          <span
+                            style={{
+                              fontSize: "14px",
+                            }}
+                          >
+                            {" "}
+                            Qty:{""}
+                            <span
+                              style={{
+                                marginLeft: "0.31em",
+                              }}
+                            >
+                              {" "}
+                              {cartItem.quantity}
+                            </span>
+                          </span>
+                        </h3>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            width: "100%",
+                            alignItems: "baseline",
+                            color: "black",
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    <p
+                      style={{
+                        color: "gray",
+                        fontSize: "0.94em",
+                      }}
+                    >
+                      {cartItem.title}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           <div className="last-checkout-div">
-            <h3>Cart Summary</h3>
+            <h3>Order Summary</h3>
             <br />
+
             <div
               style={{
                 display: "flex",
@@ -76,194 +303,160 @@ const Checkout = (cartItem) => {
                   Delivery fees not included yet
                 </p>
               </div>
-              <h2>
+              <h2
+                style={{
+                  fontSize: "16px",
+                }}
+              >
                 <span>&#8358;</span>
-                {cart.cartTotalAmount}
-                <span
-                  style={{
-                    fontSize: "0.5em",
-                  }}
-                >
-                  .00
-                </span>
+                {grandTotal}
+                <span>.00</span>
               </h2>
             </div>
-            <br /> <br />
-            <button
+
+            <br />
+
+            <div
               style={{
-                backgroundColor: "#66666635",
-                height: "3.1em",
-                borderRadius: "0.4em",
-                border: "none",
-                fontSize: "01em",
-                color: "black",
-                width: "100%",
-                marginTop: "01em",
-                marginBottom: "01em",
-              }}
-              type="submit"
-              onClick={() => {
-                navigate("/cart");
+                display: "flex",
+                justifyContent: "space-between",
+                borderTop: "0.03em solid #66666635",
+                paddingTop: " 01.2em",
               }}
             >
-              Modify Cart
-            </button>
-          </div>
-          <div>
-            <div></div>
-            <div>
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  //   width: "100vw",
-                  //   height: "100vh",
-                  borderRadius: "1em",
-                  backgroundColor: "white",
+                  flexDirection: "column",
                 }}
               >
-                <Formik
-                  initialValues={{
-                    houseNumber: "",
-                    streetAddress: "",
-                    nearestBustop: "",
-                    townOfDelivery: "",
-                    cityOfDelivery: "",
-                    stateOfDelivery: "",
+                <h4>Delivery Fee </h4>
+                <p
+                  className="product-title"
+                  style={{
+                    color: "gray",
                   }}
-                  validationSchema={validate}
                 >
-                  {(formik) => (
-                    <div className="checkout-div-delivery">
-                      {/* <img
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    src={logo}
-                    alt="logo"
-                  /> */}
-                      <h2
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginTop: "02em",
-                        }}
-                      >
-                        {" "}
-                        Delivery Details
-                      </h2>
-                      <p
-                        style={{
-                          marginTop: "0.5em",
-                        }}
-                      >
-                        <span
-                          style={{
-                            color: "#386AEB",
-                          }}
-                          onClick={() => navigate("/signin")}
-                        ></span>
-                      </p>
-                      <br /> <br />
-                      {console.log(formik.values)}
-                      <Form>
-                        <TextFieldCheckout
-                          label="Address"
-                          name="houseNumber"
-                          type="text"
-                        />
-
-                        {/*  <br /><TextFieldCheckout
-                      label="Street Description"
-                      name="streetAddress"
-                      type="text"
-                    /> */}
-                        <br />
-                        <TextFieldCheckout
-                          label="Nearest Bustop"
-                          name="nearestBustop"
-                          type="text"
-                        />
-                        <br />
-                        {/* <TextFieldCheckout
-                      label="Town"
-                      name="townOfDelivery"
-                      type="text"
-                    /> 
-                     <br />*/}
-                        <TextFieldCheckout
-                          label="City"
-                          name="cityOfDelivery"
-                          type="text"
-                        />
-                        <br />
-                        <TextFieldCheckout
-                          label="State"
-                          name="stateOfDelivery"
-                          type="text"
-                        />
-                        <br />
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <br />
-                          <button
-                            style={{
-                              backgroundColor: "#386AEB",
-                              height: "3.1em",
-                              borderRadius: "0.4em",
-                              border: "none",
-                              color: "white",
-                              fontSize: "1em",
-                            }}
-                            type="submit"
-                            onClick={() => navigate("/payment")}
-                          >
-                            Proceed to Payment
-                          </button>
-                          <button
-                            style={{
-                              backgroundColor: "#66666635",
-                              height: "3.1em",
-                              borderRadius: "0.4em",
-                              border: "none",
-                              fontSize: "01em",
-                              color: "black",
-
-                              marginTop: "01em",
-                              marginBottom: "01em",
-                            }}
-                            type="submit"
-                            onClick={() => {
-                              navigate("/cart");
-                            }}
-                          >
-                            Modify Cart
-                          </button>
-                        </div>
-
-                        {/* <button type='submit'>Reset</button> */}
-                      </Form>
-                    </div>
-                  )}
-                </Formik>
+                  Delivery fee
+                </p>
               </div>
+              <h2
+                style={{
+                  fontSize: "16px",
+                }}
+              >
+                <span>&#8358;</span>
+                {shipPrice}
+                <span>.00</span>
+              </h2>
+            </div>
+            <br />
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                borderTop: "0.03em solid #66666635",
+                paddingTop: " 01.2em",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <h4>Order Total </h4>
+                <p
+                  className="product-title"
+                  style={{
+                    color: "gray",
+                  }}
+                >
+                  Price to be Checked Out
+                </p>
+              </div>
+              <h2
+                style={{
+                  fontSize: "20px",
+                  fontWeight: "bolder",
+                }}
+              >
+                <strong>
+                  <span>&#8358;</span>
+                  {checkoutTotal}
+                  <span>.00</span>
+                </strong>
+              </h2>
+            </div>
+            <div>
+              <div
+                style={{
+                  marginTop: "3.2em",
+                }}
+              >
+                <div className="payment-page">
+                  <label className="payment-option">
+                    <input
+                      type="checkbox"
+                      name="payment-option"
+                      value="credit-card"
+                      onChange={handleOptionChange}
+                      checked={selectedOption === "credit-card"}
+                    />
+                    <span className="checkmark"></span>
+                    Pay with Credit Card
+                  </label>
+                  <label className="payment-option">
+                    <input
+                      type="checkbox"
+                      name="payment-option"
+                      value="wallet"
+                      onChange={handleOptionChange}
+                      checked={selectedOption === "wallet"}
+                    />
+                    <span className="checkmark"></span>
+                    Pay with Wallet
+                  </label>
+                  <label className="payment-option">
+                    <input
+                      type="checkbox"
+                      name="payment-option"
+                      value="transfer"
+                      onChange={handleOptionChange}
+                      checked={selectedOption === "transfer"}
+                    />
+                    <span className="checkmark"></span>
+                    Pay with Transfer
+                  </label>
+                </div>
+              </div>
+              <button
+                style={{
+                  fontSize: "1em",
+                  marginTop: "3em",
+                }}
+                className="checkout-btn"
+                onClick={handleCheckouts}
+              >
+                Pay {""} {""} {""} <span>&#8358;{checkoutTotal}</span>
+              </button>
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "14px",
+                  textAlign: "center",
+                  margin: "8px 0",
+                }}
+              >
+                {thisError}
+              </p>
             </div>
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };
 
-export default Checkout;
+export default Cart;
