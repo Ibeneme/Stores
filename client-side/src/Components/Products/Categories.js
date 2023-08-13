@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { categoryFetch } from "../../Slices/Products/CategoriesSlices";
 import Loader from "../Loader/Loader";
 import { addToCart } from "../../Slices/cartSlice";
-import sampleproductimage from "./images/Re.png";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
 
 const Categories = () => {
@@ -89,9 +88,10 @@ const Categories = () => {
                     )
                   }
                   className=""
-                  src={sampleproductimage}
+                  src={product?.product_images_data?.[0]?.image?.url}
                   alt={product.name}
                   width="100%"
+                  height="180px"
                 />
               </div>
               <div

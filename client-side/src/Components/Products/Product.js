@@ -59,6 +59,22 @@ const Product = () => {
             },
           });
   
+        } else if(response.payload.message === 'No token provided!'){
+          toast.success('Please login to add to Cart', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            style: {
+            
+              backgroundColor: "#007aff", // Background color
+              color: "white", // Text color
+            },
+          });
+          navigate('/signin')
         }
     } catch (error) {
       console.log("Error adding item to cart:", error);
