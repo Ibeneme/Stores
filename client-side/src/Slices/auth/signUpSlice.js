@@ -19,7 +19,7 @@ export const signupUser = createAsyncThunk(
 );
 export const signupPasscoder = createAsyncThunk(
   "signup/signupPasscoder",
-  async ({ country, pid },  { rejectWithValue } ) => {
+  async ({ country, pid }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
         "https://us-central1-hydra-express.cloudfunctions.net/app/auth/user/signup/via/passcoder",
@@ -32,7 +32,7 @@ export const signupPasscoder = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue(error.response.data);;
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -60,6 +60,24 @@ export const signinPasscoder = createAsyncThunk(
   }
 );
 
+export const signoutUser = createAsyncThunk(
+  "auth/signoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.get(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/auth/user/signout"
+      );
+
+      // Clear the token from local storage
+      localStorage.removeItem("token");
+
+      return null; // Return null since no data is needed after sign out
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const authSignUpSlice = createSlice({
   name: "authSignUp",
   initialState: {
@@ -68,7 +86,11 @@ const authSignUpSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearToken: (state) => {
+      state.token = null;
+
+  }},
   extraReducers: (builder) => {
     builder
       .addCase(signupUser.pending, (state) => {
@@ -94,8 +116,9 @@ const authSignUpSlice = createSlice({
       })
       .addCase(signupPasscoder.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload
-      }).addCase(signinPasscoder.pending, (state) => {
+        state.error = action.payload;
+      })
+      .addCase(signinPasscoder.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -107,8 +130,22 @@ const authSignUpSlice = createSlice({
       .addCase(signinPasscoder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(signoutUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signoutUser.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+        state.token = null; 
+      })
+      .addCase(signoutUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
+export const { clearToken } = authSignUpSlice.actions;
 export default authSignUpSlice.reducer;

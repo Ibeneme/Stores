@@ -50,7 +50,7 @@ import ProductImageForm from "./Components/Sellers/addImage";
 import ProductImageFormEdit from "./Components/Sellers/edit/editImage";
 import DeleteProductImageForm from "./Components/Sellers/deleteImage";
 import EditProductRatingForm from "./Components/Rating/EditRatings";
-import KYCForm from "./Components/Kyc/Kyc";
+
 import ProductListPublish from "./Components/Sellers/Publish";
 import ProductListDrafts from "./Components/Sellers/drafts";
 
@@ -197,8 +197,6 @@ function App() {
         <Route path="/editall" element={<EditAllForm />} />
         <Route path="/editimage" element={<ProductImageForm />} />
         <Route path="/deleteimage" element={<DeleteProductImageForm />} />
-
-        <Route path="/kyc" element={<KYCForm />} />
 
         <Route path="/orderr" element={<Orders />} />
 

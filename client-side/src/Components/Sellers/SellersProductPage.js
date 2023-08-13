@@ -133,13 +133,13 @@ const SellersProductPage = () => {
                         gap: "10px",
                       }}
                     >
-                      {product.data.product_images_data
-                        ? product.data.product_images_data.map(
+                      {product?.data?.product_images_data
+                        ? product?.data?.product_images_data.map(
                             (data, index) => (
                               <img
                                 className="Product-image-first-image"
                                 key={index}
-                                src={data.image.url}
+                                src={data?.image?.url}
                                 alt={`yeah ${index}`}
                                 style={{
                                   width: "100%",

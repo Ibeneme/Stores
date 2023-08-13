@@ -20,9 +20,9 @@ import { useNavigate } from "react-router";
 
 import { userProfile } from "../../Slices/userSlice";
 import { fetchUserProfile } from "../../Slices/Users/ProfileSlice";
-import { logOutUser } from "../../Slices/authSlice";
+import { signoutUser } from "../../Slices/auth/signUpSlice";
 import { fetchCartData } from "../../Slices/Cart/CartSlice";
-
+import { clearToken } from "../../Slices/auth/signUpSlice";
 function Navbarr({ token }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [cartData, setCartResponse] = useState(null);
@@ -54,12 +54,16 @@ function Navbarr({ token }) {
   };
 
   const handleLogout = () => {
-    dispatch(logOutUser(null));
+    dispatch(clearToken());
+    dispatch(signoutUser());
+    const token = localStorage.getItem("token");
+    console.log(token, "llol");
+    localStorage.removeItem("token");
+    window.location.reload();
   };
 
   const [isOpen, setIsOpen] = useState(false);
 
- 
   const auth = useSelector((state) => state.auth);
   const userprofile = useSelector((state) => state.userProfile.data);
 
@@ -135,7 +139,11 @@ function Navbarr({ token }) {
       </div>
 
       <nav className="nav-bar" ref={navRef}>
-        <span>
+        <span
+          style={{
+            width: "100%",
+          }}
+        >
           {auth.token ? (
             <span
               style={{
@@ -231,6 +239,23 @@ function Navbarr({ token }) {
                 <MdOutlineHelpOutline />
                 Help
               </p>
+              <span
+                style={{
+                  width: "90%",
+                  height: "50px",
+            
+                  borderRadius: "22em",
+                  border: "1px solid white",
+                  backgroundColor: "#ff000000",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={handleLogout}
+              >
+                Logout
+              </span>
             </span>
           ) : (
             <span
@@ -239,6 +264,7 @@ function Navbarr({ token }) {
                 flexDirection: "column",
                 justifyContent: "center",
                 gap: "3em",
+                width: "100%",
               }}
             >
               <p
@@ -330,6 +356,40 @@ function Navbarr({ token }) {
                 <MdOutlineHelpOutline />
                 Help
               </p>
+
+              <span
+                style={{
+                  height: "50px",
+                  borderRadius: "22em",
+                  border: "none",
+                  backgroundColor: "white",
+                  color: "black",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "90%",
+                }}
+                onClick={() => navigate("/signin")}
+              >
+                Sign in
+              </span>
+              <span
+                style={{
+                  width: "90%",
+                  height: "50px",
+                  marginTop: "-2em",
+                  borderRadius: "22em",
+                  border: "1px solid white",
+                  backgroundColor: "none",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => navigate("/signup")}
+              >
+                Sign Up
+              </span>
             </span>
             // <span
             //   style={{
