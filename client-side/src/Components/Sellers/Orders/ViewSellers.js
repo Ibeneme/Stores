@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { fetchOrderDetails } from "../../../Slices/orders/SellersOrders/OrdersSellersSlice";
-import { MdEdit } from "react-icons/md";
-import { FaCreditCard } from "react-icons/fa";
 import "../styles/product.css";
-import { BsTrash } from "react-icons/bs";
 import ShimmerLoader from "../../Loader/Shima";
 
 const ViewSellers = () => {
@@ -14,7 +11,7 @@ const ViewSellers = () => {
   const queryParams = new URLSearchParams(location.search);
   const unique_id = queryParams.get("unique_id");
   const orders = useSelector((state) => state.ordersInternal);
-  const navigate = useNavigate();
+ 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -135,6 +132,7 @@ const ViewSellers = () => {
                 }}
               >
                 <img
+                alt='track'
                   width="100%"
                   height="100%"
                   style={{

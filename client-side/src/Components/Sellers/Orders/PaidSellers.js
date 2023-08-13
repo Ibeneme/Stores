@@ -19,25 +19,17 @@ const PaidSellers = () => {
   const shippedOrders = useSelector((state) => state.ordersInternal);
   console.log(shippedOrders, "shippedOrders");
 
-  const handleOpen = () => {
-    setIsModalOpen(true);
-  };
-
   const handleClose = () => {
     setIsModalOpen(false);
   };
 
-  const handleOpenNext = () => {
-    setIsModalOpenNext(true);
-  };
+
 
   const handleCloseNext = () => {
     setIsModalOpenNext(false);
   };
 
-  const handleTransit = () => {
-    setIsModalOpenNext(true);
-  };
+ 
 
   const handlePaid = (order_unique_id) => {};
 
@@ -212,6 +204,7 @@ const PaidSellers = () => {
                           }}
                         >
                           <img
+                          alt='orders'
                             width="100%"
                             height="100%"
                             style={{

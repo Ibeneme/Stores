@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../Slices/Sellers/SellersProductDetailsSlice";
 import { useLocation, useNavigate } from "react-router";
 import { publishProduct } from "../../Slices/Sellers/publishProductSlice";
-import sample from "../Products/images/Rectangle 15.png";
 import Loader from "../Loader/Loader";
 import { deleteProduct } from "../../Slices/Sellers/deleteProductSlice";
 import { deleteProductImage } from "../../Slices/Sellers/Image/deleteImageSlice";
