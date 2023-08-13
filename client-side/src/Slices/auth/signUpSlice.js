@@ -37,6 +37,29 @@ export const signupPasscoder = createAsyncThunk(
   }
 );
 
+export const signinPasscoder = createAsyncThunk(
+  "signup/signinPasscoder",
+  async ({ country, pid }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/auth/user/signin/via/pid",
+        {
+          country,
+          pid,
+        }
+      );
+
+      // Store the token in local storage
+      localStorage.setItem("authToken", response.data.token);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const authSignUpSlice = createSlice({
   name: "authSignUp",
   initialState: {
@@ -72,6 +95,18 @@ const authSignUpSlice = createSlice({
       .addCase(signupPasscoder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload
+      }).addCase(signinPasscoder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signinPasscoder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.token = action.payload.token; // Update token in state
+      })
+      .addCase(signinPasscoder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

@@ -59,21 +59,15 @@ import authSigninReducer from "./Slices/auth/signinSlice";
 import authSignUpReducer from "./Slices/auth/signUpSlice";
 import cartsReducer from "./Slices/Cart/CartSlice";
 import shippingReducer from "./Slices/Shipping/Shipping";
-import shippingSliceReducer, {
-  fetchAllShippingData,
-} from "./Slices/Shipping/ShippingSlice";
+import shippingSliceReducer from "./Slices/Shipping/ShippingSlice";
 
 import usersReducer from "../src/Slices/orders/OrderSlice";
-import disputeSliceReducer, {
-  fetchAllDisputes,
-  fetchDisputesByOrderUniqueId,
-  createNewDispute,
-} from "./Slices/Disputes/Disputes";
-import ordersInternalSliceReducer from "./Slices/orders/SellersOrders/OrdersSellersSlice";
+import disputeSliceReducer from "./Slices/Disputes/Disputes";
+import ordersInternalReducer from "./Slices/orders/SellersOrders/OrdersSellersSlice";
 import transactionSliceReducer from "./Slices/Transaction/TransactionSlice";
 import kycSliceReducer from './Slices/KYC/KYCSlice'
 import cartReducer from './Slices/cartSlice'
-
+import paidReducer from './Slices/orders/SellersOrders/Gets'
 const saveStateMiddleware = (store) => (next) => (action) => {
   const result = next(action);
   const state = JSON.stringify(store.getState());
@@ -84,11 +78,11 @@ const saveStateMiddleware = (store) => (next) => (action) => {
 const store = configureStore({
   reducer: {
     cart: cartReducer, 
-
+paid:paidReducer,
     shipping: shippingReducer,
     shippingSlice: shippingSliceReducer,
     disputeSlice: disputeSliceReducer,
-    ordersInternalSlice: ordersInternalSliceReducer,
+    ordersInternal: ordersInternalReducer,
     transactionSlice: transactionSliceReducer,
 
     authSignin: authSigninReducer,

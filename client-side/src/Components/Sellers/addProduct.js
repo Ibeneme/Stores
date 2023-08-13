@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../../Slices/Sellers/addProductSlice";
 import { sendProductDraft } from "../../Slices/Sellers/draftProductSlice";
 import "./styles/addProduct.css";
 import { useNavigate } from "react-router";
-import { MdOutlineRemoveCircle } from "react-icons/md";
+import { MdOutlineRemoveCircle, MdCloudUpload } from "react-icons/md";
 import { useGetAllProductsQuery } from "../../Slices/Sellers/productSlice";
 import { addProductImage } from "../../Slices/Sellers/Image/AddImageSlice";
 import { storage } from "../../Firebase/firebaseConfig";
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { publishProduct } from "../../Slices/Sellers/publishProductSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddProductForm = () => {
   const dispatch = useDispatch();
@@ -19,19 +20,32 @@ const AddProductForm = () => {
   const isImageUploadHandledRef = useRef(false);
   const { error: nameError } = useSelector((state) => state.draftProduct);
   console.log(nameError, "draft");
+  const maxFileSizeInBytes = 3 * 1024 * 1024; // 3 MB
+  const [imageError, SetImageError] = useState("");
+
+  const handleImageChange = (event) => {
+    SetImageError("");
+    const files = Array.from(event.target.files);
+    const validFiles = files.filter((file) => file.size <= maxFileSizeInBytes);
+
+    if (validFiles.length === files.length) {
+      setImageUpload((prevUploads) => [...prevUploads, ...validFiles]);
+    } else {
+      SetImageError(
+        "Selected Images should not exceed a maximum limit of 3MB."
+      );
+    }
+  };
 
   const { data } = useGetAllProductsQuery();
   console.log(data, "productss");
-  const loading = useSelector((state) => state.productImage.loading);
-  const error = useSelector((state) => state.productImage.error);
-  const success = useSelector((state) => state.productImage.success);
   const [imageList, setImageList] = useState([]);
   const [uniqueID, setUniqueId] = useState("");
-  // // const [product_unique_id, setProductUniqueId] = useState("");
+  const [loading, setLoading] = useState(false);
   const [imageUpload, setImageUpload] = useState([]);
 
   const imageListRef = ref(storage, "SellersImages/");
-
+ 
   const [setError, setFormError] = useState("");
   const [productData, setProductData] = useState({
     category_unique_id: "",
@@ -50,6 +64,7 @@ const AddProductForm = () => {
   const navigate = useNavigate();
 
   const [showAddModal, setShowAddModal] = useState(false);
+
   const [showDraftModal, setShowDraftModal] = useState(false);
 
   const handleDraft = () => {
@@ -69,26 +84,25 @@ const AddProductForm = () => {
       .catch((error) => {});
   };
 
-  const handleAddProduct = async () => {
-    try {
-      setShowAddModal(true);
+  // const handleAddProduct = async () => {
+  //   try {
+  //     setShowAddModal(true);
 
-      const productDraft = parseProductData(productData);
+  //     const productDraft = parseProductData(productData);
 
-      const response = await dispatch(sendProductDraft(productDraft));
-      console.log("Product Draft Sent Successfully:", response);
+  //     const response = await dispatch(sendProductDraft(productDraft));
+  //     console.log("Product Draft Sent Successfully:", response);
 
-      const unique_id = response.payload.data.unique_id;
-      setUniqueId(unique_id);
+  //     const unique_id = response.payload.data.unique_id;
+  //     setUniqueId(unique_id);
 
-      await handleImageUpload();
+  //     await handleImageUpload();
 
-      console.log("Add Product logic goes here");
-      // You can dispatch other actions or perform other operations related to adding the product
-    } catch (error) {
-      console.error("Error Sending Product Draft:", error);
-    }
-  };
+  //     console.log("Add Product logic goes here");
+  //   } catch (error) {
+  //     console.error("Error Sending Product Draft:", error);
+  //   }
+  // };
   const openAddModal = async () => {
     try {
       setShowAddModal(true);
@@ -102,24 +116,28 @@ const AddProductForm = () => {
       console.error("Error Sending Product Draft:", error);
     }
   };
-  
+
+  const handleRemoveImage = (indexToRemove) => {
+    setImageUpload((prevUploads) =>
+      prevUploads.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
   const handleImageUpload = async (unique_id) => {
     if (imageUpload.length === 0 || isImageUploadHandledRef.current) return;
-  
+
     try {
       const uploadPromises = imageUpload.map(async (file) => {
         const imageRef = ref(storage, `SellersImages/${uuidv4()}-${file.name}`);
         await uploadBytes(imageRef, file);
         return getDownloadURL(imageRef);
       });
-  
+
       const urls = await Promise.all(uploadPromises);
-  
+
       setImageUpload([]);
       setImageList((prevImageList) => [...prevImageList, ...urls]);
-  
-      alert("Images uploaded");
-  
+
       const images = urls.map((url) => ({ url }));
       dispatch(addProductImage({ unique_id, images }));
 
@@ -128,21 +146,58 @@ const AddProductForm = () => {
       console.error("Error Uploading Images:", error);
     }
   };
-  
 
   const handleSubmit = async () => {
+    setLoading(true);
+    await handleImageUpload();
     try {
       const response = await dispatch(publishProduct(uniqueID));
-      console.log(response);
-      if (response.success) {
-        // Product was published successfully
-        // //  navigate(`/success?message=Product%20successfully%Added`);
+      setLoading(false);
+      console.log(response, "recorddd");
+      if (response.type === "product/publishProduct/fulfilled") {
+        toast.success("Product published successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#064bde", // Background color
+            color: "white", // Text color
+          },
+        });
+        navigate("/sellersproductsdisplay");
       } else {
-        // // Product was not published successfully
-        // //  navigate(`/errorpage?message=Error%20Adding%20this%20Product`);
+        toast.error("Failed to publish product. Please try again.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "red", // Background color
+            color: "white", // Text color
+          },
+        });
       }
     } catch (error) {
-      // Handle any error that occurred during dispatching
+      toast.error("An error occurred. Please try again later.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: {
+          backgroundColor: "red", // Background color
+          color: "white", // Text color
+        },
+      });
       console.error("Error Adding Product:", error);
       // navigate(`/errorpage?message=Error%20Adding%20this%20Product`);
     }
@@ -164,6 +219,7 @@ const AddProductForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "color" || name === "size") {
+      setFormError("");
       setProductData((prevData) => ({
         ...prevData,
         specifications: {
@@ -245,6 +301,7 @@ const AddProductForm = () => {
 
     return color.charAt(0).toUpperCase() + color.slice(1);
   };
+ 
 
   return (
     <div
@@ -258,6 +315,13 @@ const AddProductForm = () => {
       }}
       className="addprodut-f4"
     >
+      <p
+        style={{
+          display: "none",
+        }}
+      >
+        {imageList} {imageListRef}
+      </p>
       <div
         className="addproduct-first-div"
         style={{
@@ -272,43 +336,120 @@ const AddProductForm = () => {
         <h1 className="addproduct-first-h1">Sell a Product</h1>
 
         <div style={{ marginTop: "0em" }}>
-          {/* <input
-          type="text"
-          // value={product_unique_id}
-          onChange={(e) => setProductUniqueId(e.target.value)}
-          placeholder="Product Unique ID"
-        /> */}
-
-          {/* Custom styled image upload */}
           <label>
-            <input
-              type="file"
-              onChange={(event) => {
-                const files = Array.from(event.target.files);
-                setImageUpload((prevUploads) => [...prevUploads, ...files]);
+            <div
+              className="input-forms"
+              style={{
+                border: "none",
+                backgroundColor: "#DDEDF5",
+                color: "#DDEDF5",
+                position: "relative",
+                overflow: "hidden",
+                // Adjust the width as needed
+                height: "80px",
               }}
-              accept="image/*"
-              multiple
-            />
+            >
+              <input
+                style={{
+                  border: "none",
+                  backgroundColor: "#DDEDF5",
+                  color: "#DDEDF5",
+                  position: "absolute",
+                }}
+                type="file"
+                // onChange={(event) => {
+                //   const files = Array.from(event.target.files);
+                //   setImageUpload((prevUploads) => [...prevUploads, ...files]);
+                // }}
 
-            <span>Upload Photo</span>
-            {imageUpload.map((file, index) => (
-              <img
-                key={index}
-                src={URL.createObjectURL(file)}
-                alt={`Selected Image ${index + 1}`}
-                style={{ width: "100px", height: "100px", margin: "5px" }}
+                onChange={handleImageChange}
+                accept="image/*"
+                multiple
+                placeholder="Choose an Image"
               />
-            ))}
+              <p
+                style={{
+                  position: "absolute",
+                  top: "58px",
+                  color: "#000",
+                  left: "39%",
+                }}
+              >
+                Upload an image
+              </p>
+              <MdCloudUpload
+                style={{
+                  position: "absolute",
+                  top: "12px",
+                  left: "45%",
+                  color: "black",
+                  fontSize: "48px",
+                }}
+              />
+            </div>
+            {imageError ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "14px",
+                  textAlign: "center",
+                }}
+              >
+                {" "}
+                {imageError}
+              </p>
+            ) : null}
           </label>
+          <br />
 
-          <button type="submit">Add Images</button>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "10px",
+              marginBottom: "24px",
+            }}
+          >
+            {imageUpload.map((file, index) => (
+              <div
+                key={index}
+                style={{
+                  gap: "10px",
+                  position: "relative",
+                }}
+              >
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={`Selected order ${index + 1}`}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    cursor: "pointer",
+                    margin: "5px",
+                  }}
+                />
+                <MdOutlineRemoveCircle
+                  style={{
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    backgroundColor: "white",
+                    fontSize: "24px",
+                    borderRadius: "4555px",
+                    border: "none",
+                    color: "red",
+                  }}
+                  onClick={() => handleRemoveImage(index)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div>
           <select
             className="input-forms"
-            style={{ height: "50px" }}
+            style={{ height: "50px", backgroundColor: "white" }}
             name="category_unique_id"
             value={productData.category_unique_id}
             onChange={handleChange}
@@ -347,14 +488,16 @@ const AddProductForm = () => {
           </p>
         </div>
         <div>
-          <textarea
+          <input
             className="input-forms"
-            style={{ height: " 6em", marginBottom: "1.69em", padding: "0.4em" }}
+            style={{
+              height: "50px",
+            }}
             name="description"
             value={productData.description}
             onChange={handleChange}
             placeholder="Enter Product Description"
-          ></textarea>
+          />
           <p
             style={{
               marginTop: "-1.59em",
@@ -621,6 +764,53 @@ const AddProductForm = () => {
           </select>
         </div>
 
+        {showAddModal && (
+          <div
+            style={{
+              zIndex: "999",
+            }}
+            className="modal"
+          >
+            <div className="modal-content">
+              <h2>Add this Product</h2>
+              <p>Are you sure you want to add this product?</p>
+
+              <div className="modal-buttons">
+                <button
+                  style={{
+                    backgroundColor: "#d9d9d945",
+                    color: "#000",
+                  }}
+                  onClick={closeAddModal}
+                >
+                  No, Save as Drafts
+                </button>
+                {loading ? (
+                  <button
+                    style={{
+                      backgroundColor: "#064bde32",
+                      color: "white",
+                    }}
+                    onClick={handleSubmit}
+                  >
+                    Uploading...{" "}
+                  </button>
+                ) : (
+                  <button
+                    style={{
+                      backgroundColor: "#064bde",
+                      color: "white",
+                    }}
+                    onClick={handleSubmit}
+                  >
+                    Add{" "}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         <button
           style={{
             height: "50px",
@@ -669,16 +859,27 @@ const AddProductForm = () => {
               >
                 No, Save as Drafts
               </button>
-
-              <button
-                style={{
-                  backgroundColor: "#064bde",
-                  color: "white",
-                }}
-                onClick={handleSubmit}
-              >
-                Add{" "}
-              </button>
+              {loading ? (
+                <button
+                  style={{
+                    backgroundColor: "#064bde32",
+                    color: "white",
+                  }}
+                  onClick={handleSubmit}
+                >
+                  Uploading...{" "}
+                </button>
+              ) : (
+                <button
+                  style={{
+                    backgroundColor: "#064bde",
+                    color: "white",
+                  }}
+                  onClick={handleSubmit}
+                >
+                  Add{" "}
+                </button>
+              )}
             </div>
           </div>
         </div>

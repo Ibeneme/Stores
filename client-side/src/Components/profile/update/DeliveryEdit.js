@@ -22,40 +22,39 @@ const UserProfileEditDelivery = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
 
- 
- 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const formatAddress = (str) => {
       return str
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
     };
-  
+
     const addressData = {
       address: formatAddress(address),
       street: formatAddress(street),
       city: formatAddress(city),
       state: formatAddress(state),
     };
-  
+
     try {
-      await dispatch(updateProfileAddress(addressData));
-  
-      if (nameError) {
-        console.error("Error updating address:", nameError);
-      } else {
+      const response = await dispatch(updateProfileAddress(addressData));
+      console.log(response);
+      if (response.payload.message === "User address updated successfully") {
         console.log("Address updated successfully!");
-        navigate('/deliverydetails');
+        navigate(-1); // Navigate back to the previous page
+      } else {
+        console.log(
+          "Error updating address:",
+          response
+        );
       }
     } catch (error) {
-      console.error("Error updating address:", error);
+      console.log("Error updating address:", error);
     }
   };
-  
 
   useEffect(() => {
     dispatch(fetchUserProfile());

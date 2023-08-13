@@ -16,11 +16,11 @@ export const updateAllProductDetails = createAsyncThunk(
           "hydra-express-access-token": token,
         },
       });
-console.log(response)
-      return response.data;
+      console.log(response);
+      return response.data.data;
     } catch (error) {
-        console.log(error)
-      return thunkAPI.rejectWithValue(error.response.data);
+      console.log(error.response.data.data,'response');
+      return thunkAPI.rejectWithValue(error.response.data.data);
     }
   }
 );
@@ -48,9 +48,7 @@ const editAllSlice = createSlice({
       })
       .addCase(updateAllProductDetails.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload
-          ? action.payload.message
-          : "Error occurred while updating product details.";
+        state.error = action.payload;
         state.success = false;
       });
   },

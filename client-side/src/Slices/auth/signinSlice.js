@@ -1,7 +1,5 @@
-
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
   user: null,
@@ -10,10 +8,10 @@ const initialState = {
 };
 
 export const signInViaEmail = createAsyncThunk(
-  'auth/signInViaEmail',
+  "auth/signInViaEmail",
   async ({ email, password }) => {
     const response = await axios.post(
-      'https://us-central1-hydra-express.cloudfunctions.net/app/auth/user/signin/via/email',
+      "https://us-central1-hydra-express.cloudfunctions.net/app/auth/user/signin/via/email",
       { email, password }
     );
     return response.data;
@@ -21,7 +19,7 @@ export const signInViaEmail = createAsyncThunk(
 );
 
 const authSignInSlice = createSlice({
-  name: 'authSignin',
+  name: "authSignin",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

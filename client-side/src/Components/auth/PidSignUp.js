@@ -10,7 +10,7 @@ const PIDSignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState('');
   const [formData, setFormData] = useState({
     country: "",
     pid: "",
@@ -34,10 +34,11 @@ const PIDSignUp = () => {
         country: "",
         pid: "",
       });
-      setFormErrors({});
+      setFormErrors();
     } catch (error) {
       console.log(error, "comperr");
-      setFormErrors(error.data);
+      setFormErrors(error.message);
+
     }
   };
 
@@ -66,19 +67,27 @@ const PIDSignUp = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center",
         }}
       >
-        <img
+        <div
           style={{
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            width: "3em",
           }}
-          src={logo}
-          alt="logo"
-        />
+        >
+          <img
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "3em",
+            }}
+            src={logo}
+            alt="logo"
+          />
+        </div>
         <h2
           style={{
             width: "100%",
@@ -86,11 +95,18 @@ const PIDSignUp = () => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: "0.5em",
+            textAlign: "center",
           }}
         >
           Create an account with Passcoder
         </h2>
-        <p style={{ marginTop: "0.5em", marginBottom: "3em" }}>
+        <p
+          style={{
+            marginTop: "0.5em",
+            marginBottom: "3em",
+            textAlign: "center",
+          }}
+        >
           Already have an account?{" "}
           <span
             style={{ color: "#386AEB", cursor: "pointer" }}
@@ -99,6 +115,20 @@ const PIDSignUp = () => {
             Sign In with Passcoder
           </span>
         </p>
+
+        {formErrors ? (
+          <p
+            style={{
+              textAlign: "left",
+              padding: "12px",
+              backgroundColor: "#ff000021",
+              color: "red",
+              marginBottom: "2em",
+            }}
+          >
+          {formErrors === 'Validation Error Occured'? 'Country and PID required': 'Passcoder ID already exists!'}
+          </p>
+        ) : null}
 
         <div
           style={{
@@ -117,13 +147,6 @@ const PIDSignUp = () => {
             <option value="">Select Country</option>
             <option value="Nigeria">Nigeria</option>
           </select>
-          {formErrors &&
-            Object.values(formErrors).map((error) => {
-              if (error.param === "country") {
-                return <div key={error.param} className="error">{error.msg}</div>;
-              }
-              return null;
-            })}
         </div>
         <div
           style={{
@@ -141,13 +164,6 @@ const PIDSignUp = () => {
             onChange={handleChange}
             placeholder="Passcoder ID"
           />
-          {formErrors &&
-            Object.values(formErrors).map((error) => {
-              if (error.param === "pid") {
-                return <div key={error.param} className="error">{error.msg}</div>;
-              }
-              return null;
-            })}
         </div>
         <button
           style={{

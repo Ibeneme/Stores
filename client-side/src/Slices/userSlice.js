@@ -1,43 +1,40 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const userData = JSON.parse(localStorage.getItem("userData"))
   ? JSON.parse(localStorage.getItem("userData"))
   : null;
 
 export const userProfile = createAsyncThunk(
-  'auth/userProfile',
+  "auth/userProfile",
   async (_, { getState }) => {
     try {
       const token = getState().auth.token;
       const headers = {
-        'hydra-express-access-token': token,
+        "hydra-express-access-token": token,
       };
       const response = await axios.get(
-        'https://us-central1-hydra-express.cloudfunctions.net/app/user/profile',
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/profile",
         { headers }
       );
       const result = response.data.data;
 
-      localStorage.setItem('userData', JSON.stringify(response.data.data));
+      localStorage.setItem("userData", JSON.stringify(response.data.data));
 
       console.log(result);
       console.log(JSON.stringify(response.data.data));
 
       return response.data.data;
     } catch (error) {
-      // Handle error
-      throw new Error('Failed to fetch user profile');
+      throw new Error("Failed to fetch user profile");
     }
   }
 );
 
 const userProfileSlice = createSlice({
-  name: 'userProfile',
+  name: "userProfile",
   initialState: {
-    userData: userData, // 
+    userData: userData,
     isLoading: false,
     error: null,
   },

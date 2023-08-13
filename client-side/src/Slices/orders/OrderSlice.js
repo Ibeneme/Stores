@@ -28,9 +28,11 @@ const fetchUserOrders = createAsyncThunk(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders",
         config
       );
+      console.log(response);
       // Return the data from the response
       return response.data;
     } catch (error) {
+      console.log(error);
       // If an error occurs, throw the error message
       throw error.response.data;
     }
@@ -113,9 +115,11 @@ const fetchUserOrderByUniqueId = createAsyncThunk(
         config
       );
       // Return the data from the response
+      console.log(response.data);
       return response.data;
     } catch (error) {
       // If an error occurs, throw the error message
+      console.log(error);
       throw error.response.data;
     }
   }
@@ -193,9 +197,11 @@ const checkoutMultipleProducts = createAsyncThunk(
         { cart_unique_ids, payment_method },
         config
       );
+      console.log(response);
       // Return the data from the response
       return response.data;
     } catch (error) {
+      console.log(error);
       // If an error occurs, throw the error message
       throw error.response.data;
     }
@@ -288,28 +294,172 @@ const checkOrderPaymentStatus = createAsyncThunk(
   }
 );
 
-// Export the users slice, including all the async thunks and endpoints
+const fetchPaidUserOrders = createAsyncThunk(
+  "user/fetchPaidUserOrders",
+  async (_, { getState }) => {
+    // Get the authentication token from the state
+    const { token } = getState().auth;
+    // Set the headers with the access token
+    const config = {
+      headers: {
+        "hydra-express-access-token": token,
+      },
+    };
+
+    try {
+      // Make the API call to fetch paid user orders
+      const response = await axios.get(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/paid?paid=true",
+        config
+      );
+      // Return the data from the response
+      return response.data;
+    } catch (error) {
+      // If an error occurs, throw the error message
+      throw error.response.data;
+    }
+  }
+);
+
+const fetchDisputedUserOrders = createAsyncThunk(
+  "user/fetchDisputedUserOrders",
+  async (_, { getState }) => {
+    // Get the authentication token from the state
+    const { token } = getState().auth;
+    // Set the headers with the access token
+    const config = {
+      headers: {
+        "hydra-express-access-token": token,
+      },
+    };
+
+    try {
+      // Make the API call to fetch disputed user orders
+      const response = await axios.get(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/disputed?disputed=true",
+        config
+      );
+      // Return the data from the response
+      return response.data;
+    } catch (error) {
+      // If an error occurs, throw the error message
+      throw error.response.data;
+    }
+  }
+);
+
+const cancelUserOrder = createAsyncThunk(
+  "user/cancelUserOrder",
+  async ({ unique_id }, { getState }) => {
+    // Get the authentication token from the state
+    const { token } = getState().auth;
+
+    // Set the headers with the access token and hydra-express-access-key
+    const config = {
+      headers: {
+        "hydra-express-access-token": token,
+        "hydra-express-access-key": "passcoder_1853cef81fea126373d2", // Add the static access key here
+      },
+    };
+
+    try {
+      // Make the API call to cancel a user order
+      const response = await axios.post(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/cancel",
+        { unique_id },
+        config
+      );
+      console.log(response);
+      // Return the data from the response
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      // If an error occurs, throw the error message
+      throw error.response.data;
+    }
+  }
+);
+
+const deleteUserOrder = createAsyncThunk(
+  "user/deleteUserOrder",
+  async ({ unique_id }, { getState }) => {
+    // Get the authentication token from the state
+    const { token } = getState().auth;
+
+    // Set the headers with the access token and hydra-express-access-key
+    const config = {
+      headers: {
+        "hydra-express-access-token": token,
+        "hydra-express-access-key": "passcoder_1853cef81fea126373d2", // Add the static access key here
+      },
+    };
+
+    try {
+      // Make the API call to cancel a user order
+      const response = await axios.delete(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/delete",
+        { data: { unique_id }, ...config } // Pass the data in the request body for a DELETE request
+      );
+      // Return the data from the response
+      return response.data;
+    } catch (error) {
+      // If an error occurs, throw the error message
+      throw error.response.data;
+    }
+  }
+);
+
+const makePayment = createAsyncThunk(
+  "user/makePayment",
+  async (paymentData, { getState }) => {
+    // Get the authentication token from the state
+    const { token } = getState().auth;
+    // Set the headers with the access token
+    const config = {
+      headers: {
+        "hydra-express-access-token": token,
+        "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
+      },
+    };
+
+    try {
+      // Make the API call to process payment
+      const response = await axios.post(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/pay",
+        paymentData,
+        config
+      );
+      console.log(response);
+      // Return the data from the response
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      // If an error occurs, throw the error message
+      throw error.response.data;
+    }
+  }
+);
+
+
 const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Handle fetchUserOrders
       .addCase(fetchUserOrders.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchUserOrders.fulfilled, (state, action) => {
         state.orders = action.payload;
-        state.loading = false;
+        state.loading = action.payload;
         state.error = null;
       })
       .addCase(fetchUserOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
-      // Handle fetchUserOrdersByTrackingNumber
       .addCase(fetchUserOrdersByTrackingNumber.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -416,6 +566,68 @@ const usersSlice = createSlice({
       .addCase(checkOrderPaymentStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(fetchPaidUserOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPaidUserOrders.fulfilled, (state, action) => {
+        state.paidOrders = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchPaidUserOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchDisputedUserOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDisputedUserOrders.fulfilled, (state, action) => {
+        state.disputedOrders = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchDisputedUserOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(cancelUserOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(cancelUserOrder.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(cancelUserOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteUserOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteUserOrder.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteUserOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(makePayment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(makePayment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.paymentSuccess = true; // Update the payment success state
+      })
+      .addCase(makePayment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
@@ -429,10 +641,13 @@ export {
   checkoutSingleProduct,
   checkoutMultipleProducts,
   createOrderDispute,
+  fetchPaidUserOrders,
+  fetchDisputedUserOrders,
   updateOrderPaymentMethod,
   checkOrderPaymentStatus,
-  // Add other async thunks here...
+  cancelUserOrder,
+  deleteUserOrder,
+  makePayment,
 };
 
-// Export the users slice reducer
 export default usersSlice.reducer;

@@ -3,23 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "../Products/ProductPage.css";
 import "./Cart.css";
-import { BiMinus } from "react-icons/bi";
-import logo from "./images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
 import cartItemimage from "../Products/images/Rectangle 15.png";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { RxPlus } from "react-icons/rx";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
-import imagge from "./images/Group 36684.png";
-import { AiFillShop } from "react-icons/ai";
-import { TbTruckDelivery } from "react-icons/tb";
-import { MdBroadcastOnHome } from "react-icons/md";
 import { fetchCartData } from "../../Slices/Cart/CartSlice";
-import {
-  deleteCartItem,
-  increaseCartItemQuantity,
-  decreaseCartItemQuantity,
-  clearCart,
-} from "../../Slices/Cart/CartSlice";
 import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 import { checkoutMultipleProducts } from "../../Slices/orders/OrderSlice";
 
@@ -31,12 +17,11 @@ const Cart = () => {
   console.log(data, "nana");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
-  const [displayModal, setDisplayModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
+    setError("");
     console.log(`Selected option: ${event.target.value}`);
   };
 
@@ -46,60 +31,85 @@ const Cart = () => {
   const [shipPrice, setShipPrice] = useState(null);
   const [thisError, setError] = useState(null);
 
-  useEffect(() => {
-    const handleShipping = () => {
-      dispatch(
-        fetchShippingPrice({
-          fromAddress: "Port Harcourt",
-          toAddress: "Port harcourt",
-        })
-      )
-        .then((action) => {
-          console.log("Shipping price action:", action);
-          console.log("Shipping price payload:", action.payload);
-          console.log("Shipping response data:", action.payload?.data);
-          setShipPrice(action.payload?.data?.price); // Logging the response data
-        })
-        .catch((error) => {
-          console.log("Error fetching shipping price:", error);
-        });
-    };
-
-    handleShipping();
-  }, [dispatch]);
+  const usersAddress = auth?.userData?.address;
 
   console.log(selectedOption, "selectedNannn");
-  const handleCheckouts = () => {
-    if (selectedOption) {
-      const payment_method = selectedOption;
-      dispatch(checkoutMultipleProducts({ cart_unique_ids, payment_method }))
-        .then((response) => {
-          console.log("Checkout response:", response);
-        })
-        .catch((error) => {});
-    } else {
-      setError("Please select a payment method.");
-      console.log("Please select a payment method.");
+  const handleCheckouts = async () => {
+    try {
+      if (selectedOption) {
+        const payment_method = selectedOption;
+        const response = await dispatch(
+          checkoutMultipleProducts({
+            cart_unique_ids: cartUniqueIds,
+            payment_method,
+          })
+        );
+        if (response.payload.success === true) {
+          navigate("/pay");
+        }
+        console.log("Checkout response:", response);
+      } else {
+        setError("Please select a payment method.");
+        console.log("Please select a payment method.");
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      console.log(error);
+      // Handle the error here
     }
   };
 
   const [cartUniqueIds, setCartUniqueIds] = useState([]);
+  const [newLocation, setLocation] = useState("");
 
   useEffect(() => {
     dispatch(fetchCartData())
       .then((response) => {
+        console.log(response, "resss");
         if (response.payload?.data?.rows) {
           const newCartUniqueIds = response.payload.data.rows.map(
             (item) => item.cart_unique_id
           );
           setCartUniqueIds(newCartUniqueIds);
           console.log(newCartUniqueIds, "cart_unique_ids");
+
+          const newLocation =
+            response.payload.data.rows[0].product_data.location;
+
+          setLocation(newLocation);
+          console.log(newLocation, "newLocation");
+
+          // Nested useEffect for handling shipping after cart data is fetched
+          const handleShipping = () => {
+            console.log(
+              response?.data?.rows?.[0].product_data.location,
+              "response?.data?.rows?.[0].product_data.location"
+            );
+
+            dispatch(
+              fetchShippingPrice({
+                fromAddress: newLocation,
+                toAddress: usersAddress,
+              })
+            )
+              .then((action) => {
+                console.log("Shipping price action:", action);
+                console.log("Shipping price payload:", action.payload);
+                console.log("Shipping response data:", action.payload?.data);
+                setShipPrice(action.payload?.data?.price);
+              })
+              .catch((error) => {
+                console.log("Error fetching shipping price:", error);
+              });
+          };
+
+          handleShipping();
         }
       })
       .catch((error) => {
         console.log("Error fetching cart data:", error);
       });
-  }, [dispatch]);
+  }, [dispatch, usersAddress]);
 
   const grandTotal = data?.data?.data?.rows.reduce((total, cartItem) => {
     const itemTotal = cartItem.product_data.price * cartItem.quantity;
@@ -123,7 +133,16 @@ const Cart = () => {
                 display: "flex",
                 justifyContent: "flex-end",
               }}
-            ></div>
+            >
+              <p
+                style={{
+                  display: "none",
+                }}
+              >
+                {" "}
+                {newLocation}
+              </p>
+            </div>
 
             {data?.data?.data?.rows.map((cartItem) => {
               return (
@@ -400,9 +419,9 @@ const Cart = () => {
                     <input
                       type="checkbox"
                       name="payment-option"
-                      value="credit-card"
+                      value="Credit/Debit Card"
                       onChange={handleOptionChange}
-                      checked={selectedOption === "credit-card"}
+                      checked={selectedOption === "Credit/Debit Card"}
                     />
                     <span className="checkmark"></span>
                     Pay with Credit Card

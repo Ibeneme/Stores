@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { productsFetch } from "../../Slices/Products/productSlice";
 import Loader from "../Loader/Loader";
 import { addItemToCart } from "../../Slices/Cart/CartSlice";
-import sample from "./images/Rectangle 15.png";
 import "./ProductPage.css";
 import { MdLocationOn } from "react-icons/md";
 import { BiMinus } from "react-icons/bi";
@@ -38,10 +37,55 @@ const ProductPage = () => {
     try {
       const response = await dispatch(addItemToCart(itemData));
       console.log("Item added to cart:", response.payload);
-      toast.success(response.payload.message, {});
+      if (response.payload.message === "Unable to add to cart, add address") {
+        toast.error(response.payload.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "red", // Background color
+            color: "white", // Text color
+          },
+        });
+
+        navigate("/editdelivery");
+      } else if(response.payload.message === 
+        "Cart added successfully!"){
+          toast.success(response.payload.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            style: {
+            
+              backgroundColor: "#007aff", // Background color
+              color: "white", // Text color
+            },
+          });
+  
+        }
     } catch (error) {
       console.log("Error adding item to cart:", error);
-      toast.error(error.payload.message, {});
+      toast.error(error.payload.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: {
+          backgroundColor: "red", // Background color
+          color: "white", // Text color
+        },
+      });
     }
   };
 
@@ -51,6 +95,15 @@ const ProductPage = () => {
       setCartQuantity(cartQuantity - 1);
     }
   };
+
+  // const buyNow = (user_unique_id, unique_id) => {
+  //   if (user_unique_id && unique_id) {
+  //     navigate(
+  //       `/product?user_unique_id=${user_unique_id}&unique_id=${unique_id}`
+  //     );
+  //     console.log("see", user_unique_id, unique_id);
+  //   }
+  // };
 
   const {
     items: details,

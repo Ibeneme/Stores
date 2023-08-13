@@ -26,10 +26,55 @@ const Product = () => {
     try {
       const response = await dispatch(addItemToCart(itemData));
       console.log("Item added to cart:", response.payload);
-      toast.success(response.payload.message, {});
+      if (response.payload.message === "Unable to add to cart, add address") {
+        toast.error(response.payload.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "red", // Background color
+            color: "white", // Text color
+          },
+        });
+
+        navigate("/editdelivery");
+      } else if(response.payload.message === 
+        "Cart added successfully!"){
+          toast.success(response.payload.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            style: {
+            
+              backgroundColor: "#007aff", // Background color
+              color: "white", // Text color
+            },
+          });
+  
+        }
     } catch (error) {
       console.log("Error adding item to cart:", error);
-      toast.error(error.payload.message, {});
+      toast.error(error.payload.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: {
+          backgroundColor: "red", // Background color
+          color: "white", // Text color
+        },
+      });
     }
   };
   const handleClick = (user_unique_id, unique_id) => {
@@ -181,9 +226,10 @@ const Product = () => {
                           <img
                             key={0} // Since there's only one image, you can use a fixed key value
                             src={product.product_images_data[0]?.image?.url}
-                            alt={`Product Image 0`}
+                            alt='orders'
                             width="100%"
                             height="180px"
+                            
                           />
                         )}
                     </div>

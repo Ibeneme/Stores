@@ -17,31 +17,44 @@ const cartSlice = createSlice({
       const itemIndex = state.cartItems.findIndex(
         (item) => item.unique_id === action.payload.unique_id
       );
-      if (itemIndex >= 0) {
-        state.cartItems[itemIndex].cartQuantity += 1;
-        toast.info(`increased ${state.cartItems[itemIndex].name} product`, {
-          position: "top-center",
-        });
-      } else {
-        const tempProduct = { ...action.payload, cartQuantity: 1 };
-        state.cartItems.push(tempProduct);
 
-        toast.success(`${action.payload.name} added a new product to cart`, {
+      if (itemIndex >= 0) {
+        const updatedCartItems = [...state.cartItems];
+        updatedCartItems[itemIndex].cartQuantity += 1;
+        console.log(updatedCartItems, "console.log(tempProduct.name)");
+        toast.info(`Increased product`, {
           position: "top-center",
         });
+
+        return {
+          ...state,
+          cartItems: updatedCartItems,
+        };
+      } else {
+        // Item does not exist in the cart, add it
+        const tempProduct = { ...action.payload, cartQuantity: 1 };
+        toast.success(`Added a new product to cart`, {
+          position: "top-center",
+        });
+
+        return {
+          ...state,
+          cartItems: [...state.cartItems, tempProduct],
+        };
       }
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
+
     removeFromCart(state, action) {
       const nextCartItems = state.cartItems.filter(
         (cartItem) => cartItem.unique_id !== action.payload.unique_id
       );
       state.cartItems = nextCartItems;
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-      toast.error(`${action.payload.name} removed from the cart`, {
+      toast.error(`removed from the cart`, {
         position: "top-center",
       });
     },
+
     decreaseCart(state, action) {
       const itemIndex = state.cartItems.findIndex(
         (cartItem) => cartItem.unique_id === action.payload.unique_id

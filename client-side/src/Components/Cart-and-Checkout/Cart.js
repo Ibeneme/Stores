@@ -5,7 +5,6 @@ import "../Products/ProductPage.css";
 import "./Cart.css";
 import { BiMinus } from "react-icons/bi";
 import logo from "./images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
-import cartItemimage from "../Products/images/Rectangle 15.png";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxPlus } from "react-icons/rx";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
@@ -25,28 +24,36 @@ import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 const Cart = () => {
   const auth = useSelector((state) => state.auth);
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
-  console.log(shippingPrice, "authhh");
-  // const data = useSelector((state) => state.carts);
- 
+  const [data, setCartResponse] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchCartData());
+        setCartResponse(response.payload); // Store the response in a variable
+      } catch (error) {}
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  console.log(data, "dataz");
+
   const [showModal, setShowModal] = useState(false);
   const [displayModal, setDisplayModal] = useState(false);
 
-  const storedItem = localStorage.getItem("carts");
-  const data = JSON.parse(storedItem);
-  console.log(JSON.parse(storedItem),'loll');
+  const productLocation =
+    data?.data?.rows?.[0]?.product_data?.location || "Unknown Location";
 
-  const testAddress = data?.data?.data?.rows[0].product_data.location;
-  const toAddress =
-    data?.data?.data?.rows.length > 0 ? <p>{testAddress}</p> : null;
+  const usersAddress = auth?.userData?.address;
 
-  console.log(testAddress, "biggg");
   const handleShipping = () => {
     dispatch(
       fetchShippingPrice({
-        fromAddress: "Port Harcourt",
-        toAddress: "Port harcourt",
+        fromAddress: usersAddress,
+        toAddress: productLocation,
       })
     )
       .then((action) => {
@@ -65,13 +72,6 @@ const Cart = () => {
   const handleDeleteConfirmation = () => {
     setDisplayModal(false);
   };
-
-  useEffect(
-    (data) => {
-      dispatch(fetchCartData(data));
-    },
-    [dispatch]
-  );
 
   const handleCheckout = () => {
     setShowModal(true);
@@ -95,9 +95,11 @@ const Cart = () => {
 
   const handleClearCart = async () => {
     try {
-      const response = await dispatch(clearCart());
+      const response = await dispatch(clearCart(data));
       dispatch(fetchCartData(data));
+  
       setIsModalOpen(false);
+      window.location.reload();
       console.log("Item added to cart:", response.payload);
     } catch (error) {
       console.log("Error adding item to cart:", error);
@@ -106,12 +108,14 @@ const Cart = () => {
 
   const handleDeleteThisToCart = async (unique_id) => {
     try {
-      const response = await dispatch(dispatch(deleteCartItem(unique_id)));
+      const response = await dispatch(deleteCartItem(unique_id));
       dispatch(fetchCartData(data));
-
-      console.log("Item added to cart:", response.payload);
+      console.log("Item deleted from cart:", response.payload);
+      setDisplayModal(false);
+      window.location.reload()
+    // Navigate to the cart route after successful deletion
     } catch (error) {
-      console.log("Error adding item to cart:", error);
+      console.log("Error deleting product:", error);
     }
   };
 
@@ -129,11 +133,6 @@ const Cart = () => {
   };
   console.log(data?.data?.data?.rows, "here cart");
 
-  const grandTotal = data?.data?.data?.rows.reduce((total, cartItem) => {
-    const itemTotal = cartItem.product_data.price * cartItem.quantity;
-    return total + itemTotal;
-  }, 0);
-
   const handleIncrease = async (unique_id) => {
     const itemData = unique_id;
     try {
@@ -146,6 +145,20 @@ const Cart = () => {
     }
   };
   console.log(data);
+
+  const calculateCartItemTotal = (cartItem) => {
+    return cartItem.product_data.price * cartItem.quantity;
+  };
+
+  const calculateGrandTotal = () => {
+    if (!data?.data?.rows) return 0;
+
+    return data.data.rows.reduce((total, cartItem) => {
+      return total + calculateCartItemTotal(cartItem);
+    }, 0);
+  };
+
+  const grandTotal = calculateGrandTotal();
 
   return (
     <div>
@@ -162,6 +175,7 @@ const Cart = () => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              marginBottom: "4em",
             }}
           >
             <div className="no-product">
@@ -271,13 +285,13 @@ const Cart = () => {
                 </div>
               )}
 
-              {data?.data?.data?.rows.map((cartItem) => {
+              {data?.data?.rows?.map((cartItem) => {
                 return (
                   <div className="cart-first-div" key={cartItem.unique_id}>
                     <div className="div-cart-first-div">
                       <img
                         className="img-cart-first-div"
-                        src={cartItemimage}
+                        src={cartItem?.product_images_data?.[0]?.image?.url}
                         alt="cartitem"
                       />
                     </div>
@@ -308,31 +322,44 @@ const Cart = () => {
                             }}
                             className="Product-page-h1"
                           >
-                            {cartItem.product_data.name}
+                            {cartItem?.product_data?.name}
                           </h3>
-
-                          {/* <h3
+                          {/* <div
                             style={{
-                              border: "none",
-                              margin: "0px",
-                              padding: "0px",
-                              fontSize: "12px",
-                              color: "gray",
-                              marginTop: "0.56em",
+                              display: "flex",
+                              alignItems: "baseline",
+                              gap: "2.8em",
                             }}
-                            className="Product-page-price"
                           >
-                            <span>&#8358;</span>
-                            {cartItem.product_data.price}{" "}
-                            <span
+                            <h3
                               style={{
-                                fontSize: "0.6em",
+                                display: "flex",
+                                alignItems: "baseline",
                                 color: "gray",
+                                marginTop: "0.3em",
                               }}
                             >
-                              Unit Price
-                            </span>
-                          </h3> */}
+                              {" "}
+                              <span
+                                style={{
+                                  fontSize: "12px",
+                                  color: "gray",
+                                }}
+                              >
+                                {" "}
+                                Unit Price:{" "}
+                              </span>{" "}
+                              <span
+                                style={{
+                                  fontSize: "14px",
+                                }}
+                              >
+                                {" "}
+                                <span>&#8358;</span>
+                                {cartItem.product_data.price}
+                              </span>
+                            </h3>
+                          </div> */}
                           <div
                             style={{
                               display: "flex",
@@ -365,8 +392,8 @@ const Cart = () => {
                               >
                                 {" "}
                                 <span>&#8358;</span>
-                                {cartItem.product_data.price *
-                                  cartItem.quantity}
+                                {cartItem?.product_data?.price *
+                                  cartItem?.quantity}
                               </span>
                             </h3>
                           </div>
@@ -397,7 +424,7 @@ const Cart = () => {
                               </button>{" "}
                               <p className="product-page-quantity">
                                 {" "}
-                                {cartItem.quantity}
+                                {cartItem?.quantity}
                               </p>
                               {console.log(cartItem.quantity, "trialll")}
                               <button
@@ -560,7 +587,7 @@ const Cart = () => {
                       Delivery Address
                     </p>
                   </div>
-                  {auth.userData.address ? (
+                  {auth?.userData?.address ? (
                     <p
                       style={{
                         backgroundColor: "#064BDE16",
@@ -592,7 +619,7 @@ const Cart = () => {
                   )}
                 </div>
 
-                {auth.userData.address ? (
+                {auth?.userData?.address ? (
                   <span>
                     {" "}
                     <p
@@ -602,7 +629,7 @@ const Cart = () => {
                       }}
                     >
                       {" "}
-                      {auth.userData.address}{" "}
+                      {auth?.userData?.address}{" "}
                     </p>
                     {/* <button>Send to another Address</button> */}
                   </span>
@@ -789,7 +816,7 @@ const Cart = () => {
                               width: "100%",
                             }}
                           >
-                            {auth.userData.address}
+                            {productLocation}
                           </p>
 
                           <p
@@ -799,7 +826,7 @@ const Cart = () => {
                               width: "100%",
                             }}
                           >
-                            {toAddress}
+                            {usersAddress}
                           </p>
                         </div>
                         <h2>
@@ -816,7 +843,7 @@ const Cart = () => {
                             height: "50px",
                             fontSize: "16px",
                           }}
-                      onClick={() => navigate("/checkout")}
+                          onClick={() => navigate("/checkout")}
                         >
                           Accept Fare
                         </button>

@@ -26,10 +26,10 @@ export const fetchFavorites = createAsyncThunk(
           "https://us-central1-hydra-express.cloudfunctions.net/app/user/favorites",
           { headers }
         );
-        console.log(response)
+      
         return response.data;
       } catch (error) {
-        console.log(error)
+       
         return rejectWithValue(error.response.data);
       }
     }

@@ -51,7 +51,6 @@ import ProductImageFormEdit from "./Components/Sellers/edit/editImage";
 import DeleteProductImageForm from "./Components/Sellers/deleteImage";
 import EditProductRatingForm from "./Components/Rating/EditRatings";
 import KYCForm from "./Components/Kyc/Kyc";
-import AddKYCForm from "./Components/Kyc/AddKYC";
 import ProductListPublish from "./Components/Sellers/Publish";
 import ProductListDrafts from "./Components/Sellers/drafts";
 
@@ -67,6 +66,23 @@ import Footer from "./Components/Navbar-and-Footer/Footer";
 import UpdateNameForm from "./Components/auth/nextSignUp";
 import UserProfileDelivery from "./Components/profile/Delivery";
 import UserProfileEditDelivery from "./Components/profile/update/DeliveryEdit";
+import Orders from "./Components/Orders/Orders";
+import Carta from "./Components/Cart-and-Checkout/Cart/Cart";
+import CheckoutSingle from "./Components/Cart-and-Checkout/SingleCheckout";
+import ViewOrder from "./Components/Orders/ViewOrder";
+import PaidOrders from "./Components/Orders/PaidOrders";
+import ShippedOrders from "./Components/Orders/ShippedOrders";
+import ProcessingOrders from "./Components/Orders/ProcessingOrders";
+import Disputes from "./Components/Orders/Disputes";
+import Deliveredorders from "./Components/Orders/Deliveredorders";
+import SellersOrder from "./Components/Sellers/Orders/SellersOrder";
+import ViewSellers from "./Components/Sellers/Orders/ViewSellers";
+import PaidSellers from "./Components/Sellers/Orders/PaidSellers";
+import ShippedSellers from "./Components/Sellers/Orders/ShippedSellers";
+import DisputesSellers from "./Components/Sellers/Orders/Disputes";
+import DeliveredSellers from "./Components/Sellers/Orders/DeliveredSellers";
+import PhotoInput from "./Components/Sellers/imagetest";
+import Pay from "./Components/Cart-and-Checkout/payment/Pay";
 
 const ScrollToTop = () => {
   const navigate = useNavigate();
@@ -91,6 +107,15 @@ function App() {
       <ToastContainer />
       <Navbarr />
       <Routes>
+        <Route path="/vieworder" element={<ViewOrder />} />
+        <Route path="/sellersorder" element={<SellersOrder />} />
+        <Route path="/viewsellers" element={<ViewSellers />} />
+
+        <Route path="/paidsellers" element={<PaidSellers />} />
+        <Route path="/shippedsellers" element={<ShippedSellers />} />
+        <Route path="/Disputesellers" element={<DisputesSellers />} />
+        <Route path="/deliveredsellers" element={<DeliveredSellers />} />
+
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/addcart" element={<AddToCartComponent />} />
         <Route path="/editprofile" element={<ProfileNameForm />} />
@@ -101,6 +126,13 @@ function App() {
         <Route path="/editdetails" element={<UserProfileEdit />} />
         <Route path="/deliverydetails" element={<UserProfileDelivery />} />
         <Route path="/editdelivery" element={<UserProfileEditDelivery />} />
+
+        <Route path="/single" element={<CheckoutSingle />} />
+        <Route path="/paidorder" element={<PaidOrders />} />
+        <Route path="/shippedorder" element={<ShippedOrders />} />
+        <Route path="/processingorder" element={<ProcessingOrders />} />
+        <Route path="/disputesorder" element={<Disputes />} />
+        <Route path="/deliveredorder" element={<Deliveredorders />} />
 
         <Route path="/" element={<Product />} />
         <Route path="/carousel" element={<Carousels />} />
@@ -117,6 +149,11 @@ function App() {
         <Route path="/togglefavorite" element={<FavoritesToggle />} />
         <Route path="/deletefavorite" element={<FavoriteItem />} />
 
+
+        <Route path="/im" element={<PhotoInput />} />
+        <Route path="/pay" element={<Pay />} />
+
+
         <Route path="/allratings" element={<RatingsPage />} />
         <Route path="/getrating" element={<GetRating />} />
         <Route path="/addrating" element={<AddRatings />} />
@@ -124,6 +161,7 @@ function App() {
 
         <Route path="/editseller" element={<EditProductForm />} />
 
+        <Route path="/carta" element={<Carta />} />
         <Route path="/productdd" element={<ProductPage />} />
         <Route path="/Signin" element={<SignIn />} />
         <Route path="/Signupnext" element={<NextSignUp />} />
@@ -161,7 +199,8 @@ function App() {
         <Route path="/deleteimage" element={<DeleteProductImageForm />} />
 
         <Route path="/kyc" element={<KYCForm />} />
-        <Route path="/addkyc" element={<AddKYCForm />} />
+
+        <Route path="/orderr" element={<Orders />} />
 
         <Route path="/lesss" element={<UpdateNameForm />} />
         {/* <Route path="/editprofile" element={<UpdateNameFormEdit/>} />

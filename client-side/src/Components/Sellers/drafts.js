@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router";
-import { useGetAllProductsQuery } from "../../Slices/Sellers/productSlice";
-import Loader from "../Loader/Loader";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import "./styles/product.css";
-import sample from "../../Components/Products/images/Rectangle 15.png";
-import Navbarr from "../Navbar-and-Footer/Navbarr";
-import logo from '../Cart-and-Checkout/images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png'
-
+import sample from "../../Components/Products/images/Re.png";
+import logo from "../Cart-and-Checkout/images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
+import ShimmerLoader from "../Loader/Shima";
+import { fetchProduct } from "../../Slices/Sellers/SellersProductDetailsSlice";
 
 const ProductListDrafts = () => {
   const navigate = useNavigate();
@@ -13,72 +13,34 @@ const ProductListDrafts = () => {
     navigate(`/sellersproduct?unique_id=${unique_id}`);
     console.log("see", unique_id);
   };
-  const { data, isLoading, isError, error } = useGetAllProductsQuery();
 
-  console.log(data);
-  if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
+  const dispatch = useDispatch();
+  const [ordersData, setOrdersData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  if (isError) {
-    console.log(error);
-    return  <div
-    style={{
-      height: "100vh",
-      weight: "100vw",
-      display: "flex",
-      justifyContent: "center",
-      alignItems:'center'
-    }}
-  >
-     <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div className="no-product">
-          <p>You have no Products for Sale</p>
-          <br />
-          <img src={logo} alt="shopping" />
-          <br /> <br />
-          <button
-            style={{
-              width: "17em",
-              height: "3.8em",
-              borderRadius: "0.4em",
-              border: "none",
-              backgroundColor: "#386AEB",
-              color: "white",
+  useEffect(() => {
+    const fetchOrdersData = async () => {
+      try {
+        const response = await dispatch(fetchProduct());
+        setOrdersData(response);
+        console.log(response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log("Error fetching user orders:", error);
+      }
+    };
 
-              fontSize: "1em",
-            }}
-            onClick={() => navigate("/addProducts")}
-          >
-            Start Selling
-          </button>
-          <br />
-        </div>
-      </div>
-  </div>;
-  }
+    fetchOrdersData();
+  }, [dispatch]);
 
-  const { rows } = data.data;
-
-  if (!rows || rows.length === 0) {
-    return <div>No products available.</div>;
-  }
-  const filteredProducts = rows.filter((product) => product.status === 2);
+  console.log(ordersData, "console.log(data)");
+  const filteredProducts =
+    ordersData &&
+    ordersData?.payload?.data?.rows?.filter((product) => product.status === 0);
 
   return (
     <div className="first-sellers-product-div">
-      <Navbarr />
       <div
         style={{
           marginTop: "7.5em",
@@ -94,17 +56,17 @@ const ProductListDrafts = () => {
             </div>
             <div
               onClick={() => navigate("/publish")}
-              className="contents-flex-left-inside-third-sellers-product-div"
+              className="contents-flex-left-inside-third-sellers-product-div "
             >
-              Published Products
+              Published
             </div>
             <div
               onClick={() => navigate("/drafts")}
-              className="contents-flex-left-inside-third-sellers-product-div active-contents"
+              className="active-contents contents-flex-left-inside-third-sellers-product-div"
             >
               Drafts
             </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
+            {/* <div className="contents-flex-left-inside-third-sellers-product-div">
               Orders
             </div>
             <div className="contents-flex-left-inside-third-sellers-product-div">
@@ -124,7 +86,7 @@ const ProductListDrafts = () => {
             </div>
             <div className="contents-flex-left-inside-third-sellers-product-div">
               Paid
-            </div>
+            </div> */}
           </div>
           <div className="flex-right-inside-third-sellers-product-div">
             <div className="contents-flex-right-inside-third-sellers-product-div">
@@ -156,9 +118,11 @@ const ProductListDrafts = () => {
                 >
                   Add Product
                 </button>
-                <button className="btn-btn-to-add-button btn-profile">
+                <button 
+                 onClick={() => navigate("/wallet")}className="btn-btn-to-add-button btn-profile">
+
                   {" "}
-                  Edit Profile
+                 Wallet
                 </button>
               </div>
             </div>
@@ -171,90 +135,132 @@ const ProductListDrafts = () => {
               </div>
               <div
                 onClick={() => navigate("/publish")}
-                className="div-display-slider "
+                className="div-display-slider"
               >
-                Published Products
+                Published
               </div>
               <div
                 onClick={() => navigate("/drafts")}
-                className="div-display-slider active-div-display-slider"
+                className="div-display-slider  active-div-display-slider"
               >
                 Drafts
               </div>
-              <div className="div-display-slider">Orders</div>
+              {/* <div className="div-display-slider">Orders</div>
               <div className="div-display-slider">Processing</div>
               <div className="div-display-slider">Shipped</div>
               <div className="div-display-slider">Completed</div>
               <div className="div-display-slider">Refunds and Dispute</div>
               <div className="div-display-slider">Unpaid</div>
-              <div className="div-display-slider">Paid</div>
+              <div className="div-display-slider">Paid</div> */}
             </div>
             <div>
               <div>
+                {" "}
+                <div>{loading ? <ShimmerLoader /> : <div></div>}</div>
+                {filteredProducts && filteredProducts.length === 0 ? (
+                  <div
+                    style={{
+                      weight: "100vw",
+                      display: "flex",
+                      textAlign: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        marginTop: "-24px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div className="no-product">
+                        <p>You have no Products for Sale</p>
+                        <br />
+                        <img src={logo} alt="shopping" />
+                        <br /> <br />
+                        <button
+                          style={{
+                            width: "17em",
+                            height: "3.8em",
+                            borderRadius: "0.4em",
+                            border: "none",
+                            backgroundColor: "#386AEB",
+                            color: "white",
+
+                            fontSize: "1em",
+                          }}
+                          onClick={() => navigate("/addProducts")}
+                        >
+                          Start Selling
+                        </button>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                ) : null}{" "}
                 <div className="container-mapping">
-                  {filteredProducts.length === 0 ? (
-                    <p>No products available.</p>
-                  ) : (
-                    filteredProducts.map((product) => (
-                      <div key={product.unique_id}>
-                        <div>
-                          <img src={sample} alt="sample" width="100%" />
-                          <h3>{product.name}</h3>
-                          <span>
-                            {product.sales_price === product.price ? (
-                              <p
-                                style={{
-                                  display: "flex",
-                                  gap: "1em",
-                                }}
-                              >
-                                <span>
-                                  <span>&#8358;</span>
-                                  {product.price}
-                                </span>{" "}
-                              </p>
-                            ) : (
-                              <p
-                                style={{
-                                  display: "flex",
-                                  gap: "1em",
-                                }}
-                              >
-                                <span
-                                  style={{
-                                    textDecoration: "line-through",
-                                    color: "red",
-                                  }}
-                                >
-                                  <span>&#8358;</span>
-                                  {product.price}
-                                </span>{" "}
-                                <span>&#8358;{product.sales_price}</span>
-                              </p>
-                            )}
-                          </span>
-
-                          <div
-                            style={{
-                              margin: "0.8em 0",
-                              fontSize: "0.85em",
-                            }}
-                          >
-                            <p>In-Stock: {product.remaining}</p>
-                          </div>
-
-                          <div className="container-for-btns-sellers">
-                            <button
-                              className="btn-btn-div-publish"
-                              onClick={() => handleClick(product.unique_id)}
+                  {filteredProducts?.map((product) => (
+                    <div key={product.unique_id}>
+                      <div>
+                        <img src={sample} alt="sample" width="100%" />
+                        <h3>{product.name}</h3>
+                        <span>
+                          {product.sales_price === product.price ? (
+                            <p
+                              style={{
+                                display: "flex",
+                                gap: "1em",
+                              }}
                             >
-                              View Product
-                            </button>
-                          </div>
+                              <span>
+                                <span>&#8358;</span>
+                                {product.price}
+                              </span>{" "}
+                            </p>
+                          ) : (
+                            <p
+                              style={{
+                                display: "flex",
+                                gap: "1em",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  textDecoration: "line-through",
+                                  color: "red",
+                                }}
+                              >
+                                <span>&#8358;</span>
+                                {product.price}
+                              </span>{" "}
+                              <span>&#8358;{product.sales_price}</span>
+                            </p>
+                          )}
+                        </span>
+
+                        <div
+                          style={{
+                            margin: "0.8em 0",
+                            fontSize: "0.85em",
+                          }}
+                        >
+                          <p>In-Stock: {product.remaining}</p>
+                        </div>
+
+                        <div className="container-for-btns-sellers">
+                          <button
+                            className="btn-btn-div-publish"
+                            onClick={() => handleClick(product.unique_id)}
+                          >
+                            View Product
+                          </button>
                         </div>
                       </div>
-                    ))
-                  )}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

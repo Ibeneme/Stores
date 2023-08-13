@@ -14,6 +14,7 @@ const SignupComponent = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const [thisError, setThisError] = useState("");
 
   const [formData, setFormData] = useState({
     country: "",
@@ -74,6 +75,7 @@ const SignupComponent = () => {
       });
       setFormErrors({});
     } catch (error) {
+      setThisError(error.message);
       console.log(error, "comperr");
       setFormErrors(error.data);
     }
@@ -128,6 +130,21 @@ const SignupComponent = () => {
       <br />
       <br />
       {error && <div>Error: {error.data}</div>}
+      {thisError ? (
+        <p
+          className="input-forms"
+          style={{
+            backgroundColor: "#ff000021",
+            color: "red",
+            height: "fit-content",
+            padding: "12px 12px",
+            border: "none",
+          }}
+        >
+          {" "}
+          {thisError}
+        </p>
+      ) : null}
       <form
         onSubmit={handleSubmit}
         style={{
@@ -479,6 +496,21 @@ const SignupComponent = () => {
         >
           Signup
         </button>
+        {thisError ? (
+        <p
+          className="input-forms"
+          style={{
+            backgroundColor: "#ff000021",
+            color: "red",
+            height: "fit-content",
+            padding: "12px 12px",
+            border: "none",
+          }}
+        >
+          {" "}
+          {thisError}
+        </p>
+      ) : null}
       </form>
       <br />
       <p style={{ display: "flex", justifyContent: "center" }}>Or</p>

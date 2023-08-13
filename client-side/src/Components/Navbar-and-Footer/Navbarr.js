@@ -21,20 +21,33 @@ import { useNavigate } from "react-router";
 import { userProfile } from "../../Slices/userSlice";
 import { fetchUserProfile } from "../../Slices/Users/ProfileSlice";
 import { logOutUser } from "../../Slices/authSlice";
+import { fetchCartData } from "../../Slices/Cart/CartSlice";
 
 function Navbarr({ token }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [cartData, setCartResponse] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchCartData());
+        setCartResponse(response.payload.data); // Store the response in a variable
+      } catch (error) {}
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
       if (searchQuery.trim().length > 3) {
         navigate(`/searchproducts?search=${searchQuery}`);
-        console.log(searchQuery);
       }
     }
   };
-  const dispatch = useDispatch();
+
   const navRef = useRef();
   const showNavbar = () => {
     navRef.current.classList.toggle("responsive_nav");
@@ -46,21 +59,14 @@ function Navbarr({ token }) {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const profile = useSelector((state) => state.userProfile);
-  const storedItem = localStorage.getItem("carts");
-  const cartData = JSON.parse(storedItem);
-  console.log(JSON.parse(storedItem),'loll');
-
-
+ 
   const auth = useSelector((state) => state.auth);
   const userprofile = useSelector((state) => state.userProfile.data);
 
-
-console.log(cartData)
   const handleDropdownToggle = () => {
     const token = auth.token;
     setIsOpen(!isOpen);
-    console.log(profile);
+
     dispatch(userProfile(token));
   };
 
@@ -77,6 +83,7 @@ console.log(cartData)
         color: "#000",
         display: "flex",
         alignItems: "center",
+        zIndex: "99",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
       }}
     >
@@ -114,10 +121,7 @@ console.log(cartData)
             className="Logo-top-left"
             width="24em"
             alt="logo"
-
-
             src={logologo}
-
           />
 
           <h3
@@ -180,6 +184,7 @@ console.log(cartData)
                   cursor: "pointer",
                   alignItems: "center",
                 }}
+                onClick={() => navigate("/orderr")}
               >
                 {" "}
                 <FaRegListAlt />
@@ -275,7 +280,7 @@ console.log(cartData)
                   cursor: "pointer",
                   alignItems: "center",
                 }}
-                onClick={() => navigate("/signin")}
+                onClick={() => navigate("/orderr")}
               >
                 {" "}
                 <FaRegListAlt />
@@ -400,11 +405,12 @@ console.log(cartData)
             >
               <input
                 style={{
-                  height: "3.4em",
-
+                  height: "50px",
+                  borderRadius: "12px",
                   width: "100%",
                   paddingLeft: "1.2em",
                   marginRight: "0.3em",
+                  border: "1px solid black",
                 }}
                 placeholder="Search for items here"
                 value={searchQuery}
@@ -412,11 +418,12 @@ console.log(cartData)
               />
               <button
                 style={{
-                  height: "3.4em",
+                  height: "50px",
                   padding: "0 2em",
                   backgroundColor: "#064bde",
                   color: "white",
                   border: "none",
+                  borderRadius: "12px",
                 }}
                 type="submit"
               >
@@ -431,7 +438,7 @@ console.log(cartData)
             }}
             className="hide-mobile"
           >
-            {auth.token ? (
+            {auth?.token ? (
               <span
                 style={{
                   display: "flex",
@@ -460,10 +467,9 @@ console.log(cartData)
                     }}
                     onClick={handleDropdownToggle}
                   >
-                   
                     <p>
-                      {userprofile && userprofile.firstname
-                        ? `Hi ${userprofile.firstname}`
+                      {userprofile && userprofile?.firstname
+                        ? `Hi ${userprofile?.firstname}`
                         : "My Account"}
                     </p>
                     <span
@@ -493,7 +499,7 @@ console.log(cartData)
                           <FaRegUser />
                           My Account
                         </p>
-                        <p>
+                        <p onClick={() => navigate("/orderr")}>
                           {" "}
                           <FaRegListAlt />
                           Orders

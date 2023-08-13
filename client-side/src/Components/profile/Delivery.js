@@ -189,7 +189,7 @@ const UserProfileDelivery = () => {
                         marginBottom: "20px",
                         marginTop: "3px",
                         color: "gray",
-                        height: "50px",
+                        height: "fit-content",
                         display: "flex",
                         alignItems: "baseline",
                       }}

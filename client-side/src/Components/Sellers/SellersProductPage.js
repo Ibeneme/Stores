@@ -6,7 +6,7 @@ import { publishProduct } from "../../Slices/Sellers/publishProductSlice";
 import sample from "../Products/images/Rectangle 15.png";
 import Loader from "../Loader/Loader";
 import { deleteProduct } from "../../Slices/Sellers/deleteProductSlice";
-
+import { deleteProductImage } from "../../Slices/Sellers/Image/deleteImageSlice";
 const SellersProductPage = () => {
   const product = useSelector((state) => state.sellersProductsDetails.products);
   const loading = useSelector((state) => state.sellersProductsDetails.loading);
@@ -53,18 +53,23 @@ const SellersProductPage = () => {
     setIsOpen(true);
   };
 
-  const handleDeleteConfirmation = () => {
-    dispatch(deleteProduct(unique_id))
-      .then(() => {
-        // Product successfully deleted
-        // Navigate to the success page
-        navigate(`/success?message=Product%20successfully%20deleted`);
-      })
-      .catch((error) => {
-        navigate(`/errorpage?message=Delete%20Failed`);
-        console.log(error);
-      });
-    console.log("working delete", unique_id);
+  const handleDeleteConfirmation = async () => {
+    dispatch(
+      deleteProductImage({ uniqueId: unique_id, productUniqueId: unique_id })
+    );
+    try {
+      const response = await dispatch(deleteProduct(unique_id));
+
+      // Product successfully deleted
+      // Navigate to the success page
+      // navigate(`/success?message=Product%20successfully%20deleted`);
+
+      console.log("working delete", unique_id);
+      console.log("Delete response:", response);
+    } catch (error) {
+      //  navigate(`/errorpage?message=Delete%20Failed`);
+      console.log("Error deleting product:", error);
+    }
   };
 
   const handleCancelDelete = () => {

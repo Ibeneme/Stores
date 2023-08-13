@@ -1,20 +1,20 @@
-import React, {  useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import React, {  useEffect} from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
 
 
-const KYCForm = () => {
-  const dispatch = useDispatch();
+// const KYCForm = () => {
+//   const dispatch = useDispatch();
 
-  return (
-    <div>
-      <form>
-        {/* Form inputs */}
-      </form>
+//   return (
+//     <div>
+//       <form>
+//         {/* Form inputs */}
+//       </form>
 
      
-    </div>
-  );
-};
+//     </div>
+//   );
+// };
 
 
-export default KYCForm;
+// export default KYCForm;

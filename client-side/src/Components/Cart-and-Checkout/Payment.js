@@ -31,7 +31,10 @@ const PaymentCheckout = (cartItem) => {
   return (
     <div>
       <Navbarr />
-      <div className="checkout-main-div">
+      <div style={{
+        zIndex:'999'
+      }}>
+      <div className="checkout-main-div" >
         <div className="last-checkout-div">
           <h3>Cart Summary</h3>
           <br />
@@ -234,6 +237,7 @@ const PaymentCheckout = (cartItem) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
       <Footer />
     </div>

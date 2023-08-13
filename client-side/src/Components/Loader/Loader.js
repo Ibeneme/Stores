@@ -11,6 +11,7 @@ const Loader = () => {
         height: "100vh",
         backgroundColor: "white",
         width: "100vw",
+        zIndex:'999'
       }}
     >
       <div

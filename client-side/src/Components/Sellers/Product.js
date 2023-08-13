@@ -1,78 +1,41 @@
 import { useNavigate } from "react-router";
-import { useGetAllProductsQuery } from "../../Slices/Sellers/productSlice";
-import Loader from "../Loader/Loader";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 import "./styles/product.css";
 import sample from "../../Components/Products/images/Re.png";
-import logo from '../Cart-and-Checkout/images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png'
+import logo from "../Cart-and-Checkout/images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
+import ShimmerLoader from "../Loader/Shima";
+import { fetchProduct } from "../../Slices/Sellers/SellersProductDetailsSlice";
+
 const ProductList = () => {
   const navigate = useNavigate();
   const handleClick = (unique_id) => {
     navigate(`/sellersproduct?unique_id=${unique_id}`);
     console.log("see", unique_id);
   };
-  const { data, isLoading, isError, error } = useGetAllProductsQuery();
 
-  console.log(data);
-  if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
+  const dispatch = useDispatch();
+  const [ordersData, setOrdersData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  if (isError) {
-    console.log(error);
-    return (
-      <div
-        style={{
-          height: "100vh",
-          weight: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          alignItems:'center'
-        }}
-      >
-         <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div className="no-product">
-              <p>You have no Products for Sale</p>
-              <br />
-              <img src={logo} alt="shopping" />
-              <br /> <br />
-              <button
-                style={{
-                  width: "17em",
-                  height: "3.8em",
-                  borderRadius: "0.4em",
-                  border: "none",
-                  backgroundColor: "#386AEB",
-                  color: "white",
+  useEffect(() => {
+    const fetchOrdersData = async () => {
+      try {
+        const response = await dispatch(fetchProduct());
+        setOrdersData(response);
+        console.log(response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log("Error fetching user orders:", error);
+      }
+    };
 
-                  fontSize: "1em",
-                }}
-                onClick={() => navigate("/addProducts")}
-              >
-                Start Selling
-              </button>
-              <br />
-            </div>
-          </div>
-      </div>
-    );
-  }
+    fetchOrdersData();
+  }, [dispatch]);
 
-  const { rows } = data.data;
-
-  if (!rows || rows.length === 0) {
-    return <div>No products available.</div>;
-  }
+  console.log(ordersData, "console.log(data)");
 
   return (
     <div className="first-sellers-product-div">
@@ -83,14 +46,17 @@ const ProductList = () => {
       >
         <div className="third-sellers-product-div">
           <div className="flex-left-inside-third-sellers-product-div">
-            <div className="contents-flex-left-inside-third-sellers-product-div active-contents">
+            <div
+              onClick={() => navigate("/sellersproductsdisplay")}
+              className="contents-flex-left-inside-third-sellers-product-div active-contents"
+            >
               All Products
             </div>
             <div
               onClick={() => navigate("/publish")}
               className="contents-flex-left-inside-third-sellers-product-div"
             >
-              Published Products
+              Published
             </div>
             <div
               onClick={() => navigate("/drafts")}
@@ -98,27 +64,38 @@ const ProductList = () => {
             >
               Drafts
             </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
-              Orders
+            {/* 
+            <div
+              onClick={() => navigate("/sellersorder")}
+              className="contents-flex-left-inside-third-sellers-product-div"
+            >
+              All Order
             </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
-              Processing
+            <div
+              onClick={() => navigate("/shippedsellers")}
+              className="contents-flex-left-inside-third-sellers-product-div"
+            >
+              Shipped Orders
             </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
-              Shipped
+            <div
+              onClick={() => navigate("/deliveredsellers")}
+              className="contents-flex-left-inside-third-sellers-product-div"
+            >
+              Delivered Orders
             </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
-              Completed
+            <div
+              onClick={() => navigate("/disputesellers")}
+              className="contents-flex-left-inside-third-sellers-product-div"
+            >
+              Disputed Order
             </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
-              Refunds and Dispute
-            </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
-              Unpaid
-            </div>
-            <div className="contents-flex-left-inside-third-sellers-product-div">
-              Paid
-            </div>
+
+            <div
+              onClick={() => navigate("/paidsellers")}
+              className="contents-flex-left-inside-third-sellers-product-div"
+            >
+              Paid Orders
+            </div> */}
           </div>
           <div className="flex-right-inside-third-sellers-product-div">
             <div className="contents-flex-right-inside-third-sellers-product-div">
@@ -141,7 +118,7 @@ const ProductList = () => {
                 <div>
                   <h3>
                     {" "}
-                    0 {} {console.log(rows.length)}
+                    0 {} {console.log(ordersData?.payload?.data?.rows.length)}
                   </h3>
                   <p>Posts</p>
                 </div>
@@ -155,7 +132,7 @@ const ProductList = () => {
                 </button>
                 <button className="btn-btn-to-add-button btn-profile">
                   {" "}
-                  Edit Profile
+                  Wallet
                 </button>
               </div>
             </div>
@@ -167,7 +144,7 @@ const ProductList = () => {
                 onClick={() => navigate("/publish")}
                 className="div-display-slider"
               >
-                Published Products
+                Published
               </div>
               <div
                 onClick={() => navigate("/drafts")}
@@ -175,81 +152,156 @@ const ProductList = () => {
               >
                 Drafts
               </div>
-              <div className="div-display-slider">Orders</div>
-              <div className="div-display-slider">Processing</div>
-              <div className="div-display-slider">Shipped</div>
-              <div className="div-display-slider">Completed</div>
-              <div className="div-display-slider">Refunds and Dispute</div>
-              <div className="div-display-slider">Unpaid</div>
-              <div className="div-display-slider">Paid</div>
+              {/* <div
+                onClick={() => navigate("/sellersorder")}
+                className="div-display-slider"
+              >
+                All Orders
+              </div>
+              <div
+                onClick={() => navigate("/shippedsellers")}
+                className="div-display-slider"
+              >
+                Shipped Orders
+              </div>
+              <div
+                onClick={() => navigate("/deliveredsellers")}
+                className="div-display-slider"
+              >
+                Delivered Orders
+              </div>
+              <div
+                onClick={() => navigate("/disputesellers")}
+                className="div-display-slider"
+              >
+                Disputed Orders
+              </div>
+              {/* <div
+                onClick={() => navigate("/shippedorder")}
+                className="div-display-slider"
+              >
+                Shipped Orders
+              </div> 
+              <div 
+                onClick={() => navigate("/paidsellers")}
+                className="div-display-slider"
+              >
+                Paid Orders
+              </div> */}{" "}
             </div>
             <div>
+              <div>{loading ? <ShimmerLoader /> : <div></div>}</div>
+              {ordersData.type === "products/fetchProduct/rejected" ? (
+                <div
+                  style={{
+                    height: "70vh",
+                    weight: "100vw",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="no-product">
+                      <p>You have no Products for Sale</p>
+                      <br />
+                      <img src={logo} alt="shopping" />
+                      <br /> <br />
+                      <button
+                        style={{
+                          width: "17em",
+                          height: "3.8em",
+                          borderRadius: "0.4em",
+                          border: "none",
+                          backgroundColor: "#386AEB",
+                          color: "white",
+
+                          fontSize: "1em",
+                        }}
+                        onClick={() => navigate("/addProducts")}
+                      >
+                        Start Selling
+                      </button>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
               <div className="container-mapping">
-                {rows.map((product) => (
-                  <div key={product.unique_id}>
+                {ordersData &&
+                  ordersData?.payload?.data?.rows?.map((product) => (
                     <div key={product.unique_id}>
-                      <img src={sample} alt="sample" width="100%" />
-                      <h3>{product.name}</h3>
-                      {product.sales_price === product.price ? (
-                        <p
-                          style={{
-                            display: "flex",
-                            gap: "1em",
-                          }}
-                        >
-                          <span>
-                            {" "}
-                            <span>&#8358;</span>
-                            {product.price}
-                          </span>{" "}
-                        </p>
-                      ) : (
-                        <p
-                          style={{
-                            display: "flex",
-                            gap: "1em",
-                          }}
-                        >
-                          <span
+                      <div key={product.unique_id}>
+                        <img src={sample} alt="sample" width="100%" />
+                        <h3>{product.name}</h3>
+                        {product.sales_price === product.price ? (
+                          <p
                             style={{
-                              textDecoration: "line-through",
-                              color: "red",
+                              display: "flex",
+                              gap: "1em",
                             }}
                           >
-                            {" "}
-                            <span>&#8358;</span>
-                            {product.price}
-                          </span>{" "}
-                          <span>&#8358;{product.sales_price}</span>
-                        </p>
-                      )}
-                      <div
-                        style={{
-                          margin: "0.8em 0",
-                          fontSize: "0.85em",
-                        }}
-                      >
-                        <p>In-Stock: {product.remaining}</p>
-                      </div>
-
-                      <div className="container-for-btns-sellers">
-                        <button
-                          className="btn-btn-div-publish"
-                          onClick={() => handleClick(product.unique_id)}
+                            <span>
+                              {" "}
+                              <span>&#8358;</span>
+                              {product.price}
+                            </span>{" "}
+                          </p>
+                        ) : (
+                          <p
+                            style={{
+                              display: "flex",
+                              gap: "1em",
+                            }}
+                          >
+                            <span
+                              style={{
+                                textDecoration: "line-through",
+                                color: "red",
+                              }}
+                            >
+                              {" "}
+                              <span>&#8358;</span>
+                              {product.price}
+                            </span>{" "}
+                            <span>&#8358;{product.sales_price}</span>
+                          </p>
+                        )}
+                        <div
+                          style={{
+                            margin: "0.8em 0",
+                            fontSize: "0.85em",
+                          }}
                         >
-                          View Product
-                        </button>
-                        {/* {product.status === 1 ? (
+                          <p>In-Stock: {product.remaining}</p>
+                        </div>
+
+                        <div className="container-for-btns-sellers">
+                          <button
+                            className="btn-btn-div-publish"
+                            onClick={() => handleClick(product.unique_id)}
+                          >
+                            View Product
+                          </button>
+                          {/* {product.status === 1 ? (
                         <button className="btn-btn-sellers" > View this Product</button>
                       ) : (
                         <button className="btn-btn-sellers">
                           Publish Product
                         </button>
                       )} */}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           </div>
