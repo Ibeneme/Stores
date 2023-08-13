@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import "./styles/product.css";
-import sample from "../../Components/Products/images/Re.png";
 import logo from "../Cart-and-Checkout/images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
 import ShimmerLoader from "../Loader/Shima";
 import { fetchProduct } from "../../Slices/Sellers/SellersProductDetailsSlice";
@@ -240,7 +239,7 @@ const ProductList = () => {
                   ordersData?.payload?.data?.rows?.map((product) => (
                     <div key={product.unique_id}>
                       <div key={product.unique_id}>
-                        <img src={sample} alt="sample" width="100%" />
+                        <img src={product?.product_images_data[0]?.image?.url} alt="sample" width="100%" />
                         <h3>{product.name}</h3>
                         {product.sales_price === product.price ? (
                           <p
@@ -291,13 +290,7 @@ const ProductList = () => {
                           >
                             View Product
                           </button>
-                          {/* {product.status === 1 ? (
-                        <button className="btn-btn-sellers" > View this Product</button>
-                      ) : (
-                        <button className="btn-btn-sellers">
-                          Publish Product
-                        </button>
-                      )} */}
+                    
                         </div>
                       </div>
                     </div>

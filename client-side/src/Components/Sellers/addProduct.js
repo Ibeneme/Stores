@@ -44,8 +44,9 @@ const AddProductForm = () => {
   const [loading, setLoading] = useState(false);
   const [imageUpload, setImageUpload] = useState([]);
 
-  const imageListRef = ref(storage, "SellersImages/");
- 
+  //const imageListRef = ref(storage, "SellersImages/");
+  //const [zoomedImageIndex, setZoomedImageIndex] = useState(null);
+
   const [setError, setFormError] = useState("");
   const [productData, setProductData] = useState({
     category_unique_id: "",
@@ -84,25 +85,25 @@ const AddProductForm = () => {
       .catch((error) => {});
   };
 
-  // const handleAddProduct = async () => {
-  //   try {
-  //     setShowAddModal(true);
+  const handleAddProduct = async () => {
+    try {
+      setShowAddModal(true);
 
-  //     const productDraft = parseProductData(productData);
+      const productDraft = parseProductData(productData);
 
-  //     const response = await dispatch(sendProductDraft(productDraft));
-  //     console.log("Product Draft Sent Successfully:", response);
+      const response = await dispatch(sendProductDraft(productDraft));
+      console.log("Product Draft Sent Successfully:", response);
 
-  //     const unique_id = response.payload.data.unique_id;
-  //     setUniqueId(unique_id);
+      const unique_id = response.payload.data.unique_id;
+      setUniqueId(unique_id);
 
-  //     await handleImageUpload();
+      await handleImageUpload();
 
-  //     console.log("Add Product logic goes here");
-  //   } catch (error) {
-  //     console.error("Error Sending Product Draft:", error);
-  //   }
-  // };
+      console.log("Add Product logic goes here");
+    } catch (error) {
+      console.error("Error Sending Product Draft:", error);
+    }
+  };
   const openAddModal = async () => {
     try {
       setShowAddModal(true);
@@ -301,7 +302,6 @@ const AddProductForm = () => {
 
     return color.charAt(0).toUpperCase() + color.slice(1);
   };
- 
 
   return (
     <div
@@ -320,7 +320,14 @@ const AddProductForm = () => {
           display: "none",
         }}
       >
-        {imageList} {imageListRef}
+        {handleAddProduct}
+      </p>
+      <p
+        style={{
+          display: "none",
+        }}
+      >
+        {imageList}
       </p>
       <div
         className="addproduct-first-div"
@@ -419,8 +426,8 @@ const AddProductForm = () => {
                 }}
               >
                 <img
+                  alt="order"
                   src={URL.createObjectURL(file)}
-                  alt={`Selected order ${index + 1}`}
                   style={{
                     width: "100px",
                     height: "100px",
