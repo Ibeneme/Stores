@@ -17,7 +17,7 @@ import {
   decreaseCart,
   // decreaseCart,
   getTotal,
-  removeFromCart,
+  //removeFromCart,
 } from "../../Slices/cartSlice";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
 import { toast } from "react-toastify";
@@ -48,6 +48,7 @@ const ProductPage = () => {
   const [productPrice, setPrice] = useState("");
   const [productImageUrl, setImageUrl] = useState("");
 
+  console.log(uid, productImageUrl);
   const auth = useSelector((state) => state.profile);
 
   const UUI = auth?.profile?.user_unique_id;
@@ -56,46 +57,20 @@ const ProductPage = () => {
 
   const productUniqueIdToFind = unique_id;
 
-  useEffect(() => {
-    const foundItem = cart.cartItems.find(
-      (item) => item.product_unique_id === productUniqueIdToFind
-    );
-    const quantityy = foundItem?.cartQuantity || 0;
-    setCounts(quantityy);
-
-    const requestData = {
-      product_unique_id: unique_id,
-      from_country: "Nigeria",
-      from_state: "Rivers",
-      to_country: "Nigeria",
-      to_state: "Lagos",
-      price: price,
-    };
-    dispatch(addShipping(requestData))
-      .then((response) => {
-        fetchShippingData();
-        console.log(response, "...sjshshhs");
-      })
-      .catch((error) => {
-        console.error(error);
-        fetchShippingData();
-      });
-  }, [dispatch, price, unique_id, auth]);
-
-  const fetchShippingData = async () => {
-    try {
-      console.log(unique_id, "shippp");
-      const response = await dispatch(getShipping({ unique_id }));
-      console.log(response, "Response from getShipping thunk");
-      console.log(
-        response.payload.data.rows[0].shipping_unique_id,
-        "shipping_unique_id"
-      );
-      setShippingID(response.payload.data.rows[0].shipping_unique_id);
-    } catch (error) {
-      console.error(error, "Error from getShipping thunk");
-    }
-  };
+  // const fetchShippingData = async () => {
+  //   try {
+  //     console.log(unique_id, shipping_id, "shippp");
+  //     const response = await dispatch(getShipping({ unique_id }));
+  //     console.log(response, "Response from getShipping thunk");
+  //     console.log(
+  //       response.payload.data.rows[0].shipping_unique_id,
+  //       "shipping_unique_id"
+  //     );
+  //     setShippingID(response.payload.data.rows[0].shipping_unique_id);
+  //   } catch (error) {
+  //     console.error(error, "Error from getShipping thunk");
+  //   }
+  // };
 
   const closeModal = () => {
     setShowModal(false);
@@ -295,11 +270,6 @@ const ProductPage = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  // const productLocation =
-  //   data?.data?.rows?.[0]?.product_data?.location || "Unknown Location";
-
-  // const usersAddress = auth?.userData?.address;
-
   const handleCheckout = (seller_location) => {
     if (
       details.data.user_data?.user_unique_id === auth.profile?.user_unique_id
@@ -346,19 +316,50 @@ const ProductPage = () => {
     }
   };
 
-  // const calculateCartItemTotal = (cartItem) => {
-  //   return cartItem.product_data.price * cartItem.quantity;
-  // };
 
-  // const calculateGrandTotal = () => {
-  //   if (!data?.data?.rows) return 0;
 
-  //   return data.data.rows.reduce((total, cartItem) => {
-  //     return total + calculateCartItemTotal(cartItem);
-  //   }, 0);
-  // };
+  useEffect(() => {
+    const foundItem = cart.cartItems.find(
+      (item) => item.product_unique_id === productUniqueIdToFind
+    );
+    const quantityy = foundItem?.cartQuantity || 0;
+    setCounts(quantityy);
 
-  // const grandTotal = calculateGrandTotal();
+    const requestData = {
+      product_unique_id: unique_id,
+      from_country: "Nigeria",
+      from_state: "Rivers",
+      to_country: "Nigeria",
+      to_state: "Lagos",
+      price: price,
+    };
+    dispatch(addShipping(requestData))
+      .then((response) => {
+        try {
+          console.log(unique_id, shipping_id, "shippp");
+          const response = dispatch(getShipping({ unique_id }));
+          console.log(response, "Response from getShipping thunk");
+          console.log(
+            response.payload.data.rows[0].shipping_unique_id,
+            "shipping_unique_id"
+          );
+          setShippingID(response.payload.data.rows[0].shipping_unique_id);
+        } catch (error) {
+          console.error(error, "Error from getShipping thunk");
+        }
+
+        //fetchShippingData();
+        console.log(response, "...sjshshhs");
+      })
+      .catch((error) => {
+        console.error(error);
+        //fetchShippingData();
+      });
+
+
+  }, [dispatch, shipping_id, price, unique_id, auth, cart.cartItems, productUniqueIdToFind]);
+
+
 
   return (
     <div>

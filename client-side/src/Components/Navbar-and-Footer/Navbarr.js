@@ -30,7 +30,9 @@ function Navbarr({ token }) {
   const dispatch = useDispatch();
 
   const { cartTotalQuantity } = useSelector((state) => state.cart);
-  useEffect(() => {
+ console.log(cartData, cartTotalQuantity) 
+ 
+ useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchCartData());
