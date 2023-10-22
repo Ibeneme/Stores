@@ -26,8 +26,9 @@ const fetchOrdersInternal = createAsyncThunk(
       // Return the data from the response
       return response.data;
     } catch (error) {
-      // If an error occurs, throw the error message
-      throw error.response.data;
+      // Handle the error here or re-throw it with a customized message if needed
+      console.error("Error fetching orders:", error);
+      throw error; // You can throw a custom error message if needed: `throw new Error("Custom error message");`
     }
   }
 );

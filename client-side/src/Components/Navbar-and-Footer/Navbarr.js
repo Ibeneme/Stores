@@ -23,11 +23,13 @@ import { fetchUserProfile } from "../../Slices/Users/ProfileSlice";
 import { signoutUser } from "../../Slices/auth/signUpSlice";
 import { fetchCartData } from "../../Slices/Cart/CartSlice";
 import { clearToken } from "../../Slices/auth/signUpSlice";
+
 function Navbarr({ token }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [cartData, setCartResponse] = useState(null);
   const dispatch = useDispatch();
 
+  const { cartTotalQuantity } = useSelector((state) => state.cart);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,6 +82,8 @@ function Navbarr({ token }) {
     dispatch(fetchUserProfile(token));
   }, [dispatch, token]);
 
+  const cart = useSelector((state) => state.cart);
+  
   return (
     <header
       style={{
@@ -243,7 +247,7 @@ function Navbarr({ token }) {
                 style={{
                   width: "90%",
                   height: "50px",
-            
+
                   borderRadius: "22em",
                   border: "1px solid white",
                   backgroundColor: "#ff000000",
@@ -606,16 +610,43 @@ function Navbarr({ token }) {
               alignItems: "center",
             }}
             onClick={() => {
-              navigate("/Cart");
+              navigate("/test-cart");
             }}
           >
+            {/* <FaShoppingCart className="utton" />
+            {cartTotalQuantity >= 1 ? (
+              <span style={{}} className="span-red">
+                {cartTotalQuantity}
+              </span>
+            ) : null} */}
+
             <FaShoppingCart
               style={{
                 color: "black",
                 fontSize: "2em",
               }}
             />
-            {cartData?.rows?.length >= 1 ? (
+
+            {cart.cartItems.length > 0? (
+              <span
+                style={{
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "23em",
+                  width: "2em",
+                  height: "2em",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "0.42em",
+                  marginLeft: "-0.5em",
+                  marginTop: "-2em",
+                }}
+              >
+                {cart.cartItems.length}
+              </span>
+            ) : null}
+  {/* {cartData?.rows?.length >= 1 ? (
               <span
                 style={{
                   backgroundColor: "red",
@@ -633,8 +664,7 @@ function Navbarr({ token }) {
               >
                 {cartData?.rows.length}
               </span>
-            ) : null}
-
+            ) : null} */}
             <br />
           </span>
         </div>

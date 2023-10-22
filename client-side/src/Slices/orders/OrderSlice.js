@@ -33,7 +33,6 @@ const fetchUserOrders = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      // If an error occurs, throw the error message
       throw error.response.data;
     }
   }
@@ -409,36 +408,33 @@ const deleteUserOrder = createAsyncThunk(
   }
 );
 
-const makePayment = createAsyncThunk(
-  "user/makePayment",
-  async (paymentData, { getState }) => {
-    // Get the authentication token from the state
-    const { token } = getState().auth;
-    // Set the headers with the access token
-    const config = {
-      headers: {
-        "hydra-express-access-token": token,
-        "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
-      },
-    };
 
+export const payOrder = createAsyncThunk(
+  "orders/payOrder",
+  async (tracking_number, { rejectWithValue, getState }) => {
     try {
-      // Make the API call to process payment
+      const { token } = getState().auth; // Get the authentication token from the state
       const response = await axios.post(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/pay",
-        paymentData,
-        config
+        {
+          tracking_number: tracking_number,
+        },
+        {
+          headers: {
+            "hydra-express-access-token": token, 
+            "hydra-express-access-key": "passcoder_1853cef81fea126373d2",// Set the headers with the access token
+          },
+        }
       );
-      console.log(response);
-      // Return the data from the response
+
       return response.data;
     } catch (error) {
-      console.log(error);
-      // If an error occurs, throw the error message
-      throw error.response.data;
+      return rejectWithValue(error.response.data);
     }
   }
 );
+
+// ...
 
 
 const usersSlice = createSlice({
@@ -617,15 +613,15 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(makePayment.pending, (state) => {
+      .addCase(payOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(makePayment.fulfilled, (state, action) => {
+      .addCase(payOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.paymentSuccess = true; // Update the payment success state
       })
-      .addCase(makePayment.rejected, (state, action) => {
+      .addCase(payOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
@@ -647,7 +643,7 @@ export {
   checkOrderPaymentStatus,
   cancelUserOrder,
   deleteUserOrder,
-  makePayment,
+
 };
 
 export default usersSlice.reducer;

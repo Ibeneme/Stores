@@ -15,33 +15,8 @@ export const fetchCartData = createAsyncThunk(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/carts",
         config
       );
-      localStorage.setItem("carts", JSON.stringify(response.data.data));
+     // localStorage.setItem("carts", JSON.stringify(response.data.data));
       console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.log(error)
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const addItemToCart = createAsyncThunk(
-  "cart/addItemToCart",
-  async (itemData, { getState, rejectWithValue }) => {
-    try {
-      const token = getState().auth.token;
-      const config = {
-        headers: {
-          "hydra-express-access-token": token,
-        },
-      };
-      const response = await axios.post(
-        "https://us-central1-hydra-express.cloudfunctions.net/app/user/cart/add",
-        itemData,
-        config
-      );
-
-      console.log(response);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -50,9 +25,44 @@ export const addItemToCart = createAsyncThunk(
   }
 );
 
+export const addItemToCart = createAsyncThunk(
+  "cart/addItemToCart",
+  async (
+    { product_unique_id, shipping_unique_id, to_address, quantity },
+    { getState, rejectWithValue }
+  ) => {
+    try {
+      const token = getState().auth.token;
+      const config = {
+        headers: {
+          "hydra-express-access-token": token,
+        },
+      };
+      console.log(
+        product_unique_id,
+        shipping_unique_id,
+        to_address,
+        quantity,
+        "Response:"
+      );
+      const response = await axios.post(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/cart/add",
+        { product_unique_id, shipping_unique_id, to_address, quantity },
+        config
+      );
+
+      console.log(response, "carttt");
+      return response.data;
+    } catch (error) {
+      console.log(error, "carttt");
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const updateCartItem = createAsyncThunk(
   "cart/updateCartItem",
-  async (cartItemData, { getState, rejectWithValue }) => {
+  async ({ unique_id, quantity }, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.token;
       const config = {
@@ -62,14 +72,14 @@ export const updateCartItem = createAsyncThunk(
       };
       const response = await axios.put(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/cart/quantity",
-        cartItemData,
+        { unique_id, quantity },
         config
       );
 
-      console.log(response.data);
+      console.log(response.data, "{unique_id, quantity}");
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.log(error, "{unique_id, quantity}err");
 
       return rejectWithValue(error.response.data);
     }
@@ -173,10 +183,38 @@ export const clearCart = createAsyncThunk(
     }
   }
 );
+
+export const addMultipleItemsToCart = createAsyncThunk(
+  "cart/addMultipleItemsToCart",
+  async (carts, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.token;
+      const config = {
+        headers: {
+          "hydra-express-access-token": token,
+        },
+      };
+
+      console.log(carts, 'config')
+      const response = await axios.post(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/cart/add/multiple",
+        {carts},
+        config
+      );
+
+      console.log(response, "multiple carttt");
+      return response.data;
+    } catch (error) {
+      console.log(error, "multiple carttt");
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const cartsSlice = createSlice({
-  name: "carts",
+  name: "cart",
   initialState: {
-    data: null,
+    data: [],
     loading: false,
     error: null,
   },
@@ -259,6 +297,17 @@ const cartsSlice = createSlice({
       .addCase(decreaseCartItemQuantity.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(addMultipleItemsToCart.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addMultipleItemsToCart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(addMultipleItemsToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

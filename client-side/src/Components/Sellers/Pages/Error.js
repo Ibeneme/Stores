@@ -23,7 +23,6 @@ const ErrorPage = () => {
       <h2
         style={{
           textAlign: "center",
-          color:'red'
         }}
       >
         Dear {""} {user} your {""}

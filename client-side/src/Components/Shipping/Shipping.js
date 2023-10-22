@@ -114,11 +114,12 @@ const SignupComponent = () => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: "0.5em",
+          textAlign: "center",
         }}
       >
         Sign Up with HydraXpress
       </h2>
-      <p style={{ marginTop: "0.5em" }}>
+      <p style={{ marginTop: "0.5em", textAlign: "center" }}>
         Already have an account?{" "}
         <span
           style={{ color: "#386AEB", cursor: "pointer" }}
@@ -497,20 +498,20 @@ const SignupComponent = () => {
           Signup
         </button>
         {thisError ? (
-        <p
-          className="input-forms"
-          style={{
-            backgroundColor: "#ff000021",
-            color: "red",
-            height: "fit-content",
-            padding: "12px 12px",
-            border: "none",
-          }}
-        >
-          {" "}
-          {thisError}
-        </p>
-      ) : null}
+          <p
+            className="input-forms"
+            style={{
+              backgroundColor: "#ff000021",
+              color: "red",
+              height: "fit-content",
+              padding: "12px 12px",
+              border: "none",
+            }}
+          >
+            {" "}
+            {thisError}
+          </p>
+        ) : null}
       </form>
       <br />
       <p style={{ display: "flex", justifyContent: "center" }}>Or</p>

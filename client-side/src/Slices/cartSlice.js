@@ -5,6 +5,7 @@ const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
+
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
 };
@@ -15,65 +16,162 @@ const cartSlice = createSlice({
   reducers: {
     addToCart(state, action) {
       const itemIndex = state.cartItems.findIndex(
-        (item) => item.unique_id === action.payload.unique_id
+        (item) => item.product_unique_id === action.payload.product_unique_id
       );
-
       if (itemIndex >= 0) {
-        const updatedCartItems = [...state.cartItems];
-        updatedCartItems[itemIndex].cartQuantity += 1;
-        console.log(updatedCartItems, "console.log(tempProduct.name)");
-        toast.info(`Increased product`, {
+        const itemName = state.cartItems[itemIndex].name
+          ? state.cartItems[itemIndex].name
+          : state.cartItems[itemIndex].product_name;
+        state.cartItems[itemIndex].cartQuantity += 1;
+        toast.info(`You Just Topped up ${itemName} in your Cart`, {
           position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#007aff",
+            color: "white",
+          },
         });
-
-        return {
-          ...state,
-          cartItems: updatedCartItems,
-        };
       } else {
-        // Item does not exist in the cart, add it
         const tempProduct = { ...action.payload, cartQuantity: 1 };
-        toast.success(`Added a new product to cart`, {
-          position: "top-center",
-        });
+        state.cartItems.push(tempProduct);
 
-        return {
-          ...state,
-          cartItems: [...state.cartItems, tempProduct],
-        };
+        toast.success(
+          `${
+            action.payload.name
+              ? action.payload.name
+              : action.payload.product_name
+          } added to cart`,
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            style: {
+              backgroundColor: "#007aff",
+              color: "white",
+            },
+          }
+        );
+      }
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+    },
+    nothingCarts(state, action) {
+      const itemIndex = state.cartItems.findIndex(
+        (item) => item.product_unique_id === action.payload.product_unique_id
+      );
+      if (itemIndex >= 0) {
+        const itemName = state.cartItems[itemIndex].name
+          ? state.cartItems[itemIndex].name
+          : state.cartItems[itemIndex].product_name;
+        state.cartItems[itemIndex].cartQuantity =  state.cartItems[itemIndex].cartQuantity + 0 
+    
+        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
       }
     },
 
     removeFromCart(state, action) {
       const nextCartItems = state.cartItems.filter(
-        (cartItem) => cartItem.unique_id !== action.payload.unique_id
+        (cartItem) =>
+          cartItem.product_unique_id !== action.payload.product_unique_id
       );
       state.cartItems = nextCartItems;
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-      toast.error(`removed from the cart`, {
-        position: "top-center",
-      });
+      toast.error(
+        `${
+          action.payload.name
+            ? action.payload.name
+            : action.payload.product_name
+        } removed from the cart`,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: (progress) => {
+            return {
+              height: "5px",
+              backgroundColor: "white",
+              opacity: progress / 100,
+            };
+          },
+          style: {
+            backgroundColor: "#ff0000",
+            color: "white",
+          },
+        }
+      );
     },
-
     decreaseCart(state, action) {
       const itemIndex = state.cartItems.findIndex(
-        (cartItem) => cartItem.unique_id === action.payload.unique_id
+        (cartItem) =>
+          cartItem.product_unique_id === action.payload.product_unique_id
       );
       if (state.cartItems[itemIndex].cartQuantity > 1) {
         state.cartItems[itemIndex].cartQuantity -= 1;
         toast.info(
-          ` you decreased the quantity of ${action.payload.name} from the cart`,
+          ` Whoops you reduced ${
+            action.payload.name
+              ? action.payload.name
+              : action.payload.product_name
+          } from the cart`,
           {
             position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: (progress) => {
+              return {
+                height: "5px",
+                backgroundColor: "white",
+                opacity: progress / 100,
+              };
+            },
+            style: {
+              backgroundColor: "#ff0000",
+              color: "white",
+            },
           }
         );
       } else if (state.cartItems[itemIndex].cartQuantity === 1) {
         const nextCartItems = state.cartItems.filter(
-          (cartItem) => cartItem.unique_id !== action.payload.unique_id
+          (cartItem) =>
+            cartItem.product_unique_id !== action.payload.product_unique_id
         );
         state.cartItems = nextCartItems;
-        toast.error(`${action.payload.name} removed from the cart`, {
+        toast.error(`${
+          action.payload.name
+            ? action.payload.name
+            : action.payload.product_name
+        } removed from the cart`, {
           position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: (progress) => {
+            return {
+              height: "5px",
+              backgroundColor: "white",
+              opacity: progress / 100,
+            };
+          },
+          style: {
+            backgroundColor: "#ff0000",
+            color: "white",
+          },
         });
         localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
       }
@@ -83,6 +181,22 @@ const cartSlice = createSlice({
       state.cartItems = [];
       toast.error(`You've emptied your cart`, {
         position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: (progress) => {
+          return {
+            height: "5px",
+            backgroundColor: "white",
+            opacity: progress / 100,
+          };
+        },
+        style: {
+          backgroundColor: "#ff0000",
+          color: "white",
+        },
       });
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },

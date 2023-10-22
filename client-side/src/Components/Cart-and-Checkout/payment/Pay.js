@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { makePayment } from "../../../Slices/orders/OrderSlice";
+import { payOrder } from "../../../Slices/orders/OrderSlice";
 
 const Pay = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const Pay = () => {
     // Dispatch the makePayment action with payment data
     try {
       await dispatch(
-        makePayment({
+        payOrder({
           cardNumber,
           expiry,
           cvc,

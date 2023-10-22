@@ -83,6 +83,11 @@ import DisputesSellers from "./Components/Sellers/Orders/Disputes";
 import DeliveredSellers from "./Components/Sellers/Orders/DeliveredSellers";
 import PhotoInput from "./Components/Sellers/imagetest";
 import Pay from "./Components/Cart-and-Checkout/payment/Pay";
+import NewCart from "./Components/Cart-and-Checkout/Cart/newCart";
+import CartActions from "./Components/Cart-and-Checkout/Cart/oldCart";
+import ProductOld from "./Components/Cart-and-Checkout/Cart/productsCarts";
+import Cartsss from "./Components/Cart-and-Checkout/Cart/cartss";
+import SingleCartCheckout from "./Components/Cart-and-Checkout/SingleCartCheckout";
 
 const ScrollToTop = () => {
   const navigate = useNavigate();
@@ -107,6 +112,12 @@ function App() {
       <ToastContainer />
       <Navbarr />
       <Routes>
+      <Route path="/newcart" element={<NewCart />} />
+      <Route path="/oldcart" element={<CartActions />} />
+      <Route path="/testss" element={<ProductOld />} />
+      <Route path="/test-cart" element={<Cartsss />} />
+      <Route path="/checkout-one" element={<SingleCartCheckout />} />
+     
         <Route path="/vieworder" element={<ViewOrder />} />
         <Route path="/sellersorder" element={<SellersOrder />} />
         <Route path="/viewsellers" element={<ViewSellers />} />

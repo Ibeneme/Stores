@@ -8,11 +8,7 @@ import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-
-
 const SignUp = () => {
-
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -23,13 +19,9 @@ const SignUp = () => {
   const [isFocusedConfirmPassword, setIsFocusedConfirmPassword] =
     useState(false);
 
-
-
   const registerError = useSelector((state) => state.auth.registerError);
   console.log(registerError);
 
-
- 
   const handleFocusDateofBirth = () => {
     setIsFocusedDateofBirth(true);
   };
@@ -84,8 +76,6 @@ const SignUp = () => {
       console.log("Error:", error);
     }
   };
- 
-  
 
   // const googleSubmit = async (e) => {
   //   e.preventDefault();
@@ -149,11 +139,12 @@ const SignUp = () => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: "0.5em",
+            textAlign: "center",
           }}
         >
           Sign Up with HydraXpress
         </h2>
-        <p style={{ marginTop: "0.5em" }}>
+        <p style={{ marginTop: "0.5em", textAlign: "center" }}>
           Already have an account?{" "}
           <span
             style={{ color: "#386AEB", cursor: "pointer" }}
@@ -184,7 +175,6 @@ const SignUp = () => {
               First Name
             </label>
             <input
-           
               autoComplete="on"
               name="firstname"
               placeholder="First name"
@@ -205,7 +195,6 @@ const SignUp = () => {
               Last Name
             </label>
             <input
-        
               autoComplete="on"
               name="name"
               placeholder="Last Name"
@@ -246,7 +235,6 @@ const SignUp = () => {
               Gender
             </label>
             <select
-           
               autoComplete="on"
               name="gender"
               className="input-forms"
@@ -269,7 +257,6 @@ const SignUp = () => {
               Country
             </label>
             <select
-            
               autoComplete="on"
               name="country"
               className="input-forms"

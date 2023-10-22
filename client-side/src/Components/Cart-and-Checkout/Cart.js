@@ -20,6 +20,12 @@ import {
   clearCart,
 } from "../../Slices/Cart/CartSlice";
 import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
+import {
+  addToCart,
+  decreaseCart,
+  getTotal,
+  removeFromCart,
+} from "../../Slices/cartSlice";
 
 const Cart = () => {
   const auth = useSelector((state) => state.auth);
@@ -27,6 +33,22 @@ const Cart = () => {
   const [data, setCartResponse] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart);
+  useEffect(() => {
+    dispatch(getTotal());
+  }, [dispatch]);
+
+  const handleRemoveFromCart = (cartItem) => {
+    dispatch(removeFromCart(cartItem));
+  };
+
+  const decreaseInCart = (cartItem) => {
+    dispatch(decreaseCart(cartItem));
+  };
+  const increaseInCart = (cartItem) => {
+    dispatch(addToCart(cartItem));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,7 +119,7 @@ const Cart = () => {
     try {
       const response = await dispatch(clearCart(data));
       dispatch(fetchCartData(data));
-  
+
       setIsModalOpen(false);
       window.location.reload();
       console.log("Item added to cart:", response.payload);
@@ -112,8 +134,8 @@ const Cart = () => {
       dispatch(fetchCartData(data));
       console.log("Item deleted from cart:", response.payload);
       setDisplayModal(false);
-      window.location.reload()
-    // Navigate to the cart route after successful deletion
+      window.location.reload();
+      // Navigate to the cart route after successful deletion
     } catch (error) {
       console.log("Error deleting product:", error);
     }
@@ -125,26 +147,26 @@ const Cart = () => {
     try {
       const response = await dispatch(decreaseCartItemQuantity(itemData));
       dispatch(fetchCartData());
-
+      dispatch(decreaseCart(unique_id));
       console.log("Item added to cart:", response.payload);
     } catch (error) {
       console.log("Error adding item to cart:", error);
     }
   };
-  console.log(data?.data?.data?.rows, "here cart");
+
+  const [counts, setCounts] = useState();
 
   const handleIncrease = async (unique_id) => {
     const itemData = unique_id;
     try {
       const response = await dispatch(increaseCartItemQuantity(itemData));
       dispatch(fetchCartData());
-
+      dispatch(addToCart(itemData));
       console.log("Item added to cart:", response.payload);
     } catch (error) {
       console.log("Error adding item to cart:", error);
     }
   };
-  console.log(data);
 
   const calculateCartItemTotal = (cartItem) => {
     return cartItem.product_data.price * cartItem.quantity;
@@ -168,6 +190,8 @@ const Cart = () => {
           marginTop: "7em",
         }}
       >
+   
+        {/*  {cart.cartItems.length === 0 ? (*/}
         {data?.data === null ? (
           <div
             style={{
@@ -324,42 +348,7 @@ const Cart = () => {
                           >
                             {cartItem?.product_data?.name}
                           </h3>
-                          {/* <div
-                            style={{
-                              display: "flex",
-                              alignItems: "baseline",
-                              gap: "2.8em",
-                            }}
-                          >
-                            <h3
-                              style={{
-                                display: "flex",
-                                alignItems: "baseline",
-                                color: "gray",
-                                marginTop: "0.3em",
-                              }}
-                            >
-                              {" "}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  color: "gray",
-                                }}
-                              >
-                                {" "}
-                                Unit Price:{" "}
-                              </span>{" "}
-                              <span
-                                style={{
-                                  fontSize: "14px",
-                                }}
-                              >
-                                {" "}
-                                <span>&#8358;</span>
-                                {cartItem.product_data.price}
-                              </span>
-                            </h3>
-                          </div> */}
+                      
                           <div
                             style={{
                               display: "flex",
@@ -426,7 +415,7 @@ const Cart = () => {
                                 {" "}
                                 {cartItem?.quantity}
                               </p>
-                              {console.log(cartItem.quantity, "trialll")}
+                             
                               <button
                                 onClick={() =>
                                   handleIncrease(cartItem.unique_id)

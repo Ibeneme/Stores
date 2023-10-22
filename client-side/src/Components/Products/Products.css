@@ -11,6 +11,10 @@
   align-items: center;
   gap: 1em;
 }
+
+button{
+  cursor:pointer
+}
 .button-to-map-productss {
   width: 13em;
   padding: 1em;

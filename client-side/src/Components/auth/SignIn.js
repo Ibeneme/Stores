@@ -123,11 +123,12 @@ const SignIn = () => {
               justifyContent: "center",
               alignItems: "center",
               marginTop: "0.5em",
+              textAlign: "center",
             }}
           >
             Sign In with HydraXpress
           </h2>
-          <p style={{ marginTop: "0.5em" }}>
+          <p style={{ marginTop: "0.5em", textAlign: "center" }}>
             Do not have an account?{" "}
             <span
               style={{ color: "#386AEB", cursor: "pointer" }}
@@ -270,7 +271,7 @@ const SignIn = () => {
                 border: "none",
                 borderRadius: "0.5em",
                 marginTop: "2em",
-                height:'50px'
+                height: "50px",
               }}
               className="input-forms"
             >
@@ -292,7 +293,7 @@ const SignIn = () => {
               backgroundColor: "black",
               border: "0.7em",
               color: "white",
-              height:'50px',
+              height: "50px",
               borderRadius: "0.3em",
             }}
             className="input-forms"

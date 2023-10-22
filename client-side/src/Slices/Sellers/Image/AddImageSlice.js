@@ -1,11 +1,10 @@
-// productImageSlice.js
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API_URL =
   "https://us-central1-hydra-express.cloudfunctions.net/app/user/product/images/add";
 
-// Async thunk for adding a product image
 export const addProductImage = createAsyncThunk(
   "productImage/addProductImage",
   async ({ unique_id, images }, thunkAPI) => {

@@ -1,150 +1,148 @@
-.checkout-main-div{
-    display: flex;
-    justify-content: center;
-    gap:1em;
-    margin-top: 8em;
-    margin-left: 1em;
-    margin-right: 1em;
+.checkout-main-div {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 8em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+.checkout-div-delivery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3em;
+  border: none;
+  border-radius: 2em;
+  background-color: white;
+  width: 60vw;
+  padding: 0.3em;
+  height: fit-content;
+}
 
+.disabled-button {
+  background-color: #ccc; /* Change the background color to gray */
+  color: #888; /* Change the text color to a lighter shade */
+  cursor: not-allowed; /* Change the cursor to 'not-allowed' */
 }
-.checkout-div-delivery{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 3em;
-    border: none;
-    border-radius: 2em;
-    background-color: white;
-    width: 60vw;
-    padding:0.3em;
-    height: fit-content;
-    
-}
-.input-forms-checkout{
-    width: 50vw;
-    height: 3.4em;
-    margin-bottom:0.4em;
-    padding-left: 1em;
+
+.input-forms-checkout {
+  width: 50vw;
+  height: 3.4em;
+  margin-bottom: 0.4em;
+  padding-left: 1em;
 }
 
 .payment-page {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .payment-option {
-    position: relative;
-    padding-left: 32px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .payment-option input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-  }
-  
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 22px;
-    width: 22px;
-    border: 1px solid #00000065;
-    border-radius: 50%;
-    font-size: 8px;
-  }
-  
-  .payment-option input:checked ~ .checkmark {
-    background-color: #064BDE;
-    color:#064BDE;
-  }
-  
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-  
-  .payment-option input:checked ~ .checkmark:after {
-    display: block;
-  }
-  
-  .payment-option .checkmark:after {
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  
-
-  
-@media only screen and (max-width: 980px){
-    .checkout-main-div{
-        display: flex;
-        flex-direction: column;
-        margin-left: 1em;
-        margin-right: 1em;
-        margin-top: 8em;
-        align-items: center;
-    }
-    .checkout-div-delivery{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 1em;
-        border: none;
-        border-radius: 0.9em;
-        background-color: white;
-        width: 90vw;
-        padding:0.3em;
-        height: fit-content;
-        border-radius: 0.3em;
-    }
-    .input-forms-checkout{
-        width: 80vw;
-        height: 3.4em;
-        margin-bottom:0.4em;
-        padding-left: 1em;
-    }
-    
-
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
+.payment-option {
+  position: relative;
+  padding-left: 32px;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-@media only screen and (max-width: 600px){
-    .checkout-main-div{
-        display: flex;
-        flex-direction: column;
-        margin-left: 1em;
-        margin-right: 1em;
-        margin-top: 8em;
-        align-items: center;
-    }
-    .checkout-div-delivery{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 1em;
-        border: none;
-        border-radius: 0.9em;
-        background-color: white;
-        width: 95vw;
-        padding:0.3em;
-        height: fit-content;
-        border-radius: 0.3em;
-    }
-    .input-forms-checkout{
-        width: 85vw;
-        height: 3.4em;
-        margin-bottom:0.4em;
-        padding-left: 1em;
-    }
-    
+.payment-option input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
 
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  border: 1px solid #00000065;
+  border-radius: 50%;
+  font-size: 8px;
+}
+
+.payment-option input:checked ~ .checkmark {
+  background-color: #064bde;
+  color: #064bde;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.payment-option input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.payment-option .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+@media only screen and (max-width: 980px) {
+  .checkout-main-div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 8em;
+    align-items: center;
+  }
+  .checkout-div-delivery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1em;
+    border: none;
+    border-radius: 0.9em;
+    background-color: white;
+    width: 90vw;
+    padding: 0.3em;
+    height: fit-content;
+    border-radius: 0.3em;
+  }
+  .input-forms-checkout {
+    width: 80vw;
+    height: 3.4em;
+    margin-bottom: 0.4em;
+    padding-left: 1em;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .checkout-main-div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 8em;
+    align-items: center;
+  }
+  .checkout-div-delivery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1em;
+    border: none;
+    border-radius: 0.9em;
+    background-color: white;
+    width: 95vw;
+    padding: 0.3em;
+    height: fit-content;
+    border-radius: 0.3em;
+  }
+  .input-forms-checkout {
+    width: 85vw;
+    height: 3.4em;
+    margin-bottom: 0.4em;
+    padding-left: 1em;
+  }
 }
