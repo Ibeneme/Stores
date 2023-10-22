@@ -24,7 +24,7 @@ import {
   addToCart,
   decreaseCart,
   getTotal,
-  removeFromCart,
+  //removeFromCart,
 } from "../../Slices/cartSlice";
 
 const Cart = () => {
@@ -34,21 +34,21 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart);
+ // const cart = useSelector((state) => state.cart);
   useEffect(() => {
     dispatch(getTotal());
   }, [dispatch]);
 
-  const handleRemoveFromCart = (cartItem) => {
-    dispatch(removeFromCart(cartItem));
-  };
+  // const handleRemoveFromCart = (cartItem) => {
+  //   dispatch(removeFromCart(cartItem));
+  // };
 
-  const decreaseInCart = (cartItem) => {
-    dispatch(decreaseCart(cartItem));
-  };
-  const increaseInCart = (cartItem) => {
-    dispatch(addToCart(cartItem));
-  };
+  // const decreaseInCart = (cartItem) => {
+  //   dispatch(decreaseCart(cartItem));
+  // };
+  // const increaseInCart = (cartItem) => {
+  //   dispatch(addToCart(cartItem));
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -154,7 +154,7 @@ const Cart = () => {
     }
   };
 
-  const [counts, setCounts] = useState();
+  //const [counts, setCounts] = useState();
 
   const handleIncrease = async (unique_id) => {
     const itemData = unique_id;

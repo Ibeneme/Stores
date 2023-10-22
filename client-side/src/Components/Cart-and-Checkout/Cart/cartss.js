@@ -12,20 +12,20 @@ import {
 //
 import { useEffect, useState } from "react";
 import { BiMinus } from "react-icons/bi";
-import { MdAdd, MdDelete } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { RxPlus } from "react-icons/rx";
+//import { RxPlus } from "react-icons/rx";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../../Loader/Loader";
+//import Loader from "../../Loader/Loader";
 import { productsFetch } from "../../../Slices/Products/productSlice";
 import logo from "../images/5购物渐变扁平矢量人物插画2420220903果冻_画板 1.png";
-import { AiFillShop } from "react-icons/ai";
-import { TbTruckDelivery } from "react-icons/tb";
-import { MdBroadcastOnHome } from "react-icons/md";
-import imagge from "../images/Group 36684.png";
+// import { AiFillShop } from "react-icons/ai";
+// import { TbTruckDelivery } from "react-icons/tb";
+// import { MdBroadcastOnHome } from "react-icons/md";
+// import imagge from "../images/Group 36684.png";
 import {
   addMultipleItemsToCart,
-  deleteCartItem,
+  // deleteCartItem,
   fetchCartData,
 } from "../../../Slices/Cart/CartSlice";
 
@@ -37,19 +37,19 @@ const Cartsss = (cartItem) => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
-  const handleCheckout = () => {
-    setShowModal(true);
-    // handleShipping();
-    //console.log(data);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  // const handleCheckout = () => {
+  //   setShowModal(true);
+  //   // handleShipping();
+  //   //console.log(data);
+  // };
+  // const closeModal = () => {
+  //   setShowModal(false);
+  // };
 
   const {
     items: details,
-    status,
-    error,
+    //status,
+    // error,
   } = useSelector((state) => state.productsDetails);
 
   const cartData = useSelector((state) => state.cartData);
@@ -74,13 +74,14 @@ const Cartsss = (cartItem) => {
   //console.log(loginUserCart, "loginUserCart");
   const queryParams = new URLSearchParams(location.search);
   const user_unique_id = queryParams.get("user_unique_id");
-  const unique_id = queryParams.get("unique_id");
+ // const unique_id = queryParams.get("unique_id");
   const price = queryParams.get("price");
   const [data, setCartResponse] = useState(null);
 
+  console.log(price, setShowModal,  showModal);
   useEffect(() => {
-    dispatch(productsFetch({ user_unique_id, unique_id }));
-  }, [dispatch, auth]);
+    dispatch(productsFetch({ user_unique_id,}));
+  }, [dispatch, auth, user_unique_id, ]);
 
   useEffect(() => {
     dispatch(getTotal());
@@ -98,10 +99,8 @@ const Cartsss = (cartItem) => {
     fetchData();
   }, [dispatch]);
 
-  console.log("dddd:", data);
-
   const handleRemoveFromCart = (cartItem) => {
-    const unique_id = "ftyyTlau66zawnYKZa8T";
+   // const unique_id = "ftyyTlau66zawnYKZa8T";
     // if (auth?.token) {
     //   if (data?.data?.rows && data?.data?.rows.length > 0) {
     //     console.log("Found data:", data);
@@ -142,7 +141,15 @@ const Cartsss = (cartItem) => {
   const { cartTotalQuantity } = useSelector((state) => state.cart);
   const cartt = useSelector((state) => state.cart);
 
-  console.log(cartt, "cartt");
+  console.log(
+    cartt,
+    "cartt",
+    loginUserCart,
+    cartTotalQuantity,
+    totalPrice,
+    addMultipleItemsToCart,
+
+  );
   useEffect(() => {
     let newTotalPrice = 0;
 
@@ -159,42 +166,45 @@ const Cartsss = (cartItem) => {
     setTotalPrice(newTotalPrice);
   }, [cart.cartItems]);
 
-  const AddMultipleItemsToCart = ({
-    product_unique_id,
-    shipping_unique_id,
-    to_address,
-    quantity,
-  }) => {
-    console.log(
-      product_unique_id,
-      shipping_unique_id,
-      to_address,
-      quantity,
-      "cartItem.product_name"
-    );
-    const carts = [
-      {
-        product_unique_id: product_unique_id,
-        shipping_unique_id: shipping_unique_id,
-        to_address: to_address,
-        quantity: quantity,
-      },
-    ];
 
-    console.log(product_unique_id, "");
-    dispatch(addMultipleItemsToCart(carts))
-      .then((response) => {
-        console.log("Response:", response);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
 
-  let items = cart.cartItems;
+  // const AddMultipleItemsToCart = ({
+  //   product_unique_id,
+  //   shipping_unique_id,
+  //   to_address,
+  //   quantity,
+  // }) => {
+  //   console.log(
+  //     product_unique_id,
+  //     shipping_unique_id,
+  //     to_address,
+  //     quantity,
+  //     "cartItem.product_name"
+  //   );
+  //   const carts = [
+  //     {
+  //       product_unique_id: product_unique_id,
+  //       shipping_unique_id: shipping_unique_id,
+  //       to_address: to_address,
+  //       quantity: quantity,
+  //     },
+  //   ];
+
+  //   console.log(product_unique_id, "");
+  //   dispatch(addMultipleItemsToCart(carts))
+  //     .then((response) => {
+  //       console.log("Response:", response);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // };
+
+  //let items = cart.cartItems;
 
   const [cartItems, setCarts] = useState([]);
-  const [itemsFromEndpoint] = useState([{ items }]);
+  console.log("dddd:", data, setCarts, cartItems);
+  // const [itemsFromEndpoint] = useState([{ items }]);
 
   // const AddMultipleItemsToCarts = (cartItem) => {
   //   setCarts([...cartItems, cartItem]);
@@ -222,11 +232,11 @@ const Cartsss = (cartItem) => {
   //   });
   // };
 
-  const combinedCartItems = [
-    ...cart.cartItems,
-    ...(Array.isArray(loginUserCart) ? loginUserCart : []),
-  ];
-  console.log(cartItems, "combinedCartItems");
+  // const combinedCartItems = [
+  //   ...cart.cartItems,
+  //   ...(Array.isArray(loginUserCart) ? loginUserCart : []),
+  // ];
+  // console.log(cartItems, "combinedCartItems");
 
   return (
     <div>
@@ -608,7 +618,6 @@ const Cartsss = (cartItem) => {
 
                     //onClick={addToCartFromEndpoint}
                     onClick={() => navigate("/checkout")}
-                
                   >
                     Checkout
                   </button>

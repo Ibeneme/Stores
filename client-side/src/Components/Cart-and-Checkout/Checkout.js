@@ -4,22 +4,24 @@ import { useSelector, useDispatch } from "react-redux";
 import "../Products/ProductPage.css";
 import "./Cart.css";
 import "./Checkout.css";
-import cartItemimage from "../Products/images/Rectangle 15.png";
+//import cartItemimage from "../Products/images/Rectangle 15.png";
 import Navbarr from "../Navbar-and-Footer/Navbarr";
 import {
   addMultipleItemsToCart,
   fetchCartData,
 } from "../../Slices/Cart/CartSlice";
-import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
+//import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 import { checkoutMultipleProducts } from "../../Slices/orders/OrderSlice";
 import { payOrder } from "../../Slices/orders/OrderSlice";
-import { toast } from "react-toastify";
-import { usePaystackPayment } from "react-paystack";
+//import { toast } from "react-toastify";
+//import { usePaystackPayment } from "react-paystack";
+import { getTotal } from "../../Slices/cartSlice";
+
 import { productsFetch } from "../../Slices/Products/productSlice";
-import { addToCart, getTotal, removeFromCart } from "../../Slices/cartSlice";
-import { BiMinus } from "react-icons/bi";
-import { MdAdd, MdDelete } from "react-icons/md";
-import { RiDeleteBin6Line } from "react-icons/ri";
+//import { addToCart, getTotal, removeFromCart } from "../../Slices/cartSlice";
+// import { BiMinus } from "react-icons/bi";
+// import { MdAdd, MdDelete } from "react-icons/md";
+// import { RiDeleteBin6Line } from "react-icons/ri";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -33,14 +35,13 @@ const Cart = () => {
   const [cartRes, setCartResponse] = useState([null]);
   const [shipPrice, setShipPrice] = useState(null);
   const [thisError, setError] = useState(null);
-  const usersAddress = auth?.userData?.address;
+  // const usersAddress = auth?.userData?.address;
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
   console.log(shippingPrice, "authhh");
   const data = useSelector((state) => state.carts);
-  console.log(data, "nana");
 
   const [totalPrice, setTotalPrice] = useState(0);
-  const { cartTotalQuantity } = useSelector((state) => state.cart);
+  // const { cartTotalQuantity } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(null);
@@ -48,25 +49,38 @@ const Cart = () => {
   const queryParams = new URLSearchParams(location.search);
   const user_unique_id = queryParams.get("user_unique_id");
   const unique_id = queryParams.get("unique_id");
-  const price = queryParams.get("price");
+  // const price = queryParams.get("price");
   const [datas, setCartResponses] = useState(null);
 
-  const handleCheckout = () => {
-    setShowModal(true);
-    // handleShipping();
-    //console.log(data);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  console.log(
+    data,
+    datas,
+    thisError,
+    showModal,
+    cartUniqueIds,
+    setShowModal,
+    setCartResponse,
+    setLocation,
+    totalPrice,
+    setShipPrice,
+    "nana"
+  );
+  // const handleCheckout = () => {
+  //   setShowModal(true);
+  //   // handleShipping();
+  //   //console.log(data);
+  // };
+  // const closeModal = () => {
+  //   setShowModal(false);
+  // };
 
-  const {
-    items: details,
-    status,
-    error,
-  } = useSelector((state) => state.productsDetails);
+  // const {
+  //   items: details,
+  //   // status,
+  //   // error,
+  // } = useSelector((state) => state.productsDetails);
 
-  const cartData = useSelector((state) => state.cartData);
+  // const cartData = useSelector((state) => state.cartData);
 
   useEffect(() => {
     dispatch(fetchCartData())
@@ -88,7 +102,7 @@ const Cart = () => {
 
   useEffect(() => {
     dispatch(productsFetch({ user_unique_id, unique_id }));
-  }, [dispatch, auth]);
+  }, [dispatch, auth, user_unique_id, unique_id]);
 
   useEffect(() => {
     dispatch(getTotal());
@@ -108,42 +122,42 @@ const Cart = () => {
 
   console.log("dddd:", data);
 
-  const handleRemoveFromCart = (cartItem) => {
-    dispatch(removeFromCart(cartItem));
-  };
+  // const handleRemoveFromCart = (cartItem) => {
+  //   dispatch(removeFromCart(cartItem));
+  // };
 
-  const decreaseInCart = (cartItem) => {
-    dispatch(decreaseInCart(cartItem));
-  };
-  const increaseInCart = (cartItem) => {
-    dispatch(addToCart(cartItem));
-    console.log(cartItem, "carttt");
-    console.log(details, "carttt");
-  };
+  // const decreaseInCart = (cartItem) => {
+  //   dispatch(decreaseInCart(cartItem));
+  // };
+  // const increaseInCart = (cartItem) => {
+  //   dispatch(addToCart(cartItem));
+  //   console.log(cartItem, "carttt");
+  //   console.log(details, "carttt");
+  // };
 
-  const config = {
-    reference: new Date().getTime().toString(),
-    email: "user@example.com",
-    amount: 20000, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey: "pk_test_dsdfghuytfd2345678gvxxxxxxxxxx",
-  };
-
-  // you can call this function anything
-  const onSuccess = (reference) => {
-    // Implementation for whatever you want to do with reference and after success call.
-    console.log(reference);
-  };
+  // const config = {
+  //   reference: new Date().getTime().toString(),
+  //   email: "user@example.com",
+  //   amount: 20000, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+  //   publicKey: "pk_test_dsdfghuytfd2345678gvxxxxxxxxxx",
+  // };
 
   // you can call this function anything
-  const onClose = () => {
-    // navigate("/orderr");
-    console.log("closed");
-  };
+  // const onSuccess = (reference) => {
+  //   // Implementation for whatever you want to do with reference and after success call.
+  //   console.log(reference);
+  // };
+
+  // // you can call this function anything
+  // const onClose = () => {
+  //   // navigate("/orderr");
+  //   console.log("closed");
+  // };
   // const handlePayment = () => {
   //   initializePayment(); // Call the initializePayment function to trigger the payment
   // };
 
-  const initializePayment = usePaystackPayment(config);
+  //const initializePayment = usePaystackPayment(config);
   // const PaystackHookExample = () => {
 
   //   const initializePayment = usePaystackPayment(config);
@@ -239,13 +253,13 @@ const Cart = () => {
   //   console.log(extractedData, "extractedData");
   // };
 
-  const [selectedOptionError, setSelectedOptionError] = useState("");
+  // const [selectedOptionError, setSelectedOptionError] = useState("");
   const [selectedOptionDisable, setSelectedOptionDisable] = useState(false);
 
   const AddMultipleItemsToCarts = async (cartItem) => {
     if (!selectedOption) {
       console.log("selectedOption");
-      setSelectedOptionError("Select a Payment Method");
+      // setSelectedOptionError("Select a Payment Method");
       setSelectedOptionDisable(false);
       return;
     }
@@ -265,7 +279,7 @@ const Cart = () => {
       const addToCartResponse = await dispatch(
         addMultipleItemsToCart(extractedData)
       );
-      //console.log("extractedDataCart:", addToCartResponse);
+      console.log("extractedDataCart:", addToCartResponse);
       const fetchCartResponse = await dispatch(fetchCartData());
       const data = fetchCartResponse?.payload?.data.rows;
       //console.log("cartUniqueIds", data);
@@ -452,7 +466,7 @@ const Cart = () => {
   }, 0);
 
   const checkoutTotal = grandTotal + shipPrice;
-
+  console.log(checkoutTotal);
   return (
     <div>
       <Navbarr />

@@ -1,34 +1,34 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../Products/ProductPage.css";
 import "./Cart.css";
-import { fetchCartData } from "../../Slices/Cart/CartSlice";
-import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
+//import { fetchCartData } from "../../Slices/Cart/CartSlice";
+//import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 import { checkoutMultipleProducts } from "../../Slices/orders/OrderSlice";
 import { payOrder } from "../../Slices/orders/OrderSlice";
-import { toast } from "react-toastify";
+//import { toast } from "react-toastify";
 
 const SingleCartCheckout = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const product_unique_id = queryParams.get("product_unique_id");
-  const shipping_unique_id = queryParams.get("shipping_unique_id");
+  //const shipping_unique_id = queryParams.get("shipping_unique_id");
   const quantity = queryParams.get("quantity");
   const productName = queryParams.get("productName");
   const productPrice = queryParams.get("productPrice");
   const shipps = queryParams.get("shipps");
   const imageUrl = queryParams.get("imageUrl");
-  const locationn = queryParams.get("locationn");
+  //const locationn = queryParams.get("locationn");
 
   console.log(imageUrl, "imageUrl");
 
-  const auth = useSelector((state) => state.auth);
+ // const auth = useSelector((state) => state.auth);
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
   console.log(shippingPrice, "authhh");
   const data = useSelector((state) => state.carts);
   console.log(data, "nana");
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -42,8 +42,8 @@ const SingleCartCheckout = () => {
   console.log(cart_unique_ids, "cccc");
 
   const [shipPrice, setShipPrice] = useState(null);
-  const [thisError, setError] = useState(null);
-  const usersAddress = auth?.userData?.address;
+  const [thisError, setError,] = useState(null);
+  //const usersAddress = auth?.userData?.address;
 
   console.log(selectedOption, "selectedNannn");
   const handleCheckouts = async () => {
@@ -77,6 +77,8 @@ const SingleCartCheckout = () => {
 
   const [cartUniqueIds, setCartUniqueIds] = useState([]);
   const [newLocation, setLocation] = useState("");
+
+
 
 //   useEffect(() => {
 //     dispatch(fetchCartData())
@@ -148,6 +150,10 @@ const SingleCartCheckout = () => {
   const totalCost = productPrice * quantity;
   const addTotal = totalCost + shipps;
   const url = `${imageUrl}`;
+
+  console.log(shipPrice, addTotal,setCartUniqueIds, newLocation, setLocation, newLocation, setShipPrice, handleCheckouts)
+
+
   return (
     <div
       style={{
