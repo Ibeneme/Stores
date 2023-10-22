@@ -6,7 +6,7 @@ import Carousels from "../Navbar-and-Footer/Carousel";
 import Loader from "../Loader/Loader";
 import "./Products.css";
 import sampleimage from "./images/Frame 212.png";
-import { addItemToCart } from "../../Slices/Cart/CartSlice";
+//import { addItemToCart } from "../../Slices/Cart/CartSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addToCart } from "../../Slices/cartSlice";
@@ -25,7 +25,6 @@ const Product = () => {
     // error,
   } = useSelector((state) => state.productsDetails);
 
-
   console.log(details.data, "cartttsdata");
   const pushToCart = ({
     id,
@@ -43,6 +42,7 @@ const Product = () => {
       to_address: location,
       quantity: quantity,
     };
+    console.log(data);
 
     const dataCart = {
       product_unique_id: id,
@@ -95,95 +95,95 @@ const Product = () => {
   };
 
   console.log(auth);
-  const handleAddThisToCart = async (unique_id, location) => {
-    const itemData = {
-      product_unique_id: unique_id,
-      to_address: location,
-      quantity: 1,
-    };
+  // const handleAddThisToCart = async (unique_id, location) => {
+  //   const itemData = {
+  //     product_unique_id: unique_id,
+  //     to_address: location,
+  //     quantity: 1,
+  //   };
 
-    try {
-      const response = await dispatch(addItemToCart(itemData));
-      console.log("Item added to cart:", response.payload);
-      if (response.payload.message === "Unable to add to cart, add address") {
-        toast.error(response.payload.message, {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          style: {
-            backgroundColor: "red", // Background color
-            color: "white", // Text color
-          },
-        });
+  //   try {
+  //     const response = await dispatch(addItemToCart(itemData));
+  //     console.log("Item added to cart:", response.payload);
+  //     if (response.payload.message === "Unable to add to cart, add address") {
+  //       toast.error(response.payload.message, {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         style: {
+  //           backgroundColor: "red", // Background color
+  //           color: "white", // Text color
+  //         },
+  //       });
 
-        navigate("/editdelivery");
-      } else if (response.payload.message === "Cart added successfully!") {
-        toast.success(response.payload.message, {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          style: {
-            backgroundColor: "#007aff", // Background color
-            color: "white", // Text color
-          },
-        });
-      } else if (response.payload.message === "No token provided!") {
-        toast.success("Please login to add to Cart", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          style: {
-            backgroundColor: "#007aff", // Background color
-            color: "white", // Text color
-          },
-        });
-        navigate("/signin");
-      } else if (
-        response.payload.message === "Unable to add own product to cart!"
-      ) {
-        toast.success("Unable to add your own product to cart!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          style: {
-            backgroundColor: "#007aff", // Background color
-            color: "white", // Text color
-          },
-        });
-      }
-    } catch (error) {
-      console.log("Error adding item to cart:", error);
-      toast.error(error.payload.message, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        style: {
-          backgroundColor: "red", // Background color
-          color: "white", // Text color
-        },
-      });
-    }
-  };
+  //       navigate("/editdelivery");
+  //     } else if (response.payload.message === "Cart added successfully!") {
+  //       toast.success(response.payload.message, {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         style: {
+  //           backgroundColor: "#007aff", // Background color
+  //           color: "white", // Text color
+  //         },
+  //       });
+  //     } else if (response.payload.message === "No token provided!") {
+  //       toast.success("Please login to add to Cart", {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         style: {
+  //           backgroundColor: "#007aff", // Background color
+  //           color: "white", // Text color
+  //         },
+  //       });
+  //       navigate("/signin");
+  //     } else if (
+  //       response.payload.message === "Unable to add own product to cart!"
+  //     ) {
+  //       toast.success("Unable to add your own product to cart!", {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         style: {
+  //           backgroundColor: "#007aff", // Background color
+  //           color: "white", // Text color
+  //         },
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log("Error adding item to cart:", error);
+  //     toast.error(error.payload.message, {
+  //       position: "top-center",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       style: {
+  //         backgroundColor: "red", // Background color
+  //         color: "white", // Text color
+  //       },
+  //     });
+  //   }
+  // };
   const handleClick = (user_unique_id, unique_id) => {
     if (user_unique_id && unique_id) {
       navigate(
