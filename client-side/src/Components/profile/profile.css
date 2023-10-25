@@ -22,8 +22,10 @@
 }
 .div-p-profile {
   display: flex;
-  gap: 1em;
+  flex-direction: column;
+  /* gap: 1em; */
   width: 100%;
+  justify-content: flex-start;
 }
 .profile-menu-container {
   display: none;
@@ -39,28 +41,43 @@
 
 .profile-div-right {
   background-color: white;
-  padding: 2em;
+  padding: 24px;
+  width: 1000px;
+  flex-direction: column;
 }
 
 .first-profile-p {
   display: flex;
   gap: 1em;
-  margin-top: 10em;
+  margin-top: -6em;
+  width: 100%;
   justify-content: center;
+  padding: 0;
+  padding-left: 120px;
+  padding-right: 120px;
+  margin-bottom: 124px;
 }
 
 .profile-icons {
 }
-.mobile-hide-profile {
+
+.new-profile {
+  background-color: red;
   display: flex;
-  flex-direction: column;
+}
+.mobile-hide-profile {
+  /* display: flex;
+  width: 200;
+  flex-direction: column; */
+  display: none;
 }
 .div-lines-display {
-  width: 368px;
+  width: 100%;
 }
 
 .functions-hider {
-  display: none;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 1200px) {
@@ -68,7 +85,7 @@
     display: none;
   }
   .div-lines-display {
-    width: 368px;
+    width: 100%;
   }
   .div-p-profile {
     display: flex;
@@ -80,32 +97,75 @@
   }
   .profile-div-right {
     background-color: white;
-    padding: 2em;
+    padding: 24px;
+    width: 700px;
+    flex-direction: column;
   }
   .functions-hider {
     display: flex;
   }
-
-  
 }
 
 @media (max-width: 600px) {
   .profile-div-right {
     background-color: white;
-    width: 100vw;
+    width: 500px;
     margin-top: -9em;
-    padding-top: 9em;
     padding-bottom: 9em;
     margin-bottom: -5em;
   }
   .div-lines-display {
-    width: 95vw;
+    width: 100%;
   }
   .h4-details {
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
   .functions-hider {
     display: flex;
+  }
+
+  .first-profile-p {
+    display: flex;
+    gap: 1em;
+    margin-top: 3em;
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+    padding-left: 120px;
+    padding-right: 120px;
+    margin-bottom: 124px;
+  }
+}
+
+@media (max-width: 400px) {
+  .profile-div-right {
+    background-color: white;
+    width: 100vw;
+    margin-top: -9em;
+    padding-bottom: 9em;
+    margin-bottom: -5em;
+  }
+  .div-lines-display {
+    width: 100%;
+  }
+  .h4-details {
+    width: 100%;
+    text-align: left;
+  }
+  .functions-hider {
+    display: flex;
+  }
+
+  .first-profile-p {
+    display: flex;
+    gap: 1em;
+    margin-top: 3em;
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+    padding-left: 120px;
+    padding-right: 120px;
+    margin-bottom: 124px;
   }
 }

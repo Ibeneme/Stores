@@ -49,7 +49,12 @@ const UserProfile = () => {
     <div>
       {profile && (
         <div>
-          <div></div>
+          <div
+            style={{
+              backgroundColor: "#064BDE",
+              height: 300,
+            }}
+          ></div>
           <div
             style={{
               display: "flex",
@@ -188,37 +193,37 @@ const UserProfile = () => {
                 <p className="p-profile-overflow">Help Desk</p>
                 <p className="p-profile-overflow">FAQ</p>
               </div> */}
-            <div className="functions-hider">
-            <div className="div-display-functions">
-              <div
-                onClick={() => navigate("/profile")}
-                className="div-display-slider active-div-display-slider"
-              >
-                  Personal Details
+              <div className="functions-hider">
+                <div className="div-display-functions">
+                  <div
+                    onClick={() => navigate("/profile")}
+                    className="div-display-slider active-div-display-slider"
+                  >
+                    Personal Details
+                  </div>
+                  <div
+                    onClick={() => navigate("/deliverydetails")}
+                    className="div-display-slider"
+                  >
+                    Delivery Details
+                  </div>
+                  {/* <div
+                    onClick={() => navigate("/bankdetails")}
+                    className="div-display-slider"
+                  >
+                    Bank Details
+                  </div>
+                  <div className="div-display-slider">Verify</div> */}
+                </div>
               </div>
-              <div
-                onClick={() => navigate("/deliverydetails")}
-                className="div-display-slider"
-              >
-                 Delivery Details
-              </div>
-              <div
-                onClick={() => navigate("/bankdetails")}
-                className="div-display-slider"
-              >
-                   Bank Details
-              </div>
-              <div className="div-display-slider">Verify</div>
-            </div>
-              </div>
-            <h4
+              <h4
                 style={{
                   marginBottom: "18px",
                   textAlign: "center",
                 }}
                 className="mobile-hide-profile"
               >
-              Personal Details
+                Personal Details
               </h4>
               {/* <p>Account Name: {profile.account_name}</p>
             <p>Account Number: {profile.account_number}</p>
@@ -229,8 +234,21 @@ const UserProfile = () => {
             <p>Street: {profile.street}</p> */}
               {/* <p>Photo: {profile.photo}</p> */}
               <div className="div-p-profile">
-                <div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                    gap: "24px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>First Name:</strong>
                     <div
                       style={{
@@ -248,7 +266,13 @@ const UserProfile = () => {
                       {profile.firstname}
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Last Name:</strong>{" "}
                     <div
                       style={{
@@ -266,7 +290,13 @@ const UserProfile = () => {
                       {profile.lastname}
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Middle Name:</strong>{" "}
                     <div
                       style={{
@@ -284,7 +314,13 @@ const UserProfile = () => {
                       {profile.middlename}
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Email:</strong>{" "}
                     <div
                       style={{
@@ -302,7 +338,13 @@ const UserProfile = () => {
                       {profile.email}
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Date of Birth:</strong>{" "}
                     <div
                       style={{
@@ -320,9 +362,15 @@ const UserProfile = () => {
                       {profile.dob}
                     </div>
                   </div>
-                </div>
-                <div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  {/* </div>
+                <div> */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Gender:</strong>{" "}
                     <div
                       style={{
@@ -340,7 +388,13 @@ const UserProfile = () => {
                       {profile.gender}
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Phone Number:</strong>{" "}
                     <div
                       style={{
@@ -355,10 +409,18 @@ const UserProfile = () => {
                       }}
                       className="div-lines-display"
                     >
-                      {profile.phone_number}
+                      {profile.phone_number
+                        ? profile.phone_number
+                        : "Enter a Phone Number"}
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Referral Count:</strong>{" "}
                     <div
                       style={{
@@ -376,7 +438,13 @@ const UserProfile = () => {
                       {profile.referral_count}
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Referral ID: </strong>{" "}
                     <div
                       style={{
@@ -395,7 +463,13 @@ const UserProfile = () => {
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Referral Link:</strong>
                     <div
                       style={{
@@ -434,23 +508,28 @@ const UserProfile = () => {
                         <RiFileCopy2Line />
                       </button>
                     </div>
+                    <div
+                      style={{
+                        width: "100%",
+                      }}
+                    >
+                      <button
+                        style={{
+                          height: "50px",
+                          padding: "12px 16px",
+                          backgroundColor: "#064BDE",
+                          border: "none",
+                          color: "white",
+                          borderRadius: "4px",
+                        }}
+                        onClick={() => navigate("/editdetails")}
+                      >
+                        Edit Profile
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <button
-                style={{
-                  height: "50px",
-                  padding: "12px 16px",
-                  backgroundColor: "#064BDE",
-                  border: "none",
-                  color: "white",
-                  borderRadius: "4px",
-                }}
-                onClick={() => navigate("/editdetails")}
-              >
-                Edit Profile
-              </button>
 
               {/* <p>
               Two-Factor Authentication: {profile.two_factor_authentication}

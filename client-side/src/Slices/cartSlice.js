@@ -98,13 +98,14 @@ const cartSlice = createSlice({
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: (progress) => {
-            return {
-              height: "5px",
-              backgroundColor: "white",
-              opacity: progress / 100,
-            };
-          },
+          progress: undefined,
+          // progress: (progress) => {
+          //   return {
+          //     height: "5px",
+          //     backgroundColor: "white",
+          //     opacity: progress / 100,
+          //   };
+          // },
           style: {
             backgroundColor: "#ff0000",
             color: "white",
@@ -132,13 +133,7 @@ const cartSlice = createSlice({
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            progress: (progress) => {
-              return {
-                height: "5px",
-                backgroundColor: "white",
-                opacity: progress / 100,
-              };
-            },
+            progress: undefined,
             style: {
               backgroundColor: "#ff0000",
               color: "white",
@@ -164,13 +159,7 @@ const cartSlice = createSlice({
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-            progress: (progress) => {
-              return {
-                height: "5px",
-                backgroundColor: "white",
-                opacity: progress / 100,
-              };
-            },
+            progress: undefined,
             style: {
               backgroundColor: "#ff0000",
               color: "white",
@@ -190,13 +179,7 @@ const cartSlice = createSlice({
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: (progress) => {
-          return {
-            height: "5px",
-            backgroundColor: "white",
-            opacity: progress / 100,
-          };
-        },
+        progress:undefined,
         style: {
           backgroundColor: "#ff0000",
           color: "white",

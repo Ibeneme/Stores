@@ -34,7 +34,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
- // const cart = useSelector((state) => state.cart);
+  // const cart = useSelector((state) => state.cart);
   useEffect(() => {
     dispatch(getTotal());
   }, [dispatch]);
@@ -190,7 +190,6 @@ const Cart = () => {
           marginTop: "7em",
         }}
       >
-   
         {/*  {cart.cartItems.length === 0 ? (*/}
         {data?.data === null ? (
           <div
@@ -315,7 +314,11 @@ const Cart = () => {
                     <div className="div-cart-first-div">
                       <img
                         className="img-cart-first-div"
-                        src={cartItem?.product_images_data?.[0]?.image?.url}
+                        src={
+                          cartItem?.product_images_data[0]?.image?.url
+                            ? cartItem?.product_images_data[0]?.image?.url
+                            : null
+                        }
                         alt="cartitem"
                       />
                     </div>
@@ -348,7 +351,7 @@ const Cart = () => {
                           >
                             {cartItem?.product_data?.name}
                           </h3>
-                      
+
                           <div
                             style={{
                               display: "flex",
@@ -415,7 +418,6 @@ const Cart = () => {
                                 {" "}
                                 {cartItem?.quantity}
                               </p>
-                             
                               <button
                                 onClick={() =>
                                   handleIncrease(cartItem.unique_id)

@@ -88,6 +88,8 @@ import CartActions from "./Components/Cart-and-Checkout/Cart/oldCart";
 import ProductOld from "./Components/Cart-and-Checkout/Cart/productsCarts";
 import Cartsss from "./Components/Cart-and-Checkout/Cart/cartss";
 import SingleCartCheckout from "./Components/Cart-and-Checkout/SingleCartCheckout";
+import { useLocation } from "react-router";
+import NotFoundPage from "./Components/Cart-and-Checkout/Cart/404";
 
 const ScrollToTop = () => {
   const navigate = useNavigate();
@@ -106,45 +108,63 @@ function App() {
     dispatch(userProfile());
   }, [dispatch]);
 
+  const location = useLocation();
+  const pathsToHideNavbarr = [
+    "/signin",
+    "/signup",
+    "/pidsignin",
+    "/pidsignup",
+    "/Signupnext",
+    "/forgotPassword",
+    "/verify",
+    "/checkout",
+  ];
+  const shouldShowNavbarr = !pathsToHideNavbarr.includes(location.pathname);
+
   return (
     <>
       <ScrollToTop />
       <ToastContainer />
-      <Navbarr />
+      {shouldShowNavbarr && <Navbarr />}
+
       <Routes>
-      <Route path="/newcart" element={<NewCart />} />
-      <Route path="/oldcart" element={<CartActions />} />
-      <Route path="/testss" element={<ProductOld />} />
-      <Route path="/test-cart" element={<Cartsss />} />
-      <Route path="/checkout-one" element={<SingleCartCheckout />} />
-     
+        <Route path="/pidsignin" element={<PIDSignIn />} />
+        <Route path="/pidsignup" element={<PIDSignUp />} />
+        <Route path="/Signup" element={<SignupComponent />} />
+        <Route path="/Signin" element={<SignIn />} />
+        <Route path="/Signupnext" element={<NextSignUp />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/verify" element={<Verify />} />
+
+        <Route path="/*" element={<NotFoundPage />} />
+
+        <Route path="/newcart" element={<NewCart />} />
+        <Route path="/oldcart" element={<CartActions />} />
+        <Route path="/testss" element={<ProductOld />} />
+        <Route path="/test-cart" element={<Cartsss />} />
+        <Route path="/checkout-one" element={<SingleCartCheckout />} />
         <Route path="/vieworder" element={<ViewOrder />} />
         <Route path="/sellersorder" element={<SellersOrder />} />
         <Route path="/viewsellers" element={<ViewSellers />} />
-
         <Route path="/paidsellers" element={<PaidSellers />} />
         <Route path="/shippedsellers" element={<ShippedSellers />} />
         <Route path="/Disputesellers" element={<DisputesSellers />} />
         <Route path="/deliveredsellers" element={<DeliveredSellers />} />
-
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/addcart" element={<AddToCartComponent />} />
         <Route path="/editprofile" element={<ProfileNameForm />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/errorpage007aff" element={<SuccessPage />} />
         <Route path="/newcart" element={<CartComponent />} />
-        <Route path="/Signup" element={<SignupComponent />} />
         <Route path="/editdetails" element={<UserProfileEdit />} />
         <Route path="/deliverydetails" element={<UserProfileDelivery />} />
         <Route path="/editdelivery" element={<UserProfileEditDelivery />} />
-
         <Route path="/single" element={<CheckoutSingle />} />
         <Route path="/paidorder" element={<PaidOrders />} />
         <Route path="/shippedorder" element={<ShippedOrders />} />
         <Route path="/processingorder" element={<ProcessingOrders />} />
         <Route path="/disputesorder" element={<Disputes />} />
         <Route path="/deliveredorder" element={<Deliveredorders />} />
-
         <Route path="/" element={<Product />} />
         <Route path="/carousel" element={<Carousels />} />
         <Route path="/cart" element={<Cart />} />
@@ -159,44 +179,29 @@ function App() {
         <Route path="/getfavorite" element={<FavoritePage />} />
         <Route path="/togglefavorite" element={<FavoritesToggle />} />
         <Route path="/deletefavorite" element={<FavoriteItem />} />
-
-
         <Route path="/im" element={<PhotoInput />} />
         <Route path="/pay" element={<Pay />} />
-
-
         <Route path="/allratings" element={<RatingsPage />} />
         <Route path="/getrating" element={<GetRating />} />
         <Route path="/addrating" element={<AddRatings />} />
         <Route path="/editrating" element={<EditProductRatingForm />} />
-
         <Route path="/editseller" element={<EditProductForm />} />
-
         <Route path="/carta" element={<Carta />} />
         <Route path="/productdd" element={<ProductPage />} />
-        <Route path="/Signin" element={<SignIn />} />
-        <Route path="/Signupnext" element={<NextSignUp />} />
-        <Route path="/forgotPassword" element={<ForgotPassword />} />
-        <Route path="/verify" element={<Verify />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment" element={<PaymentCheckout />} />
-        <Route path="/pidsignin" element={<PIDSignIn />} />
-        <Route path="/pidsignup" element={<PIDSignUp />} />
         <Route path="/test" element={<Testing />} />
         <Route path="/failed" element={<Failed />} />
         <Route path="/login" element={<LoginUserr />} />
         <Route path="/vendor" element={<VendorHome />} />
-
         <Route path="/sellersproductsdisplay" element={<ProductList />} />
         <Route path="/addProducts" element={<AddProductForm />} />
         <Route path="/sellersproduct" element={<SellersProductPage />} />
         <Route path="/publishproduct" element={<ProductPublishPage />} />
         <Route path="/deleteproduct" element={<ProductDeletePage />} />
         <Route path="/addimage" element={<ProductImageFormEdit />} />
-
         <Route path="/publish" element={<ProductListPublish />} />
         <Route path="/drafts" element={<ProductListDrafts />} />
-
         <Route path="/categoryedit" element={<EditCategoryForm />} />
         <Route path="/editprice" element={<EditPricesForm />} />
         <Route path="/editlocation" element={<LocationForm />} />
@@ -208,9 +213,7 @@ function App() {
         <Route path="/editall" element={<EditAllForm />} />
         <Route path="/editimage" element={<ProductImageForm />} />
         <Route path="/deleteimage" element={<DeleteProductImageForm />} />
-
         <Route path="/orderr" element={<Orders />} />
-
         <Route path="/lesss" element={<UpdateNameForm />} />
         {/* <Route path="/editprofile" element={<UpdateNameFormEdit/>} />
        

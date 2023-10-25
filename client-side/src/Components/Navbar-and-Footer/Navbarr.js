@@ -30,9 +30,9 @@ function Navbarr({ token }) {
   const dispatch = useDispatch();
 
   const { cartTotalQuantity } = useSelector((state) => state.cart);
- console.log(cartData, cartTotalQuantity) 
- 
- useEffect(() => {
+  console.log(cartData, cartTotalQuantity);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(fetchCartData());
@@ -85,7 +85,7 @@ function Navbarr({ token }) {
   }, [dispatch, token]);
 
   const cart = useSelector((state) => state.cart);
-  
+
   return (
     <header
       style={{
@@ -205,6 +205,7 @@ function Navbarr({ token }) {
                 Orders
               </p>
               <p
+                onClick={() => navigate("/sellersorder")}
                 style={{
                   display: "flex",
                   gap: "1em",
@@ -216,7 +217,7 @@ function Navbarr({ token }) {
               >
                 {" "}
                 <MdFavoriteBorder />
-                Favorites
+                Sellers Orders
               </p>
               <p
                 style={{
@@ -570,9 +571,9 @@ function Navbarr({ token }) {
                           <FaRegListAlt />
                           Orders
                         </p>
-                        <p>
-                          <MdOutlineHelpOutline />
-                          Help
+                        <p onClick={() => navigate("/sellersorder")}>
+                          <FaRegListAlt /> {/*   <MdOutlineHelpOutline /> */}
+                          Seller's Order
                         </p>
                         <p
                           onClick={handleLogout}
@@ -629,7 +630,7 @@ function Navbarr({ token }) {
               }}
             />
 
-            {cart.cartItems.length > 0? (
+            {cart.cartItems.length > 0 ? (
               <span
                 style={{
                   backgroundColor: "red",
@@ -648,7 +649,7 @@ function Navbarr({ token }) {
                 {cart.cartItems.length}
               </span>
             ) : null}
-  {/* {cartData?.rows?.length >= 1 ? (
+            {/* {cartData?.rows?.length >= 1 ? (
               <span
                 style={{
                   backgroundColor: "red",

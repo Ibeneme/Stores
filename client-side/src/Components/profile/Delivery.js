@@ -23,7 +23,11 @@ const UserProfileDelivery = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <div><Loader /></div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   if (error) {
@@ -34,6 +38,12 @@ const UserProfileDelivery = () => {
     <div>
       {profile && (
         <div>
+          <div
+            style={{
+              backgroundColor: "#064BDE",
+              height: 300,
+            }}
+          ></div>
           <div
             style={{
               display: "flex",
@@ -152,13 +162,13 @@ const UserProfileDelivery = () => {
                   >
                     Delivery Details
                   </div>
-                  <div
+                  {/* <div
                     onClick={() => navigate("/bankdetails")}
                     className="div-display-slider"
                   >
                     Bank Details
                   </div>
-                  <div className="div-display-slider">Verify</div>
+                  <div className="div-display-slider">Verify</div> */}
                 </div>
               </div>
               <h4
@@ -179,98 +189,125 @@ const UserProfileDelivery = () => {
             <p>Street: {profile.street}</p> */}
               {/* <p>Photo: {profile.photo}</p> */}
               <div className="div-p-profile">
-                <div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Address:</strong>
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "fit-content",
-                        display: "flex",
-                        alignItems: "baseline",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.address}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>City:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.city}
-                    </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                  }}
+                >
+                  <strong>Address:</strong>
+                  <div
+                    style={{
+                      border: "gray 1px solid",
+                      padding: "12px 16px",
+                      marginBottom: "20px",
+                      marginTop: "3px",
+                      color: "gray",
+                      display: "flex",
+                      alignItems: "baseline",
+                    }}
+                    className="div-lines-display"
+                  >
+                    {profile.address}
                   </div>
                 </div>
-                <div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>Street:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "80px",
-                        display: "flex",
-                        alignItems: "baseline",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.street}
-                    </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                  }}
+                >
+                  <strong>City:</strong>{" "}
+                  <div
+                    style={{
+                      border: "gray 1px solid",
+                      padding: "12px 16px",
+                      marginBottom: "20px",
+                      marginTop: "3px",
+                      color: "gray",
+                      height: "50px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    className="div-lines-display"
+                  >
+                    {profile.city}
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <strong>State:</strong>{" "}
-                    <div
-                      style={{
-                        border: "gray 1px solid",
-                        padding: "12px 16px",
-                        marginBottom: "20px",
-                        marginTop: "3px",
-                        color: "gray",
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      className="div-lines-display"
-                    >
-                      {profile.state}
-                    </div>
+                </div>
+                {/* </div>
+                <div> */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                  }}
+                >
+                  <strong>Street:</strong>{" "}
+                  <div
+                    style={{
+                      border: "gray 1px solid",
+                      padding: "12px 16px",
+                      marginBottom: "20px",
+                      marginTop: "3px",
+                      color: "gray",
+                   
+                      display: "flex",
+                      alignItems: "baseline",
+                    }}
+                    className="div-lines-display"
+                  >
+                    {profile.street}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                  }}
+                >
+                  <strong>State:</strong>{" "}
+                  <div
+                    style={{
+                      border: "gray 1px solid",
+                      padding: "12px 16px",
+                      marginBottom: "20px",
+                      marginTop: "3px",
+                      color: "gray",
+                      height: "50px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    className="div-lines-display"
+                  >
+                    {profile.state}
                   </div>
                 </div>
               </div>
-
-              <button
+              <div
                 style={{
-                  height: "50px",
-                  padding: "12px 16px",
-                  backgroundColor: "#064BDE",
-                  border: "none",
-                  color: "white",
-                  borderRadius: "4px",
+                  display: "flex",
+                  alignItems: "flex-start",
                 }}
-                onClick={() => navigate("/editdelivery")}
               >
-                Edit Profile
-              </button>
-
+                <button
+                  style={{
+                    height: "50px",
+                    padding: "12px 16px",
+                    backgroundColor: "#064BDE",
+                    border: "none",
+                    color: "white",
+                    borderRadius: "4px",
+                    marginTop: 24
+                  }}
+                  onClick={() => navigate("/editdelivery")}
+                >
+                  Edit Profile
+                </button>
+              </div>
               {/* <p>
               Two-Factor Authentication: {profile.two_factor_authentication}
             </p> */}

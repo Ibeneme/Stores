@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile } from "../../../Slices/Users/ProfileSlice";
 import "./../profile.css";
-import { FaUserEdit } from "react-icons/fa";
-import { MdDeliveryDining, MdMail, MdVerified, MdHelp } from "react-icons/md";
-import { RiBankFill, RiLockPasswordFill } from "react-icons/ri";
-import { BsFillTelephoneFill } from "react-icons/bs";
-import { FcFaq } from "react-icons/fc";
+// import { FaUserEdit } from "react-icons/fa";
+// import { MdDeliveryDining, MdMail, MdVerified, MdHelp } from "react-icons/md";
+// import { RiBankFill, RiLockPasswordFill } from "react-icons/ri";
+// import { BsFillTelephoneFill } from "react-icons/bs";
+// import { FcFaq } from "react-icons/fc";
 import { useNavigate } from "react-router";
 import { updateProfileAddress } from "../../../Slices/Users/update/NameSlice.js";
 import Loader from "../../Loader/Loader";
@@ -44,20 +44,32 @@ const UserProfileEditDelivery = () => {
       console.log(response);
       if (response.payload.message === "User address updated successfully") {
         console.log("Address updated successfully!");
-        navigate(-1); // Navigate back to the previous page
+
+        navigate("/profile");
+        // navigate(-1); // Navigate back to the previous page
       } else {
-        console.log(
-          "Error updating address:",
-          response
-        );
+        console.log("Error updating address:", response);
       }
     } catch (error) {
       console.log("Error updating address:", error);
     }
   };
 
+  const [responseProfile, setResponseProfile] = useState("");
   useEffect(() => {
-    dispatch(fetchUserProfile());
+    const fetchData = async () => {
+      try {
+        const response = await dispatch(fetchUserProfile());
+        console.log("Response:", response?.payload);
+        setResponseProfile(response?.payload);
+        // Handle the response data here
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle the error here
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
   if (loading) {
@@ -88,11 +100,18 @@ const UserProfileEditDelivery = () => {
         <div>
           <div
             style={{
+              backgroundColor: "#064BDE",
+              height: 300,
+            }}
+          ></div>
+          <div
+            style={{
               display: "flex",
+              width: "100%",
             }}
             className="first-profile-p"
           >
-            <div
+            {/* <div
               style={{
                 backgroundColor: "white",
               }}
@@ -181,7 +200,7 @@ const UserProfileEditDelivery = () => {
                 />
                 FAQ
               </p>
-            </div>
+            </div> */}
             <div className="profile-div-right">
               <div className="profile-menu-container">
                 <p
@@ -216,15 +235,38 @@ const UserProfileEditDelivery = () => {
               </div>
               <h4
                 style={{
-                  marginBottom: "3em",
+                  marginBottom: "4px",
+                  marginTop: "2em",
+                  fontSize: 18,
                 }}
                 className="h4-details"
               >
-                Delivery Details
+                Edit Delivery Details
               </h4>
+              <p
+                style={{
+                  marginBottom: "3em",
+                  fontSize: 14,
+                  color: "#666666",
+                }}
+              >
+                Please submit valid documents to ensure swift verification
+                process.
+              </p>
               <div className="div-p-profile">
-                <form onSubmit={handleSubmit}>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                <form
+                  style={{
+                    width: "100%",
+                  }}
+                  onSubmit={handleSubmit}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Address:</strong>
                     <input
                       style={{
@@ -237,13 +279,23 @@ const UserProfileEditDelivery = () => {
                       }}
                       className="div-lines-display"
                       type="text"
-                      placeholder="Enter an address"
+                      placeholder={
+                        responseProfile.address
+                          ? responseProfile.address
+                          : "Enter an address"
+                      }
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     />
                     <p className="error">{addressError?.msg}</p>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>Street:</strong>
                     <input
                       style={{
@@ -256,13 +308,23 @@ const UserProfileEditDelivery = () => {
                       }}
                       className="div-lines-display"
                       type="text"
-                      placeholder="Enter a Street"
+                      placeholder={
+                        responseProfile.street
+                          ? responseProfile.street
+                          : "Enter a Street"
+                      }
                       value={street}
                       onChange={(e) => setStreet(e.target.value)}
                     />
                     <p className="error">{streetError?.msg}</p>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>City:</strong>
                     <input
                       style={{
@@ -275,13 +337,23 @@ const UserProfileEditDelivery = () => {
                       }}
                       className="div-lines-display"
                       type="text"
-                      placeholder="Enter a City"
+                      placeholder={
+                        responseProfile.city
+                          ? responseProfile.city
+                          : "Enter a City"
+                      }
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                     />
                     <p className="error">{cityError?.msg}</p>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
                     <strong>State:</strong>
                     <input
                       style={{
@@ -294,7 +366,11 @@ const UserProfileEditDelivery = () => {
                       }}
                       className="div-lines-display"
                       type="text"
-                      placeholder="Enter a State"
+                      placeholder={
+                        responseProfile.state
+                          ? responseProfile.state
+                          : "Enter a State"
+                      }
                       value={state}
                       onChange={(e) => setState(e.target.value)}
                     />

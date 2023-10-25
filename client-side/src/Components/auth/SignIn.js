@@ -7,12 +7,14 @@ import { useLocation, useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import SpinnerLoader from "../Loader/SpinnerLoader.js";
 
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const location = useLocation();
+  //const shouldShowNavbarr = location.pathname !== "/signin";
 
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const auth = useSelector((state) => state.auth);
@@ -33,8 +35,10 @@ const SignIn = () => {
   });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const lowercaseEmail = user.email.toLowerCase();
@@ -45,15 +49,18 @@ const SignIn = () => {
       console.log(response.meta.requestStatus);
 
       if (response.meta.requestStatus === "fulfilled") {
+        setLoading(false);
         dispatch(userProfile(token));
         const previousPath = location.state?.from || "/";
 
         navigate(previousPath);
       } else {
+        setLoading(false);
         console.log(user);
         setError("Invalid Email or Password");
       }
     } catch (error) {
+      setLoading(false);
       console.log("Error:", error);
     }
   };
@@ -91,6 +98,7 @@ const SignIn = () => {
         paddingBottom: "12em",
         justifyContent: "center",
         alignItems: "center",
+        zIndex: '9999999999999999999999999'
       }}
     >
       <div>
@@ -275,7 +283,7 @@ const SignIn = () => {
               }}
               className="input-forms"
             >
-              Submit
+              {loading ? <SpinnerLoader className="spinner" /> : "Submit"}
             </button>
           </div>
         </form>

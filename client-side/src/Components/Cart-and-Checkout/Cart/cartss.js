@@ -74,14 +74,14 @@ const Cartsss = (cartItem) => {
   //console.log(loginUserCart, "loginUserCart");
   const queryParams = new URLSearchParams(location.search);
   const user_unique_id = queryParams.get("user_unique_id");
- // const unique_id = queryParams.get("unique_id");
+  // const unique_id = queryParams.get("unique_id");
   const price = queryParams.get("price");
   const [data, setCartResponse] = useState(null);
 
-  console.log(price, setShowModal,  showModal);
+  console.log(price, setShowModal, showModal);
   useEffect(() => {
-    dispatch(productsFetch({ user_unique_id,}));
-  }, [dispatch, auth, user_unique_id, ]);
+    dispatch(productsFetch({ user_unique_id }));
+  }, [dispatch, auth, user_unique_id]);
 
   useEffect(() => {
     dispatch(getTotal());
@@ -100,7 +100,7 @@ const Cartsss = (cartItem) => {
   }, [dispatch]);
 
   const handleRemoveFromCart = (cartItem) => {
-   // const unique_id = "ftyyTlau66zawnYKZa8T";
+    // const unique_id = "ftyyTlau66zawnYKZa8T";
     // if (auth?.token) {
     //   if (data?.data?.rows && data?.data?.rows.length > 0) {
     //     console.log("Found data:", data);
@@ -147,8 +147,7 @@ const Cartsss = (cartItem) => {
     loginUserCart,
     cartTotalQuantity,
     totalPrice,
-    addMultipleItemsToCart,
-
+    addMultipleItemsToCart
   );
   useEffect(() => {
     let newTotalPrice = 0;
@@ -165,8 +164,6 @@ const Cartsss = (cartItem) => {
 
     setTotalPrice(newTotalPrice);
   }, [cart.cartItems]);
-
-
 
   // const AddMultipleItemsToCart = ({
   //   product_unique_id,
@@ -290,11 +287,7 @@ const Cartsss = (cartItem) => {
                       <div className="div-cart-first-div">
                         <img
                           className="img-cart-first-div"
-                          src={
-                            cartItem.imageUrl
-                              ? cartItem.imageUrl
-                              : cartItem?.product_images_data[0].image.url
-                          }
+                          src={cartItem.imageUrl}
                           alt="cartitem"
                         />
                       </div>
