@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendProductDraft } from "../../Slices/Sellers/draftProductSlice";
 import "./styles/addProduct.css";
@@ -12,6 +12,8 @@ import { v4 as uuidv4 } from "uuid";
 import { publishProduct } from "../../Slices/Sellers/publishProductSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { userProfile } from "../../Slices/userSlice";
+import logo from "../Cart-and-Checkout/images/usericon.png";
 
 const AddProductForm = () => {
   const dispatch = useDispatch();
@@ -303,627 +305,679 @@ const AddProductForm = () => {
     return color.charAt(0).toUpperCase() + color.slice(1);
   };
 
+  const stateProfile = useSelector((state) => state.userProfile);
+  useEffect(() => {
+    // Dispatch the action to fetch the user profile when the component mounts
+    dispatch(userProfile());
+  }, [dispatch]); // Make sure to include dispatch as a dependency
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingTop: "6em",
-        marginBottom: "2em",
-      }}
-      className="addprodut-f4"
-    >
-      <p
-        style={{
-          display: "none",
-        }}
-      >
-        {handleAddProduct}
-      </p>
-      <p
-        style={{
-          display: "none",
-        }}
-      >
-        {imageList}
-      </p>
-      <div
-        className="addproduct-first-div"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "4em",
-          backgroundColor: "white",
-        }}
-      >
-        <h1 className="addproduct-first-h1">Sell a Product</h1>
-
-        <div style={{ marginTop: "0em" }}>
-          <label>
-            <div
-              className="input-forms"
-              style={{
-                border: "none",
-                backgroundColor: "#DDEDF5",
-                color: "#DDEDF5",
-                position: "relative",
-                overflow: "hidden",
-                // Adjust the width as needed
-                height: "80px",
-              }}
-            >
-              <input
-                style={{
-                  border: "none",
-                  backgroundColor: "#DDEDF5",
-                  color: "#DDEDF5",
-                  position: "absolute",
-                }}
-                type="file"
-                // onChange={(event) => {
-                //   const files = Array.from(event.target.files);
-                //   setImageUpload((prevUploads) => [...prevUploads, ...files]);
-                // }}
-
-                onChange={handleImageChange}
-                accept="image/*"
-                multiple
-                placeholder="Choose an Image"
-              />
-              <p
-                style={{
-                  position: "absolute",
-                  top: "58px",
-                  color: "#000",
-                  left: "39%",
-                }}
-              >
-                Upload an image
-              </p>
-              <MdCloudUpload
-                style={{
-                  position: "absolute",
-                  top: "12px",
-                  left: "45%",
-                  color: "black",
-                  fontSize: "48px",
-                }}
-              />
-            </div>
-            {imageError ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "14px",
-                  textAlign: "center",
-                }}
-              >
-                {" "}
-                {imageError}
-              </p>
-            ) : null}
-          </label>
-          <br />
-
+    <div>
+      {stateProfile?.data?.address ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingTop: "6em",
+            marginBottom: "2em",
+          }}
+          className="addprodut-f4"
+        >
+          <p
+            style={{
+              display: "none",
+            }}
+          >
+            {handleAddProduct}
+          </p>
+          <p
+            style={{
+              display: "none",
+            }}
+          >
+            {imageList}
+          </p>
           <div
+            className="addproduct-first-div"
             style={{
               display: "flex",
-              flexWrap: "wrap",
-              gap: "10px",
-              marginBottom: "24px",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: "4em",
+              backgroundColor: "white",
             }}
           >
-            {imageUpload.map((file, index) => (
+            <h1 className="addproduct-first-h1">Sell a Product</h1>
+
+            <div style={{ marginTop: "0em" }}>
+              <label>
+                <div
+                  className="input-forms"
+                  style={{
+                    border: "none",
+                    backgroundColor: "#DDEDF5",
+                    color: "#DDEDF5",
+                    position: "relative",
+                    overflow: "hidden",
+                    // Adjust the width as needed
+                    height: "80px",
+                  }}
+                >
+                  <input
+                    style={{
+                      border: "none",
+                      backgroundColor: "#DDEDF5",
+                      color: "#DDEDF5",
+                      position: "absolute",
+                    }}
+                    type="file"
+                    // onChange={(event) => {
+                    //   const files = Array.from(event.target.files);
+                    //   setImageUpload((prevUploads) => [...prevUploads, ...files]);
+                    // }}
+
+                    onChange={handleImageChange}
+                    accept="image/*"
+                    multiple
+                    placeholder="Choose an Image"
+                  />
+                  <p
+                    style={{
+                      position: "absolute",
+                      top: "58px",
+                      color: "#000",
+                      left: "39%",
+                    }}
+                  >
+                    Upload an image
+                  </p>
+                  <MdCloudUpload
+                    style={{
+                      position: "absolute",
+                      top: "12px",
+                      left: "45%",
+                      color: "black",
+                      fontSize: "48px",
+                    }}
+                  />
+                </div>
+                {imageError ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "14px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {" "}
+                    {imageError}
+                  </p>
+                ) : null}
+              </label>
+              <br />
+
               <div
-                key={index}
                 style={{
+                  display: "flex",
+                  flexWrap: "wrap",
                   gap: "10px",
-                  position: "relative",
+                  marginBottom: "24px",
                 }}
               >
-                <img
-                  alt="order"
-                  src={URL.createObjectURL(file)}
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    cursor: "pointer",
-                    margin: "5px",
-                  }}
-                />
-                <MdOutlineRemoveCircle
-                  style={{
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    backgroundColor: "white",
-                    fontSize: "24px",
-                    borderRadius: "4555px",
-                    border: "none",
-                    color: "red",
-                  }}
-                  onClick={() => handleRemoveImage(index)}
-                />
+                {imageUpload.map((file, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      gap: "10px",
+                      position: "relative",
+                    }}
+                  >
+                    <img
+                      alt="order"
+                      src={URL.createObjectURL(file)}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        cursor: "pointer",
+                        margin: "5px",
+                      }}
+                    />
+                    <MdOutlineRemoveCircle
+                      style={{
+                        position: "absolute",
+                        top: "0",
+                        left: "0",
+                        backgroundColor: "white",
+                        fontSize: "24px",
+                        borderRadius: "4555px",
+                        border: "none",
+                        color: "red",
+                      }}
+                      onClick={() => handleRemoveImage(index)}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        <div>
-          <select
-            className="input-forms"
-            style={{ height: "50px", backgroundColor: "white" }}
-            name="category_unique_id"
-            value={productData.category_unique_id}
-            onChange={handleChange}
-          >
-            <option value="">Select a category</option>
-            <option value="9vmSKMKFQshEVLHr7ylz">Thrifts and Okrika</option>
-          </select>
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {categoryError?.msg}
-          </p>
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            type="text"
-            name="name"
-            value={productData.name}
-            onChange={handleChange}
-            placeholder="Enter Product Name"
-          />
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {ProductNameError?.msg}
-          </p>
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            name="description"
-            value={productData.description}
-            onChange={handleChange}
-            placeholder="Enter Product Description"
-          />
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {DescriptionError?.msg}
-          </p>
-        </div>
-        <div>
-          <div>
-            <div
-              style={{
-                position: "relative",
-                display: "inline-block",
-              }}
-            >
+            <div>
+              <select
+                className="input-forms"
+                style={{ height: "50px", backgroundColor: "white" }}
+                name="category_unique_id"
+                value={productData.category_unique_id}
+                onChange={handleChange}
+              >
+                <option value="">Select a category</option>
+                <option value="9vmSKMKFQshEVLHr7ylz">Thrifts and Okrika</option>
+              </select>
+              <p
+                style={{
+                  marginTop: "-1.59em",
+                }}
+                className="error"
+              >
+                {categoryError?.msg}
+              </p>
+            </div>
+            <div>
               <input
                 className="input-forms"
                 style={{
                   height: "50px",
                 }}
                 type="text"
-                name="color"
-                value={selectedColor}
-                onChange={handleChangeColor}
-                placeholder="Enter Product Color"
+                name="name"
+                value={productData.name}
+                onChange={handleChange}
+                placeholder="Enter Product Name"
               />
-              <button
-                onClick={handleAddColor}
+              <p
                 style={{
-                  position: "absolute",
-                  top: 8,
-                  right: 4,
-                  padding: "0 8px",
-                  height: "42px",
-                  width: "fit-content",
-                  backgroundColor: "#064bde",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "6px",
+                  marginTop: "-1.59em",
                 }}
+                className="error"
               >
-                Add Color
-              </button>
+                {ProductNameError?.msg}
+              </p>
             </div>
+            <div>
+              <input
+                className="input-forms"
+                style={{
+                  height: "50px",
+                }}
+                name="description"
+                value={productData.description}
+                onChange={handleChange}
+                placeholder="Enter Product Description"
+              />
+              <p
+                style={{
+                  marginTop: "-1.59em",
+                }}
+                className="error"
+              >
+                {DescriptionError?.msg}
+              </p>
+            </div>
+            <div>
+              <div>
+                <div
+                  style={{
+                    position: "relative",
+                    display: "inline-block",
+                  }}
+                >
+                  <input
+                    className="input-forms"
+                    style={{
+                      height: "50px",
+                    }}
+                    type="text"
+                    name="color"
+                    value={selectedColor}
+                    onChange={handleChangeColor}
+                    placeholder="Enter Product Color"
+                  />
+                  <button
+                    onClick={handleAddColor}
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      right: 4,
+                      padding: "0 8px",
+                      height: "42px",
+                      width: "fit-content",
+                      backgroundColor: "#064bde",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    Add Color
+                  </button>
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(4, 1fr)",
+                    marginTop: "-22px",
+                    marginBottom: "56px",
+                  }}
+                  className="input-color"
+                >
+                  {colors.map((color, index) => (
+                    <div key={index}>
+                      <div
+                        style={{
+                          position: "relative",
+                          backgroundColor: color,
+                          width: "36px",
+                          height: "36px",
+                          borderRadius: "10px",
+                          marginTop: "10px",
+                          border:
+                            color.toLowerCase() === "white"
+                              ? "1px solid black"
+                              : "none", // Add border style for white color
+                        }}
+                      >
+                        <MdOutlineRemoveCircle
+                          onClick={() => handleRemoveColor(color)}
+                          style={{
+                            position: "absolute",
+                            top: "-5",
+                            right: "-5",
+                            backgroundColor: "#064bde",
+                            border: "#064bde solid 2px",
+                            borderRadius: "100px",
+                            fontSize: "24px",
+                            color: "white",
+                          }}
+                        />
+                      </div>
+                      <span
+                        style={{
+                          marginTop: "43px",
+                          fontSize: "12px",
+                          textAlign: "center",
+                          width: "36px",
+                        }}
+                      >
+                        {getColorDisplayName(color)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div>
+              <input
+                className="input-forms"
+                style={{
+                  height: "50px",
+                }}
+                type="text"
+                name="size"
+                value={productData.specifications.size}
+                onChange={handleChange}
+                placeholder="Enter Product Size"
+              />
+            </div>
+            <div>
+              <input
+                className="input-forms"
+                style={{
+                  height: "50px",
+                }}
+                type="text"
+                name="quantity"
+                value={productData.quantity}
+                onChange={handleChange}
+                placeholder="Enter Product Quantity"
+              />
+              <p
+                style={{
+                  marginTop: "-1.59em",
+                }}
+                className="error"
+              >
+                {QuantityError?.msg}
+              </p>
+            </div>
+            <div>
+              <input
+                className="input-forms"
+                style={{
+                  height: "50px",
+                }}
+                type="text"
+                name="remaining"
+                value={productData.remaining}
+                onChange={handleChange}
+                placeholder="Enter Product Remaining Quantity"
+              />
+              <p
+                style={{
+                  marginTop: "-1.59em",
+                }}
+                className="error"
+              >
+                {RemainingError?.msg}
+              </p>
+            </div>
+            <div>
+              <input
+                className="input-forms"
+                style={{
+                  height: "50px",
+                }}
+                type="text"
+                name="price"
+                value={productData.price}
+                onChange={handleChange}
+                placeholder="Enter Product Price"
+              />
+              <p
+                style={{
+                  marginTop: "-1.59em",
+                }}
+                className="error"
+              >
+                {PriceError?.msg}
+              </p>
+            </div>
+            <div>
+              <input
+                className="input-forms"
+                style={{
+                  height: "50px",
+                }}
+                type="text"
+                name="max_quantity"
+                value={productData.max_quantity}
+                onChange={handleChange}
+                placeholder="Enter Product Max Quantity"
+              />{" "}
+              <p
+                style={{
+                  marginTop: "-1.59em",
+                }}
+                className="error"
+              >
+                {max_quantityError?.msg}
+              </p>
+            </div>
+            <div>
+              <input
+                className="input-forms"
+                style={{
+                  height: "50px",
+                }}
+                type="text"
+                name="sales_price"
+                value={productData.sales_price}
+                onChange={handleChange}
+                placeholder="Enter Product Sales Price"
+              />
+              <p
+                style={{
+                  marginTop: "-1.59em",
+                }}
+                className="error"
+              >
+                {sales_priceError?.msg}
+              </p>
+            </div>
+            <div>
+              <select
+                className="input-forms"
+                name="state"
+                value={productData.state}
+                onChange={handleChange}
+              >
+                <option value="">Select a state</option>
+                <option value="Abuja">FCT - Abuja</option>
+                <option value="Abia">Abia</option>
+                <option value="Adamawa">Adamawa</option>
+                <option value="Akwa Ibom">Akwa Ibom</option>
+                <option value="Anambra">Anambra</option>
+                <option value="Bauchi">Bauchi</option>
+                <option value="Bayelsa">Bayelsa</option>
+                <option value="Benue">Benue</option>
+                <option value="Borno">Borno</option>
+                <option value="Cross River">Cross River</option>
+                <option value="Delta">Delta</option>
+                <option value="Ebonyi">Ebonyi</option>
+                <option value="Edo">Edo</option>
+                <option value="Ekiti">Ekiti</option>
+                <option value="Enugu">Enugu</option>
+                <option value="Gombe">Gombe</option>
+                <option value="Imo">Imo</option>
+                <option value="Jigawa">Jigawa</option>
+                <option value="Kaduna">Kaduna</option>
+                <option value="Kano">Kano</option>
+                <option value="Katsina">Katsina</option>
+                <option value="Kebbi">Kebbi</option>
+                <option value="Kogi">Kogi</option>
+                <option value="Kwara">Kwara</option>
+                <option value="Lagos">Lagos</option>
+                <option value="Nasarawa">Nasarawa</option>
+                <option value="Niger">Niger</option>
+                <option value="Ogun">Ogun</option>
+                <option value="Ondo">Ondo</option>
+                <option value="Osun">Osun</option>
+                <option value="Oyo">Oyo</option>
+                <option value="Plateau">Plateau</option>
+                <option value="Rivers">Rivers</option>
+                <option value="Sokoto">Sokoto</option>
+                <option value="Taraba">Taraba</option>
+                <option value="Yobe">Yobe</option>
+                <option value="Zamfara">Zamfara</option>
+              </select>
+            </div>
+
+            {showAddModal && (
+              <div
+                style={{
+                  zIndex: "999",
+                }}
+                className="modal"
+              >
+                <div className="modal-content">
+                  <h2>Add this Product</h2>
+                  <p>Are you sure you want to add this product?</p>
+
+                  <div className="modal-buttons">
+                    <button
+                      style={{
+                        backgroundColor: "#d9d9d945",
+                        color: "#000",
+                      }}
+                      onClick={closeAddModal}
+                    >
+                      No, Save as Drafts
+                    </button>
+                    {loading ? (
+                      <button
+                        style={{
+                          backgroundColor: "#064bde32",
+                          color: "white",
+                        }}
+                        onClick={handleSubmit}
+                      >
+                        Uploading...{" "}
+                      </button>
+                    ) : (
+                      <button
+                        style={{
+                          backgroundColor: "#064bde",
+                          color: "white",
+                        }}
+                        onClick={handleSubmit}
+                      >
+                        Add{" "}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <button
+              style={{
+                height: "50px",
+              }}
+              className="btn-add-a-product input-forms"
+              onClick={openAddModal}
+            >
+              Add Product
+            </button>
+            <button
+              style={{
+                height: "50px",
+              }}
+              className="btn-draft-a-product input-forms"
+              onClick={openDraftModal}
+            >
+              Draft
+            </button>
+          </div>
+
+          {/* Add Product Modal */}
+          {showAddModal && (
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                marginTop: "-22px",
-                marginBottom: "56px",
+                zIndex: "999",
               }}
-              className="input-color"
+              className="modal"
             >
-              {colors.map((color, index) => (
-                <div key={index}>
-                  <div
-                    style={{
-                      position: "relative",
-                      backgroundColor: color,
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "10px",
-                      marginTop: "10px",
-                      border:
-                        color.toLowerCase() === "white"
-                          ? "1px solid black"
-                          : "none", // Add border style for white color
-                    }}
-                  >
-                    <MdOutlineRemoveCircle
-                      onClick={() => handleRemoveColor(color)}
-                      style={{
-                        position: "absolute",
-                        top: "-5",
-                        right: "-5",
-                        backgroundColor: "#064bde",
-                        border: "#064bde solid 2px",
-                        borderRadius: "100px",
-                        fontSize: "24px",
-                        color: "white",
-                      }}
-                    />
-                  </div>
-                  <span
-                    style={{
-                      marginTop: "43px",
-                      fontSize: "12px",
-                      textAlign: "center",
-                      width: "36px",
-                    }}
-                  >
-                    {getColorDisplayName(color)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            type="text"
-            name="size"
-            value={productData.specifications.size}
-            onChange={handleChange}
-            placeholder="Enter Product Size"
-          />
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            type="text"
-            name="quantity"
-            value={productData.quantity}
-            onChange={handleChange}
-            placeholder="Enter Product Quantity"
-          />
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {QuantityError?.msg}
-          </p>
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            type="text"
-            name="remaining"
-            value={productData.remaining}
-            onChange={handleChange}
-            placeholder="Enter Product Remaining Quantity"
-          />
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {RemainingError?.msg}
-          </p>
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            type="text"
-            name="price"
-            value={productData.price}
-            onChange={handleChange}
-            placeholder="Enter Product Price"
-          />
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {PriceError?.msg}
-          </p>
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            type="text"
-            name="max_quantity"
-            value={productData.max_quantity}
-            onChange={handleChange}
-            placeholder="Enter Product Max Quantity"
-          />{" "}
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {max_quantityError?.msg}
-          </p>
-        </div>
-        <div>
-          <input
-            className="input-forms"
-            style={{
-              height: "50px",
-            }}
-            type="text"
-            name="sales_price"
-            value={productData.sales_price}
-            onChange={handleChange}
-            placeholder="Enter Product Sales Price"
-          />
-          <p
-            style={{
-              marginTop: "-1.59em",
-            }}
-            className="error"
-          >
-            {sales_priceError?.msg}
-          </p>
-        </div>
-        <div>
-          <select
-            className="input-forms"
-            name="state"
-            value={productData.state}
-            onChange={handleChange}
-          >
-            <option value="">Select a state</option>
-            <option value="Abuja">FCT - Abuja</option>
-            <option value="Abia">Abia</option>
-            <option value="Adamawa">Adamawa</option>
-            <option value="Akwa Ibom">Akwa Ibom</option>
-            <option value="Anambra">Anambra</option>
-            <option value="Bauchi">Bauchi</option>
-            <option value="Bayelsa">Bayelsa</option>
-            <option value="Benue">Benue</option>
-            <option value="Borno">Borno</option>
-            <option value="Cross River">Cross River</option>
-            <option value="Delta">Delta</option>
-            <option value="Ebonyi">Ebonyi</option>
-            <option value="Edo">Edo</option>
-            <option value="Ekiti">Ekiti</option>
-            <option value="Enugu">Enugu</option>
-            <option value="Gombe">Gombe</option>
-            <option value="Imo">Imo</option>
-            <option value="Jigawa">Jigawa</option>
-            <option value="Kaduna">Kaduna</option>
-            <option value="Kano">Kano</option>
-            <option value="Katsina">Katsina</option>
-            <option value="Kebbi">Kebbi</option>
-            <option value="Kogi">Kogi</option>
-            <option value="Kwara">Kwara</option>
-            <option value="Lagos">Lagos</option>
-            <option value="Nasarawa">Nasarawa</option>
-            <option value="Niger">Niger</option>
-            <option value="Ogun">Ogun</option>
-            <option value="Ondo">Ondo</option>
-            <option value="Osun">Osun</option>
-            <option value="Oyo">Oyo</option>
-            <option value="Plateau">Plateau</option>
-            <option value="Rivers">Rivers</option>
-            <option value="Sokoto">Sokoto</option>
-            <option value="Taraba">Taraba</option>
-            <option value="Yobe">Yobe</option>
-            <option value="Zamfara">Zamfara</option>
-          </select>
-        </div>
-
-        {showAddModal && (
-          <div
-            style={{
-              zIndex: "999",
-            }}
-            className="modal"
-          >
-            <div className="modal-content">
-              <h2>Add this Product</h2>
-              <p>Are you sure you want to add this product?</p>
-
-              <div className="modal-buttons">
-                <button
+              <div className="modal-content">
+                <h2>Add this Product</h2>
+                <p>Are you sure you want to add this product?</p>
+                <p
                   style={{
-                    backgroundColor: "#d9d9d945",
-                    color: "#000",
+                    color: "red",
                   }}
-                  onClick={closeAddModal}
                 >
-                  No, Save as Drafts
-                </button>
-                {loading ? (
+                  {setError}
+                </p>
+                <div className="modal-buttons">
                   <button
                     style={{
-                      backgroundColor: "#064bde32",
-                      color: "white",
+                      backgroundColor: "#d9d9d945",
+                      color: "#000",
                     }}
-                    onClick={handleSubmit}
+                    onClick={closeAddModal}
                   >
-                    Uploading...{" "}
+                    No, Save as Drafts
                   </button>
-                ) : (
+                  {loading ? (
+                    <button
+                      style={{
+                        backgroundColor: "#064bde32",
+                        color: "white",
+                      }}
+                      onClick={handleSubmit}
+                    >
+                      Uploading...{" "}
+                    </button>
+                  ) : (
+                    <button
+                      style={{
+                        backgroundColor: "#064bde",
+                        color: "white",
+                      }}
+                      onClick={handleSubmit}
+                    >
+                      Add{" "}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Draft Modal */}
+          {showDraftModal && (
+            <div
+              style={{
+                zIndex: "999",
+              }}
+              className="modal"
+            >
+              <div className="modal-content">
+                <h2>Draft this Product?</h2>
+                <p>Are you sure you want to draft this product.</p>
+
+                <div className="modal-buttons">
+                  <button
+                    style={{
+                      backgroundColor: "#d9d9d945",
+                      color: "#000",
+                    }}
+                    onClick={closeDraftModal}
+                  >
+                    Cancel
+                  </button>
                   <button
                     style={{
                       backgroundColor: "#064bde",
                       color: "white",
                     }}
-                    onClick={handleSubmit}
+                    onClick={handleDraft}
                   >
-                    Add{" "}
+                    Save as Draft
                   </button>
-                )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-
-        <button
-          style={{
-            height: "50px",
-          }}
-          className="btn-add-a-product input-forms"
-          onClick={openAddModal}
-        >
-          Add Product
-        </button>
-        <button
-          style={{
-            height: "50px",
-          }}
-          className="btn-draft-a-product input-forms"
-          onClick={openDraftModal}
-        >
-          Draft
-        </button>
-      </div>
-
-      {/* Add Product Modal */}
-      {showAddModal && (
+          )}
+        </div>
+      ) : (
         <div
           style={{
-            zIndex: "999",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 64,
+            marginTop: 48,
           }}
-          className="modal"
         >
-          <div className="modal-content">
-            <h2>Add this Product</h2>
-            <p>Are you sure you want to add this product?</p>
+          <div className="no-product">
             <p
               style={{
-                color: "red",
+                textAlign: "center",
               }}
             >
-              {setError}
+              Your Profile personal and delivery details isn't completed, pls
+              fill to get started
             </p>
-            <div className="modal-buttons">
-              <button
-                style={{
-                  backgroundColor: "#d9d9d945",
-                  color: "#000",
-                }}
-                onClick={closeAddModal}
-              >
-                No, Save as Drafts
-              </button>
-              {loading ? (
-                <button
-                  style={{
-                    backgroundColor: "#064bde32",
-                    color: "white",
-                  }}
-                  onClick={handleSubmit}
-                >
-                  Uploading...{" "}
-                </button>
-              ) : (
-                <button
-                  style={{
-                    backgroundColor: "#064bde",
-                    color: "white",
-                  }}
-                  onClick={handleSubmit}
-                >
-                  Add{" "}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+            <br />
+            <br />
+            <img src={logo} alt="logo" />
+            <br />
+            <button
+              style={{
+                width: "200px",
+                height: "3.8em",
+                borderRadius: "0.4em",
+                border: "none",
+                backgroundColor: "#386AEB",
+                color: "white",
 
-      {/* Draft Modal */}
-      {showDraftModal && (
-        <div
-          style={{
-            zIndex: "999",
-          }}
-          className="modal"
-        >
-          <div className="modal-content">
-            <h2>Draft this Product?</h2>
-            <p>Are you sure you want to draft this product.</p>
-
-            <div className="modal-buttons">
-              <button
-                style={{
-                  backgroundColor: "#d9d9d945",
-                  color: "#000",
-                }}
-                onClick={closeDraftModal}
-              >
-                Cancel
-              </button>
-              <button
-                style={{
-                  backgroundColor: "#064bde",
-                  color: "white",
-                }}
-                onClick={handleDraft}
-              >
-                Save as Draft
-              </button>
-            </div>
+                fontSize: "1em",
+              }}
+              onClick={() => navigate("/profile")}
+            >
+              Go to Profile
+            </button>
+            <br />
           </div>
         </div>
       )}

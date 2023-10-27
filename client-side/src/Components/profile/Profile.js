@@ -263,7 +263,7 @@ const UserProfile = () => {
                       }}
                       className="div-lines-display"
                     >
-                      {profile.firstname}
+                      {profile.firstname? profile.firstname: 'No details Provided'}
                     </div>
                   </div>
                   <div

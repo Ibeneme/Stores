@@ -209,7 +209,9 @@ const UserProfileDelivery = () => {
                     }}
                     className="div-lines-display"
                   >
-                    {profile.address}
+                    {profile.address
+                      ? profile.address
+                      : "No details Provided yet, edit to fill"}
                   </div>
                 </div>
                 <div
@@ -227,13 +229,15 @@ const UserProfileDelivery = () => {
                       marginBottom: "20px",
                       marginTop: "3px",
                       color: "gray",
-                      height: "50px",
+                      height: "auto",
                       display: "flex",
                       alignItems: "center",
                     }}
                     className="div-lines-display"
                   >
-                    {profile.city}
+                    {profile.city
+                      ? profile.city
+                      : "No details Provided yet, edit to fill"}
                   </div>
                 </div>
                 {/* </div>
@@ -253,13 +257,15 @@ const UserProfileDelivery = () => {
                       marginBottom: "20px",
                       marginTop: "3px",
                       color: "gray",
-                   
+                      height: "auto",
                       display: "flex",
                       alignItems: "baseline",
                     }}
                     className="div-lines-display"
                   >
-                    {profile.street}
+                    {profile.street
+                      ? profile.street
+                      : "No details Provided yet, edit to fill"}
                   </div>
                 </div>
                 <div
@@ -283,7 +289,9 @@ const UserProfileDelivery = () => {
                     }}
                     className="div-lines-display"
                   >
-                    {profile.state}
+                    {profile.state
+                      ? profile.state
+                      : "No details Provided yet, edit to fill"}
                   </div>
                 </div>
               </div>
@@ -301,7 +309,7 @@ const UserProfileDelivery = () => {
                     border: "none",
                     color: "white",
                     borderRadius: "4px",
-                    marginTop: 24
+                    marginTop: 24,
                   }}
                   onClick={() => navigate("/editdelivery")}
                 >

@@ -28,6 +28,7 @@ import {
   // deleteCartItem,
   fetchCartData,
 } from "../../../Slices/Cart/CartSlice";
+import { userProfile } from "../../../Slices/userSlice";
 
 const Cartsss = (cartItem) => {
   const cart = useSelector((state) => state.cart);
@@ -36,6 +37,12 @@ const Cartsss = (cartItem) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+
+  const stateProfile = useSelector((state) => state.userProfile);
+  useEffect(() => {
+    // Dispatch the action to fetch the user profile when the component mounts
+    dispatch(userProfile());
+  }, [dispatch]); // Make sure to include dispatch as a dependency
 
   // const handleCheckout = () => {
   //   setShowModal(true);
@@ -46,6 +53,7 @@ const Cartsss = (cartItem) => {
   //   setShowModal(false);
   // };
 
+  console.log(stateProfile, "stateProfile");
   const {
     items: details,
     //status,
@@ -466,97 +474,118 @@ const Cartsss = (cartItem) => {
                 </p>
               </div>
               <br />
-              <div
-                style={{
-                  border: "1px solid #66666635",
-                  padding: "16px",
-                  borderRadius: 12,
-                }}
-              >
+              {stateProfile?.data?.address ? (
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    border: "1px solid #66666635",
+                    padding: "16px",
+                    borderRadius: 12,
                   }}
                 >
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "baseline",
-                      gap: "12px",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
                   >
-                    <p
+                    <div
                       style={{
-                        fontSize: "15px",
-                        fontWeight: "900",
-                        color: "#666",
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: "12px",
                       }}
                     >
-                      {" "}
-                      Delivery Address
-                    </p>
+                      <p
+                        style={{
+                          fontSize: "15px",
+                          fontWeight: "900",
+                          color: "#666",
+                        }}
+                      >
+                        {" "}
+                        Delivery Address
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {auth?.userData?.address ? (
-                  <span>
-                    {" "}
+                  {stateProfile?.data?.address ? (
+                    <span>
+                      {" "}
+                      <p
+                        style={{
+                          fontSize: "13px",
+                          marginTop: "7px",
+                          marginBottom: "12px",
+                        }}
+                      >
+                        {" "}
+                        {stateProfile?.data?.address}{" "}
+                      </p>
+                      {/* <button>Send to another Address</button> */}
+                    </span>
+                  ) : (
                     <p
                       style={{
-                        fontSize: "13px",
-                        marginTop: "7px",
-                        marginBottom: "12px",
+                        fontSize: "14px",
                       }}
-                    >
-                      {" "}
-                      {auth?.userData?.address}{" "}
-                    </p>
-                    {/* <button>Send to another Address</button> */}
-                  </span>
-                ) : (
-                  <p
-                    style={{
-                      fontSize: "14px",
-                    }}
-                  ></p>
-                )}
+                    ></p>
+                  )}
 
-                {auth?.userData?.address ? (
-                  <p
+                  {stateProfile?.data?.address ? (
+                    <p
+                      style={{
+                        // backgroundColor: "#064BDE16",
+                        color: "#064BDE",
+                        //   padding: "6px 12px",
+                        //   borderRadius: "152px",
+                        fontSize: "14px",
+                        fontWeight: 900,
+                        width: "fit-content",
+                        textAlign: "center",
+                        height: "31px",
+                        marginBottom: -12,
+                        marginTop: 24,
+                      }}
+                      onClick={() => navigate("/deliverydetails")}
+                    >
+                      Edit Address{" "}
+                    </p>
+                  ) : (
+                    <p
+                      style={{
+                        backgroundColor: "#064BDE16",
+                        color: "#064BDE",
+                        padding: "6px 12px",
+                        borderRadius: "152px",
+                        fontSize: "14px",
+                      }}
+                      onClick={() => navigate("/profile")}
+                    >
+                      Add an Address
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    borderLeft: "6px solid #386AEB",
+                    padding: "16px",
+
+                    backgroundColor: "#386AEB18",
+                  }}
+                >
+                  <h5
                     style={{
-                      // backgroundColor: "#064BDE16",
                       color: "#064BDE",
-                      //   padding: "6px 12px",
-                      //   borderRadius: "152px",
-                      fontSize: "14px",
-                      fontWeight: 900,
-                      width: "fit-content",
-                      textAlign: "center",
-                      height: "31px",
-                      marginBottom: -12,
-                      marginTop: 24,
                     }}
-                    onClick={() => navigate("/deliverydetails")}
                   >
-                    Edit Address{" "}
-                  </p>
-                ) : (
-                  <p
-                    style={{
-                      backgroundColor: "#064BDE16",
-                      color: "#064BDE",
-                      padding: "6px 12px",
-                      borderRadius: "152px",
-                      fontSize: "14px",
-                    }}
-                    onClick={() => navigate("/profile")}
-                  >
-                    Add an Address
-                  </p>
-                )}
-              </div>
+                    {stateProfile?.data?.address
+                      ? "Set Up your delivery address to Checkout"
+                      : "Sign up to Checkout"}
+                  </h5>
+                </div>
+              )}
               <div
                 style={{
                   display: "flex",
@@ -590,42 +619,73 @@ const Cartsss = (cartItem) => {
               </div>
               <br /> <br />
               {auth.token ? (
+                stateProfile?.data?.address ? (
+                  <div>
+                    <button
+                      style={{
+                        fontSize: "1em",
+                      }}
+                      className="checkout-btn"
+                      // onClick={() => {
+                      //   console.log(
+                      //     cartItem.product_unique_id,
+                      //     " cart.cartItem.product_unique_id"
+                      //   );
+                      //   AddMultipleItemsToCart({
+                      //     product_unique_id: cartItem.product_unique_id,
+                      //     shipping_unique_id: cartItem.shipping_unique_id,
+                      //     to_address: cartItem.to_address,
+                      //     quantity: cartItem.cartQuantity,
+                      //   });
+                      // }}
+
+                      //onClick={addToCartFromEndpoint}
+                      onClick={() => navigate("/checkout")}
+                    >
+                      Checkout
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <button
+                      style={{
+                        fontSize: "1em",
+                      }}
+                      className="checkout-btn"
+                      // onClick={() => {
+                      //   console.log(
+                      //     cartItem.product_unique_id,
+                      //     " cart.cartItem.product_unique_id"
+                      //   );
+                      //   AddMultipleItemsToCart({
+                      //     product_unique_id: cartItem.product_unique_id,
+                      //     shipping_unique_id: cartItem.shipping_unique_id,
+                      //     to_address: cartItem.to_address,
+                      //     quantity: cartItem.cartQuantity,
+                      //   });
+                      // }}
+
+                      //onClick={addToCartFromEndpoint}
+                      onClick={() => navigate("/deliverydetails")}
+                    >
+                      Set up Address
+                    </button>
+                  </div>
+                )
+              ) : null}
+              {!auth.token ? (
                 <div>
                   <button
                     style={{
                       fontSize: "1em",
                     }}
                     className="checkout-btn"
-                    // onClick={() => {
-                    //   console.log(
-                    //     cartItem.product_unique_id,
-                    //     " cart.cartItem.product_unique_id"
-                    //   );
-                    //   AddMultipleItemsToCart({
-                    //     product_unique_id: cartItem.product_unique_id,
-                    //     shipping_unique_id: cartItem.shipping_unique_id,
-                    //     to_address: cartItem.to_address,
-                    //     quantity: cartItem.cartQuantity,
-                    //   });
-                    // }}
-
-                    //onClick={addToCartFromEndpoint}
-                    onClick={() => navigate("/checkout")}
+                    onClick={() => navigate("/signup")}
                   >
-                    Checkout
+                    Sign Up to Checkout
                   </button>
                 </div>
-              ) : (
-                <button
-                  style={{
-                    fontSize: "1em",
-                  }}
-                  className="checkout-btn"
-                  onClick={() => navigate("/signup")}
-                >
-                  Sign Up to Checkout
-                </button>
-              )}
+              ) : null}
             </div>
           </div>
         )}

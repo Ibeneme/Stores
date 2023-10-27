@@ -129,6 +129,7 @@ const UserProfileEdit = () => {
           <div
             style={{
               display: "flex",
+              width:'100%'
             }}
             className="first-profile-p"
           >

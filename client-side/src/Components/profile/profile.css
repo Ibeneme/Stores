@@ -129,11 +129,11 @@
     display: flex;
     gap: 1em;
     margin-top: 3em;
-    width: 100%;
+    width: 100vw;
     justify-content: center;
     padding: 16px;
-    padding-left: 120px;
-    padding-right: 120px;
+    padding-left: 20px;
+    padding-right: 20px;
     margin-bottom: 124px;
   }
 }
@@ -161,11 +161,11 @@
     display: flex;
     gap: 1em;
     margin-top: 3em;
-    width: 100%;
+    width: 90vw;
     justify-content: center;
     padding: 16px;
-    padding-left: 120px;
-    padding-right: 120px;
+    padding-left: 24px;
+    padding-right: 24px;
     margin-bottom: 124px;
   }
 }
