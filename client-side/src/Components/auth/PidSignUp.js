@@ -22,7 +22,7 @@ const PIDSignUp = () => {
       ...prevData,
       [name]: value,
     }));
-    setFormErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    //setFormErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {

@@ -2,27 +2,36 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
 import "./auth.css";
 import { signinPasscoder } from "../../Slices/auth/signUpSlice";
+import SpinnerLoader from "../Loader/SpinnerLoader";
 
 const PIDSignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  //const auth = useSelector((state) => state.auth);
 
-  const auth = useSelector((state) => state.auth);
+  const [passcoderID, setPasscoderID] = useState("");
 
-  const [user, setUser] = useState({
-    pid: "",
-  });
+  const handleChange = (event) => {
+    // Update the state with the input value
+    setPasscoderID(event.target.value);
+  };
 
+  console.log(passcoderID, "passcoderID");
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
-      const response = await dispatch(signinPasscoder(user));
+      const response = await dispatch(
+        signinPasscoder({ pid: passcoderID, country: "Nigeria" })
+      );
+      setLoading(false);
       console.log(response);
       console.log(response.meta.requestStatus);
 
@@ -32,6 +41,7 @@ const PIDSignIn = () => {
         setError(response.payload.data.err_code);
       }
     } catch (error) {
+      setLoading(false);
       console.log("Error:", error);
     }
   };
@@ -85,7 +95,7 @@ const PIDSignIn = () => {
         >
           Sign In with Passcoder
         </h2>
-        <p style={{ marginTop: "0.5em" , textAlign:'center'}}>
+        <p style={{ marginTop: "0.5em", textAlign: "center" }}>
           Do not have an account?{" "}
           <span
             style={{ color: "#386AEB", cursor: "pointer" }}
@@ -138,7 +148,8 @@ const PIDSignIn = () => {
               placeholder="Enter Passcoder ID"
               type="text"
               className="input-forms"
-              onChange={(e) => setUser({ ...user, pid: e.target.value })}
+              onChange={handleChange}
+              value={passcoderID}
             />
           </div>
           <button
@@ -151,7 +162,7 @@ const PIDSignIn = () => {
             }}
             className="input-forms"
           >
-            {auth.loginStatus === "pending" ? "Loading...." : "Submit"}
+            {loading ? <SpinnerLoader className="spinner" /> : "Submit"}
           </button>
         </div>
       </form>

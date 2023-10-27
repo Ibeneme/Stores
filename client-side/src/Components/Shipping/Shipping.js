@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import logo from "../../Components/Navbar-and-Footer/image/Vector.png";
+import SpinnerLoader from "../Loader/SpinnerLoader";
 
 const SignupComponent = () => {
   const dispatch = useDispatch();
@@ -495,7 +496,7 @@ const SignupComponent = () => {
           type="submit"
           disabled={loading}
         >
-          Signup
+        {loading ? <SpinnerLoader className="spinner" /> : "Submit"}
         </button>
         {thisError ? (
           <p
