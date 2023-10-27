@@ -250,7 +250,6 @@ const updateOrderPaymentMethod = createAsyncThunk(
     };
 
     try {
-      // Make the API call to update order payment method
       const response = await axios.put(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/update/payment/method",
         { tracking_number, payment_method },
@@ -408,7 +407,6 @@ const deleteUserOrder = createAsyncThunk(
   }
 );
 
-
 export const payOrder = createAsyncThunk(
   "orders/payOrder",
   async (tracking_number, { rejectWithValue, getState }) => {
@@ -421,8 +419,8 @@ export const payOrder = createAsyncThunk(
         },
         {
           headers: {
-            "hydra-express-access-token": token, 
-            "hydra-express-access-key": "passcoder_1853cef81fea126373d2",// Set the headers with the access token
+            "hydra-express-access-token": token,
+            "hydra-express-access-key": "passcoder_1853cef81fea126373d2", // Set the headers with the access token
           },
         }
       );
@@ -435,7 +433,6 @@ export const payOrder = createAsyncThunk(
 );
 
 // ...
-
 
 const usersSlice = createSlice({
   name: "users",
@@ -643,7 +640,6 @@ export {
   checkOrderPaymentStatus,
   cancelUserOrder,
   deleteUserOrder,
-
 };
 
 export default usersSlice.reducer;

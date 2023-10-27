@@ -29,6 +29,7 @@ import imagge from "../Cart-and-Checkout/images/Group 36684.png";
 import { AiFillShop } from "react-icons/ai";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdBroadcastOnHome } from "react-icons/md";
+import { userProfile } from "../../Slices/userSlice";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -39,7 +40,7 @@ const ProductPage = () => {
   const price = queryParams.get("price");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [shippingID, setShippingID] = useState(0);
+  const [shippingID, setShippingID] = useState("");
   const [counts, setCounts] = useState(0);
   const [data, setCartResponse] = useState(null);
   const [locationn, setLocation] = useState("");
@@ -48,7 +49,6 @@ const ProductPage = () => {
   const [productPrice, setPrice] = useState("");
   const [productImageUrl, setImageUrl] = useState("");
 
-  console.log(uid, productImageUrl);
   const auth = useSelector((state) => state.profile);
 
   const UUI = auth?.profile?.user_unique_id;
@@ -57,6 +57,11 @@ const ProductPage = () => {
 
   const productUniqueIdToFind = unique_id;
 
+  const stateProfile = useSelector((state) => state.userProfile);
+  useEffect(() => {
+    dispatch(userProfile());
+  }, [dispatch]);
+  console.log(auth, "productImageUrl", uid, productImageUrl, stateProfile);
   // const fetchShippingData = async () => {
   //   try {
   //     console.log(unique_id, shipping_id, "shippp");
@@ -187,7 +192,7 @@ const ProductPage = () => {
   }, [details]);
   const box = details?.data;
   console.log(box, "boss");
-  const shipping_id = details?.data?.price;
+  //const shipping_id = details?.data?.price;
   const Shipping_location = details?.data?.location;
   console.log(Shipping_location);
 
@@ -270,14 +275,18 @@ const ProductPage = () => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const handleCheckout = (seller_location) => {
-    if (
-      details.data.user_data?.user_unique_id === auth.profile?.user_unique_id
-    ) {
-      console.log(details.data.user_data?.user_unique_id, " jjjjj");
-      console.log(auth.profile?.user_unique_id, "jjjjj");
+  const [sellersState, setSellersState] = useState("");
+  const [sellersCountry, setSellersCountry] = useState("");
 
-      toast.success("Unable to Buy your own Product", {
+  const handleCheckout = (seller_location) => {
+    const parts = seller_location.split(","); // Split the string by commas
+    const sellersCountry = parts[parts.length - 1].trim(); // Get the last part and remove leading/trailing spaces
+    const sellersState = parts[parts.length - 2].trim(); // Get the last part and remove leading/trailing spaces
+    setSellersCountry(sellersCountry);
+    setSellersState(sellersState);
+    console.log(sellersCountry, sellersState, "yeahsellerlocation");
+    if (auth?.error?.message) {
+      toast.success("Sign in to buy a product", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -290,33 +299,52 @@ const ProductPage = () => {
           color: "white",
         },
       });
-    } else if (
-      details.data.user_data?.user_unique_id !== auth.profile?.user_unique_id
-    ) {
-      setShowModal(true);
-      setLocation(seller_location);
-      handleShipping();
-      console.log(data);
     } else {
-      toast.success("Pls Login To Checkout", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        style: {
-          backgroundColor: "#007aff",
-          color: "white",
-        },
-      });
-      navigate("/signin");
-      // }
+      if (
+        details.data.user_data?.user_unique_id === auth.profile?.user_unique_id
+      ) {
+        console.log(details.data.user_data?.user_unique_id, " jjjjj");
+        console.log(auth.profile?.user_unique_id, "jjjjj");
+
+        toast.success("Unable to Buy your own Product", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#007aff",
+            color: "white",
+          },
+        });
+      } else if (
+        details.data.user_data?.user_unique_id !== auth.profile?.user_unique_id
+      ) {
+        setShowModal(true);
+        setLocation(seller_location);
+        handleShipping();
+        ShippersPrice();
+      } else {
+        toast.success("Pls Login To Checkout", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#007aff",
+            color: "white",
+          },
+        });
+        navigate("/signin");
+        // }
+      }
     }
   };
-
-
 
   useEffect(() => {
     const foundItem = cart.cartItems.find(
@@ -324,26 +352,29 @@ const ProductPage = () => {
     );
     const quantityy = foundItem?.cartQuantity || 0;
     setCounts(quantityy);
+  }, [
+    dispatch,
+    //shipping_id,
+    price,
+    unique_id,
+    auth,
+    cart.cartItems,
+    productUniqueIdToFind,
+  ]);
 
+  const ShippersPrice = async () => {
     const requestData = {
       product_unique_id: unique_id,
       from_country: "Nigeria",
-      from_state: "Rivers",
-      to_country: "Nigeria",
-      to_state: "Lagos",
+      from_state: stateProfile?.data?.state,
+      to_country: sellersCountry,
+      to_state: sellersState,
       price: price,
     };
     dispatch(addShipping(requestData))
       .then((response) => {
         try {
-          console.log(unique_id, shipping_id, "shippp");
-          const response = dispatch(getShipping({ unique_id }));
-          console.log(response, "Response from getShipping thunk");
-          console.log(
-            response.payload.data.rows[0].shipping_unique_id,
-            "shipping_unique_id"
-          );
-          setShippingID(response.payload.data.rows[0].shipping_unique_id);
+          console.log(unique_id,response, "shippp");
         } catch (error) {
           console.error(error, "Error from getShipping thunk");
         }
@@ -356,10 +387,40 @@ const ProductPage = () => {
         //fetchShippingData();
       });
 
+    dispatch(getShipping({ unique_id }))
+      .then((responseDataShips) => {
+        try {
+          console.log(responseDataShips, "Response from getShippings thunk");
+          console.log(
+            responseDataShips.payload.data.rows[0].shipping_unique_id,
+            "shipping_unique_id"
+          );
+          setShippingID(
+            responseDataShips.payload.data.rows[0].shipping_unique_id
+          );
 
-  }, [dispatch, shipping_id, price, unique_id, auth, cart.cartItems, productUniqueIdToFind]);
+          // console.log(unique_id, shipping_id, "shippp");
+        } catch (error) {
+          //console.error(error, "Error from getShipping thunk");
+        }
 
+        //fetchShippingData();
+        console.log(responseDataShips, "...sjshshhs");
+      })
+      .catch((error) => {
+        console.error(error);
+        //fetchShippingData();
+      });
 
+    // const response = dispatch(getShipping({ unique_id }));
+    //     console.log(response, "Response from getShipping thunk");
+    //     console.log(
+    //       response.payload.data.rows[0].shipping_unique_id,
+    //       "shipping_unique_id"
+    //     );
+    //     setShippingID(response.payload.data.rows[0].shipping_unique_id);
+  };
+  console.log(shippingID, "yeahsellerlocation");
 
   return (
     <div>

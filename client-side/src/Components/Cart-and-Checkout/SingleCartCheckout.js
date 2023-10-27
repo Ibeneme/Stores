@@ -7,6 +7,7 @@ import "./Cart.css";
 //import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
 import { checkoutMultipleProducts } from "../../Slices/orders/OrderSlice";
 import { payOrder } from "../../Slices/orders/OrderSlice";
+import { addItemToCart } from "../../Slices/Cart/CartSlice";
 //import { toast } from "react-toastify";
 
 const SingleCartCheckout = () => {
@@ -18,12 +19,13 @@ const SingleCartCheckout = () => {
   const productName = queryParams.get("productName");
   const productPrice = queryParams.get("productPrice");
   const shipps = queryParams.get("shipps");
+  const shipping_unique_id = queryParams.get("shipping_unique_id");
   const imageUrl = queryParams.get("imageUrl");
   //const locationn = queryParams.get("locationn");
 
-  console.log(imageUrl, "imageUrl");
+  console.log(imageUrl, shipping_unique_id, "imageUrl");
 
- // const auth = useSelector((state) => state.auth);
+  // const auth = useSelector((state) => state.auth);
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
   console.log(shippingPrice, "authhh");
   const data = useSelector((state) => state.carts);
@@ -42,7 +44,7 @@ const SingleCartCheckout = () => {
   console.log(cart_unique_ids, "cccc");
 
   const [shipPrice, setShipPrice] = useState(null);
-  const [thisError, setError,] = useState(null);
+  const [thisError, setError] = useState(null);
   //const usersAddress = auth?.userData?.address;
 
   console.log(selectedOption, "selectedNannn");
@@ -50,21 +52,32 @@ const SingleCartCheckout = () => {
     try {
       if (selectedOption) {
         const payment_method = selectedOption;
-        const response = await dispatch(
-          checkoutMultipleProducts({
-            cart_unique_ids: cartUniqueIds,
-            payment_method,
+
+        const responseData = await dispatch(
+          addItemToCart({
+            product_unique_id: product_unique_id,
+            quantity: 1,
           })
         );
-        if (response.payload.success === true) {
-          const tracking_number = response?.payload?.data?.tracking_number;
-          console.log(tracking_number, "trac");
-          try {
-            const response = await dispatch(payOrder(tracking_number));
-            console.log("Response:", response);
-          } catch (error) {}
+        if (responseData.type === "cart/addItemToCart/fulfilled") {
+          console.log(responseData, "respnsess");
+          const response = await dispatch(
+            checkoutMultipleProducts({
+              cart_unique_ids: cartUniqueIds,
+              payment_method,
+            })
+          );
+
+          if (response.payload.success === true) {
+            const tracking_number = response?.payload?.data?.tracking_number;
+            console.log(tracking_number, "trac");
+            console.log("Checkout response:", response);
+            try {
+              const response = await dispatch(payOrder(tracking_number));
+              console.log("Response:", response);
+            } catch (error) {}
+          }
         }
-        console.log("Checkout response:", response);
       } else {
         setError("Please select a payment method.");
         console.log("Please select a payment method.");
@@ -78,69 +91,67 @@ const SingleCartCheckout = () => {
   const [cartUniqueIds, setCartUniqueIds] = useState([]);
   const [newLocation, setLocation] = useState("");
 
+  //   useEffect(() => {
+  //     dispatch(fetchCartData())
+  //       .then((response) => {
+  //         console.log(response, "resss");
+  //         if (response?.payload?.data?.rows) {
+  //           const newCartUniqueIds = response.payload.data.rows.map(
+  //             (item) => item.cart_unique_id
+  //           );
+  //           setCartUniqueIds(newCartUniqueIds);
+  //           console.log(newCartUniqueIds, "cart_unique_ids");
 
+  //           const newLocation =
+  //             response.payload.data.rows[0].product_data.location;
 
-//   useEffect(() => {
-//     dispatch(fetchCartData())
-//       .then((response) => {
-//         console.log(response, "resss");
-//         if (response?.payload?.data?.rows) {
-//           const newCartUniqueIds = response.payload.data.rows.map(
-//             (item) => item.cart_unique_id
-//           );
-//           setCartUniqueIds(newCartUniqueIds);
-//           console.log(newCartUniqueIds, "cart_unique_ids");
+  //           setLocation(newLocation);
+  //           console.log(newLocation, "newLocation");
+  //           const handleShipping = () => {
+  //             console.log(
+  //               response?.data?.rows?.[0].product_data.location,
+  //               "response?.data?.rows?.[0].product_data.location"
+  //             );
 
-//           const newLocation =
-//             response.payload.data.rows[0].product_data.location;
+  //             dispatch(
+  //               fetchShippingPrice({
+  //                 fromAddress: newLocation,
+  //                 toAddress: usersAddress,
+  //               })
+  //             )
+  //               .then((action) => {
+  //                 console.log("Shipping price action:", action);
+  //                 console.log("Shipping price payload:", action.payload);
+  //                 console.log("Shipping response data:", action.payload?.data);
+  //                 setShipPrice(action.payload?.data?.price);
+  //               })
+  //               .catch((error) => {
+  //                 console.log("Error fetching shipping price:", error);
+  //               });
+  //           };
 
-//           setLocation(newLocation);
-//           console.log(newLocation, "newLocation");
-//           const handleShipping = () => {
-//             console.log(
-//               response?.data?.rows?.[0].product_data.location,
-//               "response?.data?.rows?.[0].product_data.location"
-//             );
-
-//             dispatch(
-//               fetchShippingPrice({
-//                 fromAddress: newLocation,
-//                 toAddress: usersAddress,
-//               })
-//             )
-//               .then((action) => {
-//                 console.log("Shipping price action:", action);
-//                 console.log("Shipping price payload:", action.payload);
-//                 console.log("Shipping response data:", action.payload?.data);
-//                 setShipPrice(action.payload?.data?.price);
-//               })
-//               .catch((error) => {
-//                 console.log("Error fetching shipping price:", error);
-//               });
-//           };
-
-//           handleShipping();
-//         } else if (response?.payload?.message === "All Carts not found!") {
-//           toast.success("Carts moved to Orders", {
-//             position: "top-center",
-//             autoClose: 5000,
-//             hideProgressBar: false,
-//             closeOnClick: true,
-//             pauseOnHover: true,
-//             draggable: true,
-//             progress: undefined,
-//             style: {
-//               backgroundColor: "#007aff", // Background color
-//               color: "white", // Text color
-//             },
-//           });
-//           navigate("/orderr");
-//         }
-//       })
-//       .catch((error) => {
-//         console.log("Error fetching cart data:", error);
-//       });
-//   }, [dispatch, usersAddress, navigate]);
+  //           handleShipping();
+  //         } else if (response?.payload?.message === "All Carts not found!") {
+  //           toast.success("Carts moved to Orders", {
+  //             position: "top-center",
+  //             autoClose: 5000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             progress: undefined,
+  //             style: {
+  //               backgroundColor: "#007aff", // Background color
+  //               color: "white", // Text color
+  //             },
+  //           });
+  //           navigate("/orderr");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error fetching cart data:", error);
+  //       });
+  //   }, [dispatch, usersAddress, navigate]);
 
   const itemTotal = productPrice * quantity;
   const grandTotals = Number(shipps) + Number(itemTotal);
@@ -151,8 +162,16 @@ const SingleCartCheckout = () => {
   const addTotal = totalCost + shipps;
   const url = `${imageUrl}`;
 
-  console.log(shipPrice, addTotal,setCartUniqueIds, newLocation, setLocation, newLocation, setShipPrice, handleCheckouts)
-
+  console.log(
+    shipPrice,
+    addTotal,
+    setCartUniqueIds,
+    newLocation,
+    setLocation,
+    newLocation,
+    setShipPrice,
+    handleCheckouts
+  );
 
   return (
     <div
@@ -478,9 +497,10 @@ const SingleCartCheckout = () => {
                   marginTop: "3em",
                 }}
                 className="checkout-btn"
-               // onClick={handleCheckouts}
+                onClick={handleCheckouts}
               >
-                Pay {""} {""} {""} <span>&#8358;{grandTotal.toLocaleString()}</span>
+                Pay {""} {""} {""}{" "}
+                <span>&#8358;{grandTotal.toLocaleString()}</span>
               </button>
               <p
                 style={{

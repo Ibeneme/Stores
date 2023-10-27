@@ -313,7 +313,7 @@ function Navbarr({ token }) {
                   cursor: "pointer",
                   alignItems: "center",
                 }}
-                onClick={() => navigate("/orderr")}
+                onClick={() => navigate("/signin")}
               >
                 {" "}
                 <FaRegListAlt />
@@ -332,7 +332,7 @@ function Navbarr({ token }) {
               >
                 {" "}
                 <MdFavoriteBorder />
-                Favorites
+                Sellers Order
               </p>
               <p
                 onClick={() => navigate("/signin")}
