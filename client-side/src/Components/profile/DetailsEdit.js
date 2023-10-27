@@ -413,6 +413,7 @@ const UserProfileEdit = () => {
                           marginTop: "3px",
                           color: "gray",
                           height: "50px",
+                          width:'100%'
                         }}
                         className="div-lines-display"
                         type="date"
