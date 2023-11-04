@@ -36,56 +36,172 @@ const fetchOrdersInternal = createAsyncThunk(
 // Create an async thunk to mark an order as shipped
 const markOrderAsShipped = createAsyncThunk(
   "ordersInternal/markOrderAsShipped",
-  async (_, { getState }) => {
+  async ({ order_unique_id }, { getState }) => {
     try {
       const { token } = getState().auth;
 
       const config = {
         headers: {
           "hydra-express-access-token": token,
+          "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
         },
       };
+      const data = {
+        order_unique_id: order_unique_id,
+      };
 
-      // Make the API call to mark an order as shipped
-      const response = await axios.get(
-        "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/shipped",
-
-        config // Pass the headers as the third argument
+      const response = await axios.put(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/shipping",
+        data,
+        config
       );
 
-      // Log the response
       console.log("markOrderAsShipped response:", response.data);
     } catch (error) {
-      // If an error occurs, throw the error message
       throw error.response.data;
     }
   }
 );
 
-// Create an async thunk to mark an order as completed
-const markOrderAsCompleted = createAsyncThunk(
-  "ordersInternal/markOrderAsCompleted",
-  async (_, { getState }) => {
+const markOrderAsShippedMain = createAsyncThunk(
+  "ordersInternal/markOrderAsShippedMain",
+  async ({ order_unique_id }, { getState }) => {
     try {
       const { token } = getState().auth;
 
       const config = {
         headers: {
           "hydra-express-access-token": token,
+          "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
         },
       };
+      const data = {
+        order_unique_id: order_unique_id,
+      };
 
-      // Make the API call to mark an order as completed
-      const response = await axios.get(
-        "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/completed",
-
-        config // Pass the headers as the third argument
+      const response = await axios.put(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/shipped",
+        data,
+        config
       );
 
-      // Log the response
-      console.log("markOrderAsCompleted response:", response.data);
+      console.log("markOrderAsShipped response:", response.data);
     } catch (error) {
-      // If an error occurs, throw the error message
+      throw error.response.data;
+    }
+  }
+);
+
+// const markOrderAsShipped = createAsyncThunk(
+//   "ordersInternal/markOrderAsShipped",
+//   async (_, { getState }) => {
+//     try {
+//       const { token } = getState().auth;
+
+//       const config = {
+//         headers: {
+//           "hydra-express-access-token": token,
+//         },
+//       };
+
+//       // Make the API call to mark an order as shipped
+//       const response = await axios.get(
+//         "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/shipped",
+
+//         config // Pass the headers as the third argument
+//       );
+
+//       // Log the response
+//       console.log("markOrderAsShipped response:", response.data);
+//     } catch (error) {
+//       // If an error occurs, throw the error message
+//       throw error.response.data;
+//     }
+//   }
+// );
+
+// Create an async thunk to mark an order as completed
+// const markOrderAsCompleted = createAsyncThunk(
+//   "ordersInternal/markOrderAsCompleted",
+//   async (_, { getState }) => {
+//     try {
+//       const { token } = getState().auth;
+
+//       const config = {
+//         headers: {
+//           "hydra-express-access-token": token,
+//           "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
+//         },
+//       };
+
+//       // Make the API call to mark an order as completed
+//       const response = await axios.get(
+//         "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/completed",
+
+//         config // Pass the headers as the third argument
+//       );
+
+//       // Log the response
+//       console.log("markOrderAsCompleted response:", response.data);
+//     } catch (error) {
+//       // If an error occurs, throw the error message
+//       throw error.response.data;
+//     }
+//   }
+// );
+
+const markOrderAsCompleted = createAsyncThunk(
+  "ordersInternal/markOrderAsCompleted",
+  async ({ order_unique_id }, { getState }) => {
+    try {
+      const { token } = getState().auth;
+
+      const config = {
+        headers: {
+          "hydra-express-access-token": token,
+          "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
+        },
+      };
+      const data = {
+        order_unique_id: order_unique_id,
+      };
+
+      const response = await axios.put(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/completed",
+        data,
+        config
+      );
+
+      console.log("markOrderAsShipped response:", response.data);
+    } catch (error) {
+      throw error.response.data;
+    }
+  }
+);
+const markAsReceived = createAsyncThunk(
+  "ordersInternal/markAsReceived",
+  async ({ order_unique_id }, { getState }) => {
+    try {
+      const { token } = getState().auth;
+
+      const config = {
+        headers: {
+          "hydra-express-access-token": token,
+          "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
+        },
+      };
+      const data = {
+        order_unique_id: order_unique_id,
+      };
+
+      const response = await axios.put(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/seller/order/completed",
+        data,
+        config
+      );
+
+      console.log("markOrderAsShipped response:", response.data);
+    } catch (error) {
       throw error.response.data;
     }
   }
@@ -222,6 +338,27 @@ const ordersInternalSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+
+      .addCase(markAsReceived.fulfilled, (state, action) => {
+        state.ordersInternalData = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(markAsReceived.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(markOrderAsShippedMain.fulfilled, (state, action) => {
+        state.ordersInternalData = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(markOrderAsShippedMain.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
       .addCase(markOrderAsCompleted.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -281,7 +418,9 @@ const ordersInternalSlice = createSlice({
 export {
   fetchOrdersInternal,
   markOrderAsShipped,
+  markOrderAsShippedMain,
   markOrderAsCompleted,
+  markAsReceived,
   fetchOrderDetails,
   fetchPaidOrders,
   fetchShippedOrders,

@@ -1,9 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
-import { fetchUserOrderByUniqueId } from "../../Slices/orders/OrderSlice";
-import { MdEdit } from "react-icons/md";
-import { FaCreditCard } from "react-icons/fa";
+import { useLocation } from "react-router";
+import {
+  fetchUserOrderByUniqueId,
+  markAsCancel,
+  markAsDisputes,
+  markAsReceived,
+} from "../../Slices/orders/OrderSlice";
+// import { MdEdit } from "react-icons/md";
+// import { FaCreditCard } from "react-icons/fa";
 import "../../Components/Sellers/styles/product.css";
 import { BsTrash } from "react-icons/bs";
 
@@ -13,10 +18,10 @@ const ViewOrder = () => {
   const queryParams = new URLSearchParams(location.search);
   const unique_id = queryParams.get("unique_id");
   const orders = useSelector((state) => state.users); // Replace "order" with the correct slice name in your Redux store
-  const navigate = useNavigate();
-  const handleClick = (unique_id) => {
-    navigate(`/vieworder?unique_id=${unique_id}`);
-  };
+  //const navigate = useNavigate();
+  // const handleClick = (unique_id) => {
+  //   navigate(`/vieworder?unique_id=${unique_id}`);
+  // };
   useEffect(() => {
     dispatch(fetchUserOrderByUniqueId(unique_id));
   }, [dispatch, unique_id]);
@@ -24,6 +29,76 @@ const ViewOrder = () => {
 
   const order = orders?.orders?.data;
   console.log(order, "ggg");
+
+  const [isModalOpenCompleted, setModalOpenCompleted] = useState(false);
+  const [orderUniqueId, setOrderUniqueId] = useState(null);
+  const [isModalOpenCancel, setModalOpenCancel] = useState(false);
+  const [isModalOpenDispute, setModalOpenDispute] = useState(false);
+
+  const handleOpenModalCompleted = (order_unique_id) => {
+    setOrderUniqueId(order_unique_id);
+    setModalOpenCompleted(true);
+  };
+
+  const handleOpenModalCancel = (order_unique_id) => {
+    setOrderUniqueId(order_unique_id);
+    setModalOpenCancel(true);
+  };
+
+  const handleOpenModalDispute = (order_unique_id) => {
+    setOrderUniqueId(order_unique_id);
+    setModalOpenDispute(true);
+  };
+
+  const handleCloseModalDispute = () => {
+    setModalOpenDispute(false);
+  };
+  const handleCloseModalCancel = () => {
+    setModalOpenCancel(false);
+  };
+
+  const handleCloseModalCompleted = () => {
+    setModalOpenCompleted(false);
+  };
+
+  const [completeErr, setCompleteErr] = useState("");
+  const handleConfirmComplete = () => {
+    if (orderUniqueId) {
+      dispatch(markAsReceived({ order_unique_id: orderUniqueId }))
+        .then((response) => {
+          window.location.reload();
+          console.log("handleMarkOrderAsShipped:", response);
+          setCompleteErr(response?.error?.message);
+        })
+        .catch((error) => {
+          console.log("ErrorhandleMarkOrderAsShipped:", error);
+        });
+    }
+    setModalOpenCompleted(false);
+  };
+  const handleConfirmCancel = () => {
+    if (orderUniqueId) {
+      dispatch(markAsCancel({ order_unique_id: orderUniqueId }));
+    }
+    window.location.reload();
+    setModalOpenCancel(false);
+  };
+
+  const handleConfirmDispute = async () => {
+    try {
+      if (orderUniqueId) {
+        const response = await dispatch(
+          markAsDisputes({ order_unique_id: orderUniqueId })
+        );
+        console.log(response, "responseDispute");
+      }
+    } catch (error) {
+      console.error(error, "errorDispute");
+    } finally {
+      window.location.reload();
+      setModalOpenDispute(false);
+    }
+  };
 
   return (
     <div style={{ padding: "8em 0", backgroundColor: "white" }}>
@@ -97,6 +172,39 @@ const ViewOrder = () => {
               </p>
             )}
           </span>
+
+          <span
+            style={{
+              fontSize: "15px",
+              color: "#666666",
+              paddingBottom: "32px",
+              marginTop: 24,
+            }}
+          >
+            {order?.delivery_status === "Refund" ? (
+              <p
+                style={{
+                  backgroundColor: "#0665F221",
+                  color: "#0665F2",
+                  padding: "12px 16px",
+                  marginTop: 12,
+                }}
+              >
+                Your delivery Refund is processing
+              </p>
+            ) : (
+              <p
+                style={{
+                  backgroundColor: "#0665F221",
+                  color: "#0665F2",
+                  padding: "12px 16px",
+                  marginTop: 12,
+                }}
+              >
+                Delivery Status: {order?.delivery_status}
+              </p>
+            )}
+          </span>
         </div>
 
         <div
@@ -127,7 +235,7 @@ const ViewOrder = () => {
                 }}
               >
                 <img
-                 alt='orders'
+                  alt="orders"
                   width="100%"
                   height="100%"
                   style={{
@@ -193,43 +301,7 @@ const ViewOrder = () => {
               marginTop: "16px",
               gap: "6px",
             }}
-          >
-            {order?.paid === false ? (
-              <button
-                className="button-orders"
-                style={{
-                  backgroundColor: "#37AD3C",
-                  color: "white",
-                }}
-                onClick={()=> navigate("/pay")}
-              >
-                {" "}
-                Pay Now <FaCreditCard />
-              </button>
-            ) : (
-              <button
-                className="button-orders"
-                style={{
-                  backgroundColor: "#37AD3C",
-                  color: "white",
-                }}
-              >
-                {" "}
-                Buy Again <FaCreditCard />{" "}
-              </button>
-            )}
-            <button
-              className="button-orders"
-              style={{
-                backgroundColor: "#66666696",
-                color: "white",
-              }}
-              onClick={() => handleClick(order?.unique_id)}
-            >
-              {" "}
-              Edit Order <MdEdit />
-            </button>
-          </div>
+          ></div>
         </div>
         <div
           style={{
@@ -253,7 +325,7 @@ const ViewOrder = () => {
                 Payment Method: {""}
                 {order?.payment_method}
               </p>
-              <button
+              {/* <button
                 className="button-orders"
                 style={{
                   color: "#666666",
@@ -262,9 +334,143 @@ const ViewOrder = () => {
               >
                 {" "}
                 Change Payment Method <MdEdit />
-              </button>
+              </button> */}
             </div>
           </div>
+
+          {isModalOpenCancel && (
+            <div className="modal">
+              <div className="modal-content">
+                <h2>Confirm Action</h2>
+                <p>Are you sure you want to Cancel this order?</p>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    gap: 16,
+                  }}
+                >
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#fff",
+                      backgroundColor: "#ff0000",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                    onClick={handleConfirmCancel}
+                  >
+                    Yes
+                  </button>
+
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#ff0000",
+                      backgroundColor: "#fff",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      border: "1px solid #ff0000",
+                    }}
+                    onClick={handleCloseModalCancel}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isModalOpenCompleted && (
+            <div className="modal">
+              <div className="modal-content">
+                <h2>Confirm Action</h2>
+                <p>Are you sure you want to Complete this order?</p>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    gap: 16,
+                  }}
+                >
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#fff",
+                      backgroundColor: "#386AEB",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                    onClick={handleConfirmComplete}
+                  >
+                    Yes
+                  </button>
+
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#386AEB",
+                      backgroundColor: "#fff",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      border: "1px solid #386AEB",
+                    }}
+                    onClick={handleCloseModalCompleted}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {isModalOpenDispute && (
+            <div className="modal">
+              <div className="modal-content">
+                <h2>Confirm Action</h2>
+                <p>Are you sure you want to Dispute this order?</p>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    gap: 16,
+                  }}
+                >
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#fff",
+                      backgroundColor: "#386AEB",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                    onClick={handleConfirmDispute}
+                  >
+                    Yes, Dispute
+                  </button>
+
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#386AEB",
+                      backgroundColor: "#fff",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      border: "1px solid #386AEB",
+                    }}
+                    onClick={handleCloseModalDispute}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div>
             <div
@@ -285,7 +491,90 @@ const ViewOrder = () => {
               <p>
                 Delivery Status: {""}
                 {order?.delivery_status}
+                {order?.delivery_status === "Processing" ? (
+                  <div>
+                    <button
+                      className="button-orders"
+                      style={{
+                        color: "#fff",
+                        backgroundColor: "#ff0000",
+                        marginTop: 48,
+                      }}
+                      onClick={() =>
+                        handleOpenModalCancel(order?.order_unique_id)
+                      }
+                    >
+                      Cancel this Order
+                    </button>
+
+                    {completeErr ? (
+                      <p
+                        style={{
+                          color: "red",
+                          marginTop: -38,
+                          marginBottom: 48,
+                        }}
+                      ></p>
+                    ) : null}
+                  </div>
+                ) : null}
               </p>
+              {order?.delivery_status === "Completed" ? (
+                <div>
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#fff",
+                      backgroundColor: "#386AEB",
+                      marginTop: 48,
+                    }}
+                    onClick={() =>
+                      handleOpenModalDispute(order?.order_unique_id)
+                    }
+                  >
+                    Dispute this Order
+                  </button>
+
+                  {completeErr ? (
+                    <p
+                      style={{
+                        color: "red",
+                        marginTop: -38,
+                        marginBottom: 48,
+                      }}
+                    ></p>
+                  ) : null}
+                </div>
+              ) : null}
+              {order?.delivery_status === "Shipped" ? (
+                <div>
+                  <button
+                    className="button-orders"
+                    style={{
+                      color: "#fff",
+                      backgroundColor: "#386AEB",
+                      marginTop: 48,
+                    }}
+                    onClick={() =>
+                      handleOpenModalCompleted(order?.order_unique_id)
+                    }
+                  >
+                    Complete this Order
+                  </button>
+
+                  {completeErr ? (
+                    <p
+                      style={{
+                        color: "red",
+
+                        marginBottom: 48,
+                      }}
+                    >
+                      {completeErr} Cannot Completer this order
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
             <div
               style={{

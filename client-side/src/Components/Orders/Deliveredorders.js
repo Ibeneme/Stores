@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router";
-import { fetchPaidUserOrders } from "../../Slices/orders/OrderSlice";
+import { fetchUserOrders } from "../../Slices/orders/OrderSlice";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { MdEdit } from "react-icons/md";
-import { FaCreditCard } from "react-icons/fa";
 import { BsTrash } from "react-icons/bs";
 import ShimmerLoader from "../Loader/Shima";
 import ill from "./image/No data found.png";
@@ -21,7 +20,7 @@ const DeliveryOrders = () => {
   useEffect(() => {
     const fetchOrdersData = async () => {
       try {
-        const response = await dispatch(fetchPaidUserOrders());
+        const response = await dispatch(fetchUserOrders());
         setOrdersData(response);
         setLoading(false);
       } catch (error) {
@@ -43,20 +42,29 @@ const DeliveryOrders = () => {
       >
         <div className="third-sellers-product-div">
           <div className="flex-left-inside-third-sellers-product-div">
-            <div className="contents-flex-left-inside-third-sellers-product-div ">
+            <div
+              onClick={() => navigate("/orderr")}
+              className="contents-flex-left-inside-third-sellers-product-div "
+            >
               All Orders
             </div>
             <div
               onClick={() => navigate("/processingorder")}
               className=" contents-flex-left-inside-third-sellers-product-div"
             >
-              Shipped 
+              In Transit
             </div>
             <div
               onClick={() => navigate("/deliveredorder")}
               className=" active-contents contents-flex-left-inside-third-sellers-product-div"
             >
-              Delivered 
+              Shipped
+            </div>
+            <div
+              onClick={() => navigate("/paidorder")}
+              className="contents-flex-left-inside-third-sellers-product-div"
+            >
+              Paid
             </div>
             <div
               onClick={() => navigate("/disputesorder")}
@@ -71,13 +79,6 @@ const DeliveryOrders = () => {
             >
               Shipped 
             </div> */}
-
-            <div
-              onClick={() => navigate("/paidorder")}
-              className="contents-flex-left-inside-third-sellers-product-div"
-            >
-              Paid 
-            </div>
           </div>
           <div className="flex-right-inside-third-sellers-product-div">
             <div className="div-display-functions">
@@ -85,38 +86,42 @@ const DeliveryOrders = () => {
                 onClick={() => navigate("/orderr")}
                 className="div-display-slider "
               >
-                All 
+                All
               </div>
               <div
                 onClick={() => navigate("/processingorder")}
                 className="div-display-slider "
               >
-                Shipped 
+                In Transit
               </div>
               <div
                 onClick={() => navigate("/deliveredorder")}
                 className="div-display-slider active-div-display-slider"
               >
-                Delivered 
+                Shipped
               </div>
-              <div
-                onClick={() => navigate("/disputesorder")}
-                className="div-display-slider "
-              >
-                Disputed 
-              </div>
-          
+
               <div
                 onClick={() => navigate("/paidorder")}
                 className="div-display-slider "
               >
-                Paid 
+                Paid
+              </div>
+
+              <div
+                onClick={() => navigate("/disputesorder")}
+                className="div-display-slider "
+              >
+                Disputed
               </div>
             </div>
             <div>
               <div>
                 <div>{loading ? <ShimmerLoader /> : <div></div>}</div>
-                {ordersData.type === "user/fetchPaidUserOrders/rejected" ? (
+                {ordersData.type === "user/fetchUserOrders/rejected" ||
+                ordersData?.payload?.data?.rows.filter(
+                  (item) => item.shipped === true
+                ).length === 0 ? (
                   <div
                     style={{
                       display: "flex",
@@ -131,7 +136,7 @@ const DeliveryOrders = () => {
                         textAlign: "center",
                       }}
                     >
-                      You have no Paid Orders
+                      You have no Shipped Orders
                     </p>
                     <img width="300px" src={ill} alt="not" />
                     <button
@@ -150,142 +155,154 @@ const DeliveryOrders = () => {
                   </div>
                 ) : null}
 
-                {ordersData &&
-                  ordersData?.payload?.data?.rows.map((order) => (
-                    <div
-                      key={order.unique_id}
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        paddingBottom: "12px",
-                        borderBottom: "1px solid #00000025",
-                        marginBottom: "12px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "8px",
-                          }}
-                        >
+                <div
+                  style={{
+                    marginBottom: 120,
+                  }}
+                >
+                  {ordersData &&
+                    ordersData?.payload?.data?.rows.map((order) => (
+                      <div>
+                        {order?.shipped && (
                           <div
+                            key={order.unique_id}
                             style={{
-                              width: "70px",
-                              height: "70px",
+                              width: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              paddingBottom: "12px",
+                              borderBottom: "1px solid #00000025",
+                              marginBottom: "12px",
                             }}
                           >
-                            <img
-                              width="100%"
-                              height="100%"
+                            <div
                               style={{
-                                borderRadius: "8px",
-                              }}
-                              alt='orders'
-                              src={order?.product_images_data[0].image?.url}
-                            />
-                          </div>
-                          <div>
-                            <h3
-                              style={{
-                                fontSize: "16px",
+                                display: "flex",
+                                justifyContent: "space-between",
                               }}
                             >
-                              {order.product_data?.name}
-                            </h3>
-                            <p
-                              style={{
-                                fontSize: "12px",
-                                margin: "2px 0",
-                              }}
-                            >
-                              {order.product_data?.location}
-                            </p>
-                            <p
-                              style={{
-                                fontSize: "14px",
-                                fontWeight: "900",
-                                color: "gray",
-                                marginTop: "12px",
-                              }}
-                            >
-                              {" "}
-                              Qty: {order.product_data?.quantity}
-                            </p>
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            alignItems: "flex-end",
-                          }}
-                        >
-                          <p
-                            style={{
-                              fontSize: "18px",
-                              fontWeight: "900",
-                            }}
-                          >
-                            {" "}
-                            <span>&#8358;</span>
-                            {order.amount}
-                          </p>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  gap: "8px",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    width: "70px",
+                                    height: "70px",
+                                  }}
+                                >
+                                  <img
+                                    width="100%"
+                                    height="100%"
+                                    style={{
+                                      borderRadius: "8px",
+                                    }}
+                                    alt="orders"
+                                    src={
+                                      order?.product_images_data[0].image?.url
+                                    }
+                                  />
+                                </div>
+                                <div>
+                                  <h3
+                                    style={{
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    {order.product_data?.name}
+                                  </h3>
+                                  <p
+                                    style={{
+                                      fontSize: "12px",
+                                      margin: "2px 0",
+                                    }}
+                                  >
+                                    {order.product_data?.location}
+                                  </p>
+                                  <p
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "900",
+                                      color: "gray",
+                                      marginTop: "12px",
+                                    }}
+                                  >
+                                    {" "}
+                                    Qty: {order.product_data?.quantity}
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "space-between",
+                                  alignItems: "flex-end",
+                                }}
+                              >
+                                <p
+                                  style={{
+                                    fontSize: "18px",
+                                    fontWeight: "900",
+                                  }}
+                                >
+                                  {" "}
+                                  <span>&#8358;</span>
+                                  {order.amount}
+                                </p>
 
-                          <BsTrash />
-                        </div>
+                                <BsTrash />
+                              </div>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                marginTop: "16px",
+                                gap: "6px",
+                              }}
+                            >
+                              {/* {order.paid === false ? (
+                                <button
+                                  className="button-orders"
+                                  style={{
+                                    backgroundColor: "#37AD3C",
+                                    color: "white",
+                                  }}
+                                >
+                                  {" "}
+                                  Pay Now <FaCreditCard />
+                                </button>
+                              ) : (
+                                <button
+                                  className="button-orders"
+                                  style={{
+                                    backgroundColor: "#37AD3C",
+                                    color: "white",
+                                  }}
+                                >
+                                  {" "}
+                                  Buy Again <FaCreditCard />{" "}
+                                </button>
+                              )} */}
+                              <button
+                                className="button-orders"
+                                style={{
+                                  backgroundColor: "#064bde",
+                                  color: "white",
+                                }}
+                                onClick={() => handleClick(order.unique_id)}
+                              >
+                                {" "}
+                                View Order <MdEdit />
+                              </button>
+                            </div>
+                          </div>
+                        )}{" "}
                       </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          marginTop: "16px",
-                          gap: "6px",
-                        }}
-                      >
-                        {order.paid === false ? (
-                          <button
-                            className="button-orders"
-                            style={{
-                              backgroundColor: "#37AD3C",
-                              color: "white",
-                            }}
-                          >
-                            {" "}
-                            Pay Now <FaCreditCard />
-                          </button>
-                        ) : (
-                          <button
-                            className="button-orders"
-                            style={{
-                              backgroundColor: "#37AD3C",
-                              color: "white",
-                            }}
-                          >
-                            {" "}
-                            Buy Again <FaCreditCard />{" "}
-                          </button>
-                        )}
-                        <button
-                          className="button-orders"
-                          style={{
-                            backgroundColor: "#66666696",
-                            color: "white",
-                          }}
-                          onClick={() => handleClick(order.unique_id)}
-                        >
-                          {" "}
-                          View Order <MdEdit />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
                 <div></div>
               </div>
             </div>

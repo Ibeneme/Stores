@@ -3,7 +3,7 @@ import { usePaystackPayment } from "react-paystack";
 const config = {
   reference: new Date().getTime().toString(),
   email: "user@example.com",
-  amount: 20000, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+  amount: 20000,
   publicKey: "pk_test_dsdfghuytfd2345678gvxxxxxxxxxx",
 };
 

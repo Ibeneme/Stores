@@ -90,6 +90,9 @@ import Cartsss from "./Components/Cart-and-Checkout/Cart/cartss";
 import SingleCartCheckout from "./Components/Cart-and-Checkout/SingleCartCheckout";
 import { useLocation } from "react-router";
 import NotFoundPage from "./Components/Cart-and-Checkout/Cart/404";
+import Wallet from "./Components/Wallet/Wallet";
+import Deposit from "./Components/Wallet/Deposit";
+import Withdraw from "./Components/Wallet/Withdraw";
 
 const ScrollToTop = () => {
   const navigate = useNavigate();
@@ -215,8 +218,17 @@ function App() {
         <Route path="/deleteimage" element={<DeleteProductImageForm />} />
         <Route path="/orderr" element={<Orders />} />
         <Route path="/lesss" element={<UpdateNameForm />} />
+
+
+
+        <Route path="/wallet" element={<Wallet />} />
+        <Route path="/deposit" element={<Deposit />} />
+        <Route path="/withdraw" element={<Withdraw />} />
         {/* <Route path="/editprofile" element={<UpdateNameFormEdit/>} />
        
+
+
+
         <Route path="/testin" element={<UpdateNameFormTesting/>} />
         <Route path="/ootp" element={<OTP/>} />
         <Route path="/editName" element={<EditName/>} />

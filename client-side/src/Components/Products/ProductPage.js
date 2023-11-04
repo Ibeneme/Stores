@@ -53,7 +53,7 @@ const ProductPage = () => {
 
   const UUI = auth?.profile?.user_unique_id;
   const cart = useSelector((state) => state.cart);
-  console.log(UUI, "cartcart");
+  console.log(auth, "cartcart");
 
   const productUniqueIdToFind = unique_id;
 
@@ -201,16 +201,40 @@ const ProductPage = () => {
     dispatch(productsFetch({ user_unique_id, unique_id }));
   }, [dispatch, user_unique_id, unique_id]);
 
+  const [to_address, setToAddress] = useState("");
+  const [duration, setDuration] = useState("");
+  const [distance, setDistance] = useState("");
+  const [shipping_fee, setShippingFeee] = useState("");
+  const [origin_address, setOriginAddress] = useState("");
+
   const handleShipping = () => {
+    console.log(
+      details?.data?.user_data?.seller_location,
+      to_address,
+      "details?.data?.user_data?.seller_location"
+    );
+
     dispatch(
       fetchShippingPrice({
         fromAddress: auth.profile.address,
         toAddress: details?.data?.user_data?.seller_location,
       })
     )
-      .then((action) => {
-        console.log(action);
-        console.log(action.payload);
+      .then((response) => {
+        console.log(response?.payload?.data, "testAction");
+
+        setShippingFeee(response?.payload?.data?.price);
+        setOriginAddress(response?.payload?.data?.origin_address);
+        setToAddress(response?.payload?.data?.destination_address);
+        setDuration(response?.payload?.data?.duration);
+        setDistance(response?.payload?.data?.distance);
+
+        // console.log(response?.payload?.data?.price, "setShippingFeee");
+        // console.log(response?.payload?.data?.distance, "setDistance");
+        // console.log(response?.payload?.data?.duration, "setDuration");
+        // console.log(response?.payload?.data?.destination_address, "setToAddress");
+        // console.log(response?.payload?.data?.origin_address, "setOriginAddress");
+        console.log(response.payload);
       })
       .catch((error) => {
         console.log(error);
@@ -239,6 +263,7 @@ const ProductPage = () => {
       shipping_unique_id,
       quantity,
       imageUrl,
+      to_address,
       "imageUrl"
     );
     dispatch(
@@ -250,9 +275,21 @@ const ProductPage = () => {
       })
     )
       .then((response) => {
-        console.log("Response:", response);
+        console.log("Response:", to_address, response);
+
+        console.log(
+          shipping_fee,
+          distance,
+          duration,
+          shipping_unique_id,
+          origin_address,
+          "origin_address"
+        );
+      
+
         navigate(
-          `/checkout-one?product_unique_id=${product_unique_id}&locationn=${locationn}&shipping_unique_id=${shipping_unique_id}&quantity=${quantity}&productPrice=${product_Price}&productName=${product_Name}&shipps=${shipps}&imageUrl=${imageUrl}`
+          
+          `/checkout-one?product_unique_id=${product_unique_id}&locationn=${locationn}&shipping_unique_id=${shipping_unique_id}&to_address=${to_address}&origin_address=${origin_address}&duration=${duration}&distance=${distance}&shipping_fee=${shipping_fee}&quantity=${quantity}&productPrice=${product_Price}&productName=${product_Name}&shipps=${shipps}&imageUrl=${imageUrl}`
         );
       })
       .catch((error) => {
@@ -269,6 +306,13 @@ const ProductPage = () => {
     };
 
     fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fromAddress = "Your From Address";
+    const toAddress = "Your To Address";
+
+    dispatch(fetchShippingPrice({ fromAddress, toAddress }));
   }, [dispatch]);
 
   console.log(data, "dataz");
@@ -374,7 +418,7 @@ const ProductPage = () => {
     dispatch(addShipping(requestData))
       .then((response) => {
         try {
-          console.log(unique_id,response, "shippp");
+          console.log(unique_id, response, "shippp");
         } catch (error) {
           console.error(error, "Error from getShipping thunk");
         }

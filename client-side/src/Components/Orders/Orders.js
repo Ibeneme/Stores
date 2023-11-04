@@ -3,7 +3,6 @@ import { fetchUserOrders } from "../../Slices/orders/OrderSlice";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { MdEdit } from "react-icons/md";
-import { FaCreditCard } from "react-icons/fa";
 import { BsTrash } from "react-icons/bs";
 import ShimmerLoader from "../Loader/Shima";
 import ill from "./image/No data found.png";
@@ -67,14 +66,22 @@ const Order = () => {
               onClick={() => navigate("/processingorder")}
               className="contents-flex-left-inside-third-sellers-product-div"
             >
-              Shipped 
+              In Transit
             </div>
             <div
               onClick={() => navigate("/deliveredorder")}
               className="contents-flex-left-inside-third-sellers-product-div"
             >
-              Delivered 
+              Shipped
             </div>
+
+            <div
+              onClick={() => navigate("/paidorder")}
+              className="contents-flex-left-inside-third-sellers-product-div"
+            >
+              Paid
+            </div>
+
             <div
               onClick={() => navigate("/disputesorder")}
               className="contents-flex-left-inside-third-sellers-product-div"
@@ -88,13 +95,6 @@ const Order = () => {
             >
               Shipped 
             </div> */}
-
-            <div
-              onClick={() => navigate("/paidorder")}
-              className="contents-flex-left-inside-third-sellers-product-div"
-            >
-              Paid 
-            </div>
           </div>
           <div className="flex-right-inside-third-sellers-product-div">
             <div className="div-display-functions">
@@ -102,25 +102,32 @@ const Order = () => {
                 onClick={() => navigate("/orderr")}
                 className="div-display-slider active-div-display-slider"
               >
-                All 
+                All
               </div>
               <div
                 onClick={() => navigate("/processingorder")}
                 className="div-display-slider"
               >
-                Shipped 
+                In Transit
               </div>
               <div
                 onClick={() => navigate("/deliveredorder")}
                 className="div-display-slider"
               >
-                Delivered 
+                Shipped
               </div>
+              <div
+                onClick={() => navigate("/paidorder")}
+                className="div-display-slider"
+              >
+                Paid
+              </div>
+
               <div
                 onClick={() => navigate("/disputesorder")}
                 className="div-display-slider"
               >
-                Disputed 
+                Disputed
               </div>
               {/* <div
                 onClick={() => navigate("/shippedorder")}
@@ -128,12 +135,6 @@ const Order = () => {
               >
                 Shipped 
               </div> */}
-              <div
-                onClick={() => navigate("/paidorder")}
-                className="div-display-slider"
-              >
-                Paid 
-              </div>
             </div>
             <div>
               <div>{loading ? <ShimmerLoader /> : <div></div>}</div>
@@ -203,7 +204,7 @@ const Order = () => {
                           }}
                         >
                           <img
-                           alt='orders'
+                            alt="orders"
                             width="100%"
                             height="100%"
                             style={{
@@ -275,14 +276,14 @@ const Order = () => {
                         gap: "6px",
                       }}
                     >
-                      {order.paid === false ? (
+                      {/* {order.paid === false ? (
                         <button
                           className="button-orders"
                           style={{
                             backgroundColor: "#37AD3C",
                             color: "white",
                           }}
-                          onClick={()=> navigate("/pay")}
+                          onClick={() => navigate("/pay")}
                         >
                           {" "}
                           Pay Now <FaCreditCard />
@@ -294,16 +295,15 @@ const Order = () => {
                             backgroundColor: "#37AD3C",
                             color: "white",
                           }}
-                     
                         >
                           {" "}
                           Buy Again <FaCreditCard />{" "}
                         </button>
-                      )}
+                      )} */}
                       <button
                         className="button-orders"
                         style={{
-                          backgroundColor: "#66666696",
+                          backgroundColor: "#064bde",
                           color: "white",
                         }}
                         onClick={() => handleClick(order.unique_id)}

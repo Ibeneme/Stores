@@ -19,6 +19,7 @@ const EditAllForm = () => {
   const [salesPrice, setSalesPrice] = useState("");
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
+  const [maxQuantity, setMaxQuantity] = useState('')
   const [quantity, setQuantity] = useState("");
   const [remaining, setRemaining] = useState("");
 
@@ -37,6 +38,7 @@ const EditAllForm = () => {
         color: color,
         size: size,
       },
+      max_quantity: maxQuantity,
       quantity: quantity,
       remaining: remaining,
     };
@@ -253,6 +255,21 @@ const EditAllForm = () => {
               value={color}
               onChange={(e) => setColor(e.target.value)}
               placeholder="Color"
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <label htmlFor="remaining">Max Quantity</label>
+            <input
+              className="input-forms"
+              type="text"
+              value={maxQuantity}
+              onChange={(e) => setMaxQuantity(e.target.value)}
+              placeholder="Max Quantity"
             />
           </div>
           <div

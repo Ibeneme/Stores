@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { fetchShippedOrders } from "../../../Slices/orders/SellersOrders/OrdersSellersSlice";
+import { fetchOrdersInternal } from "../../../Slices/orders/SellersOrders/OrdersSellersSlice";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ShimmerLoader from "../../Loader/Shima";
@@ -37,7 +37,7 @@ const ShippedSellers = () => {
   useEffect(() => {
     const fetchOrdersData = async () => {
       try {
-        const response = await dispatch(fetchShippedOrders());
+        const response = await dispatch(fetchOrdersInternal());
         setOrdersData(response);
         setLoading(false);
       } catch (error) {
@@ -49,7 +49,14 @@ const ShippedSellers = () => {
     fetchOrdersData();
   }, [dispatch]);
 
-  console.log(ordersData, "console.log(data)");
+  console.log(
+    ordersData.payload?.data?.rows.filter((item) => item.shipped === true),
+    "console.log(data)"
+  );
+
+  const shippOrder = ordersData.payload?.data?.rows.filter(
+    (item) => item.shipped === true
+  );
 
   return (
     <div className="first-sellers-product-div">
@@ -134,7 +141,8 @@ const ShippedSellers = () => {
             </div>
             <div>
               <div>{loading ? <ShimmerLoader /> : <div></div>}</div>
-              {shippedOrders.error === "Orders not found!" ? (
+              {shippedOrders.error === "Orders not found!" ||
+              shippOrder?.length === 0 ? (
                 <div
                   style={{
                     display: "flex",
@@ -144,6 +152,20 @@ const ShippedSellers = () => {
                     padding: "48px",
                   }}
                 >
+                  {
+                    (console.log(
+                      ordersData?.payload?.data?.rows.filter(
+                        (item) => item.shipped === true
+                      )
+                    ),
+                    "kai")
+                  }
+                  {alert(
+                    ordersData?.payload?.data?.rows.filter(
+                      (item) => item.shipped === true
+                    )
+                  )}
+
                   <p
                     style={{
                       textAlign: "center",
@@ -168,104 +190,108 @@ const ShippedSellers = () => {
                 </div>
               ) : null}
 
-              {ordersData &&
-                ordersData?.payload?.data?.rows.map((order) => (
-                  <div
-                    key={order.unique_id}
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      paddingBottom: "12px",
-                      borderBottom: "1px solid #00000025",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
+              {shippOrder &&
+                shippOrder.map((order) => (
+                  <div>
+                    {order?.shipped === true && (
                       <div
+                        key={order.unique_id}
                         style={{
+                          width: "100%",
                           display: "flex",
-                          gap: "8px",
+                          flexDirection: "column",
+                          paddingBottom: "12px",
+                          borderBottom: "1px solid #00000025",
+                          marginBottom: "12px",
                         }}
                       >
                         <div
                           style={{
-                            width: "70px",
-                            height: "70px",
+                            display: "flex",
+                            justifyContent: "space-between",
                           }}
                         >
-                          <img
-                            alt='orders'
-                            width="100%"
-                            height="100%"
+                          <div
                             style={{
-                              borderRadius: "8px",
+                              display: "flex",
+                              gap: "8px",
                             }}
-                            src={order?.product_images_data?.[0]?.image?.url}
-                          />
+                          >
+                            <div
+                              style={{
+                                width: "70px",
+                                height: "70px",
+                              }}
+                            >
+                              <img
+                                alt="orders"
+                                width="100%"
+                                height="100%"
+                                style={{
+                                  borderRadius: "8px",
+                                }}
+                                src={
+                                  order?.product_images_data?.[0]?.image?.url
+                                }
+                              />
+                            </div>
+                            <div>
+                              <h3
+                                style={{
+                                  fontSize: "16px",
+                                }}
+                              >
+                                {order?.product_data?.name}
+                              </h3>
+                              <p
+                                style={{
+                                  fontSize: "12px",
+                                  margin: "2px 0",
+                                }}
+                              >
+                                {order?.product_data?.location}
+                              </p>
+                              <p
+                                style={{
+                                  fontSize: "14px",
+                                  fontWeight: "900",
+                                  color: "gray",
+                                  marginTop: "12px",
+                                }}
+                              >
+                                {" "}
+                                Qty: {order?.product_data?.quantity}
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "space-between",
+                              alignItems: "flex-end",
+                            }}
+                          >
+                            <p
+                              style={{
+                                fontSize: "18px",
+                                fontWeight: "900",
+                              }}
+                            >
+                              {" "}
+                              <span>&#8358;</span>
+                              {order.amount}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h3
-                            style={{
-                              fontSize: "16px",
-                            }}
-                          >
-                            {order?.product_data?.name}
-                          </h3>
-                          <p
-                            style={{
-                              fontSize: "12px",
-                              margin: "2px 0",
-                            }}
-                          >
-                            {order?.product_data?.location}
-                          </p>
-                          <p
-                            style={{
-                              fontSize: "14px",
-                              fontWeight: "900",
-                              color: "gray",
-                              marginTop: "12px",
-                            }}
-                          >
-                            {" "}
-                            Qty: {order?.product_data?.quantity}
-                          </p>
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                          alignItems: "flex-end",
-                        }}
-                      >
-                        <p
+                        <div
                           style={{
-                            fontSize: "18px",
-                            fontWeight: "900",
+                            display: "flex",
+                            marginTop: "16px",
+                            gap: "6px",
                           }}
                         >
-                          {" "}
-                          <span>&#8358;</span>
-                          {order.amount}
-                        </p>
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        marginTop: "16px",
-                        gap: "6px",
-                      }}
-                    >
-                      {/* {order?.paid && order?.shipped === true ? (
+                          {/* {order?.paid && order?.shipped === true ? (
                         order?.deliveryStatus ? null : (
                           <button
                             className="button-orders"
@@ -294,66 +320,70 @@ const ShippedSellers = () => {
                         </button>
                       )} */}
 
-                      <button
-                        className="button-orders"
-                        style={{
-                          backgroundColor: "#66666696",
-                          color: "white",
-                        }}
-                        onClick={() => handleClick(order.unique_id)}
-                      >
-                        {" "}
-                        View Order
-                      </button>
-                    </div>
-                    {isModalOpen && (
-                      <div className="modal">
-                        <div className="modal-content">
-                          <h2>Confirm Delete</h2>
-                          <p>Are you sure you want to delete this item?</p>
-                          <div className="modal-actions">
-                            <button
-                              className="modal-other"
-                              onClick={handleClose}
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              className=" modal-red"
-                              onClick={() => {
-                                handleClickCancel(order?.unique_id);
-                              }}
-                            >
-                              Confirm
-                            </button>
-                          </div>
+                          <button
+                            className="button-orders"
+                            style={{
+                              backgroundColor: "#66666696",
+                              color: "white",
+                            }}
+                            onClick={() => handleClick(order.unique_id)}
+                          >
+                            {" "}
+                            View Order
+                          </button>
                         </div>
-                      </div>
-                    )}
-                    {isModalOpenNext && (
-                      <div className="modal">
-                        <div className="modal-content">
-                          <h2>Update Order to Transit?</h2>
-                          <p>Are you sure you want tou update this order?</p>
-                          <div className="modal-actions">
-                            <button
-                              className="modal-other"
-                              onClick={handleCloseNext}
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              className=" modal-blue"
-                              onClick={() => {
-                                handlePaid(order?.order_unique_id);
-                              }}
-                            >
-                              Yes, Update
-                            </button>
+                        {isModalOpen && (
+                          <div className="modal">
+                            <div className="modal-content">
+                              <h2>Confirm Delete</h2>
+                              <p>Are you sure you want to delete this item?</p>
+                              <div className="modal-actions">
+                                <button
+                                  className="modal-other"
+                                  onClick={handleClose}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className=" modal-red"
+                                  onClick={() => {
+                                    handleClickCancel(order?.unique_id);
+                                  }}
+                                >
+                                  Confirm
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        )}
+                        {isModalOpenNext && (
+                          <div className="modal">
+                            <div className="modal-content">
+                              <h2>Update Order to Transit?</h2>
+                              <p>
+                                Are you sure you want tou update this order?
+                              </p>
+                              <div className="modal-actions">
+                                <button
+                                  className="modal-other"
+                                  onClick={handleCloseNext}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className=" modal-blue"
+                                  onClick={() => {
+                                    handlePaid(order?.order_unique_id);
+                                  }}
+                                >
+                                  Yes, Update
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    )}
+                    )}{" "}
                   </div>
                 ))}
               <div

@@ -19,11 +19,7 @@
   height: fit-content;
 }
 
-.disabled-button {
-  background-color: #ccc; /* Change the background color to gray */
-  color: #888; /* Change the text color to a lighter shade */
-  cursor: not-allowed; /* Change the cursor to 'not-allowed' */
-}
+
 
 .input-forms-checkout {
   width: 50vw;

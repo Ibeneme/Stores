@@ -66,35 +66,27 @@ const fetchUserOrdersByTrackingNumber = createAsyncThunk(
   }
 );
 
-// Create an async thunk to fetch shipped user orders
 const fetchShippedUserOrders = createAsyncThunk(
   "user/fetchShippedUserOrders",
   async (_, { getState }) => {
-    // Get the authentication token from the state
     const { token } = getState().auth;
-    // Set the headers with the access token
     const config = {
       headers: {
         "hydra-express-access-token": token,
       },
     };
-
     try {
-      // Make the API call to fetch shipped user orders
       const response = await axios.get(
-        "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/shipped?shipped=true",
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/orders/shipped",
         config
       );
-      // Return the data from the response
       return response.data;
     } catch (error) {
-      // If an error occurs, throw the error message
       throw error.response.data;
     }
   }
 );
 
-// Create an async thunk to fetch a user order by unique_id
 const fetchUserOrderByUniqueId = createAsyncThunk(
   "user/fetchUserOrderByUniqueId",
   async (uniqueId, { getState }) => {
@@ -146,6 +138,7 @@ const checkoutSingleProduct = createAsyncThunk(
     const config = {
       headers: {
         "hydra-express-access-token": token,
+        "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
       },
     };
 
@@ -236,13 +229,97 @@ const createOrderDispute = createAsyncThunk(
   }
 );
 
-// Create an async thunk to update order payment method
+const markAsReceived = createAsyncThunk(
+  "user/markAsReceived",
+  async ({ order_unique_id }, { getState }) => {
+    try {
+      const { token } = getState().auth;
+
+      const config = {
+        headers: {
+          "hydra-express-access-token": token,
+          "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
+        },
+      };
+      const data = {
+        unique_id: order_unique_id,
+      };
+
+      const response = await axios.put(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/received",
+        data,
+        config
+      );
+
+      console.log("markOrderAsShipped response:", response.data);
+    } catch (error) {
+      throw error.response.data;
+    }
+  }
+);
+
+const markAsCancel = createAsyncThunk(
+  "user/markAsCancel",
+  async ({ order_unique_id }, { getState }) => {
+    try {
+      const { token } = getState().auth;
+
+      const config = {
+        headers: {
+          "hydra-express-access-token": token,
+          "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
+        },
+      };
+      const data = {
+        unique_id: order_unique_id,
+      };
+
+      const response = await axios.post(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/cancel",
+        data,
+        config
+      );
+
+      console.log("markOrderAsShipped response:", response.data);
+    } catch (error) {
+      throw error.response.data;
+    }
+  }
+);
+
+const markAsDisputes = createAsyncThunk(
+  "user/markAsDisputes",
+  async ({ order_unique_id }, { getState }) => {
+    try {
+      const { token } = getState().auth;
+
+      const config = {
+        headers: {
+          "hydra-express-access-token": token,
+          "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
+        },
+      };
+      const data = {
+        unique_id: order_unique_id,
+      };
+
+      const response = await axios.post(
+        "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/dispute",
+        data,
+        config
+      );
+
+      console.log("markOrderAsShipped response:", response.data);
+    } catch (error) {
+      throw error.response.data;
+    }
+  }
+);
+
 const updateOrderPaymentMethod = createAsyncThunk(
   "user/updateOrderPaymentMethod",
   async ({ tracking_number, payment_method }, { getState }) => {
-    // Get the authentication token from the state
     const { token } = getState().auth;
-    // Set the headers with the access token
     const config = {
       headers: {
         "hydra-express-access-token": token,
@@ -264,13 +341,10 @@ const updateOrderPaymentMethod = createAsyncThunk(
   }
 );
 
-// Create an async thunk to check order payment status
 const checkOrderPaymentStatus = createAsyncThunk(
   "user/checkOrderPaymentStatus",
   async (tracking_number, { getState }) => {
-    // Get the authentication token from the state
     const { token } = getState().auth;
-    // Set the headers with the access token
     const config = {
       headers: {
         "hydra-express-access-token": token,
@@ -278,12 +352,10 @@ const checkOrderPaymentStatus = createAsyncThunk(
     };
 
     try {
-      // Make the API call to check order payment status
       const response = await axios.get(
         `https://us-central1-hydra-express.cloudfunctions.net/app/user/order/payment/status?tracking_number=${tracking_number}`,
         config
       );
-      // Return the data from the response
       return response.data;
     } catch (error) {
       // If an error occurs, throw the error message
@@ -381,27 +453,23 @@ const cancelUserOrder = createAsyncThunk(
 const deleteUserOrder = createAsyncThunk(
   "user/deleteUserOrder",
   async ({ unique_id }, { getState }) => {
-    // Get the authentication token from the state
     const { token } = getState().auth;
 
-    // Set the headers with the access token and hydra-express-access-key
     const config = {
       headers: {
         "hydra-express-access-token": token,
-        "hydra-express-access-key": "passcoder_1853cef81fea126373d2", // Add the static access key here
+        "hydra-express-access-key": "passcoder_1853cef81fea126373d2",
       },
     };
 
     try {
-      // Make the API call to cancel a user order
       const response = await axios.delete(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/delete",
-        { data: { unique_id }, ...config } // Pass the data in the request body for a DELETE request
+        { unique_id },
+        config
       );
-      // Return the data from the response
       return response.data;
     } catch (error) {
-      // If an error occurs, throw the error message
       throw error.response.data;
     }
   }
@@ -411,11 +479,13 @@ export const payOrder = createAsyncThunk(
   "orders/payOrder",
   async (tracking_number, { rejectWithValue, getState }) => {
     try {
-      const { token } = getState().auth; // Get the authentication token from the state
+
+      console.log(tracking_number,'trststtsac')
+      const { token } = getState().auth;
       const response = await axios.post(
         "https://us-central1-hydra-express.cloudfunctions.net/app/user/order/pay",
         {
-          tracking_number: tracking_number,
+          tracking_number,
         },
         {
           headers: {
@@ -466,6 +536,35 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+
+      .addCase(markAsReceived.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(markAsReceived.fulfilled, (state, action) => {
+        state.orders = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(markAsReceived.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(markAsCancel.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(markAsCancel.fulfilled, (state, action) => {
+        state.orders = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(markAsCancel.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
       // Handle fetchShippedUserOrders
       .addCase(fetchShippedUserOrders.pending, (state) => {
         state.loading = true;
@@ -534,6 +633,20 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+
+      .addCase(markAsDisputes.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(markAsDisputes.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(markAsDisputes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
       // Handle updateOrderPaymentMethod
       .addCase(updateOrderPaymentMethod.pending, (state) => {
         state.loading = true;
@@ -640,6 +753,9 @@ export {
   checkOrderPaymentStatus,
   cancelUserOrder,
   deleteUserOrder,
+  markAsReceived,
+  markAsCancel,
+  markAsDisputes,
 };
 
 export default usersSlice.reducer;

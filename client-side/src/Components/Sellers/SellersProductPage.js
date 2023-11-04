@@ -6,6 +6,9 @@ import { publishProduct } from "../../Slices/Sellers/publishProductSlice";
 import Loader from "../Loader/Loader";
 import { deleteProduct } from "../../Slices/Sellers/deleteProductSlice";
 import { deleteProductImage } from "../../Slices/Sellers/Image/deleteImageSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const SellersProductPage = () => {
   const product = useSelector((state) => state.sellersProductsDetails.products);
   const loading = useSelector((state) => state.sellersProductsDetails.loading);
@@ -36,7 +39,21 @@ const SellersProductPage = () => {
       .then(() => {
         // Product successfully deleted
         // Navigate to the success page
-        navigate(`/success?message=Product%20successfully%Added`);
+        navigate(`/sellersproductsdisplay`);
+
+        toast.success("Product Published successful;", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#007aff",
+            color: "white",
+          },
+        });
       })
       .catch((error) => {
         navigate(`/errorpage?message=Error%20Adding%20this%20Product`);
@@ -58,6 +75,22 @@ const SellersProductPage = () => {
     );
     try {
       const response = await dispatch(deleteProduct(unique_id));
+      if (response.type === "product/deleteProduct/fulfilled") {
+        navigate(`/sellersproductsdisplay`);
+        toast.error("Product Deleted successful;", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          style: {
+            backgroundColor: "#007aff",
+            color: "white",
+          },
+        });
+      }
 
       // Product successfully deleted
       // Navigate to the success page

@@ -5,7 +5,9 @@ import "../Products/ProductPage.css";
 import "./Cart.css";
 //import { fetchCartData } from "../../Slices/Cart/CartSlice";
 //import { fetchShippingPrice } from "../../Slices/Shipping/Shipping";
-import { checkoutMultipleProducts } from "../../Slices/orders/OrderSlice";
+import {
+  checkoutSingleProduct,
+} from "../../Slices/orders/OrderSlice";
 import { payOrder } from "../../Slices/orders/OrderSlice";
 import { addItemToCart } from "../../Slices/Cart/CartSlice";
 //import { toast } from "react-toastify";
@@ -21,9 +23,14 @@ const SingleCartCheckout = () => {
   const shipps = queryParams.get("shipps");
   const shipping_unique_id = queryParams.get("shipping_unique_id");
   const imageUrl = queryParams.get("imageUrl");
+
+  const origin_address = queryParams.get("origin_address");
+  const shipping_fee = queryParams.get("shipping_fee");
+  const distance = queryParams.get("distance");
+  const duration = queryParams.get("duration");
+  const to_address = queryParams.get("to_address");
   //const locationn = queryParams.get("locationn");
 
-  console.log(imageUrl, shipping_unique_id, "imageUrl");
 
   // const auth = useSelector((state) => state.auth);
   const shippingPrice = useSelector((state) => state.shipping.shippingPrice);
@@ -51,7 +58,7 @@ const SingleCartCheckout = () => {
   const handleCheckouts = async () => {
     try {
       if (selectedOption) {
-        const payment_method = selectedOption;
+  
 
         const responseData = await dispatch(
           addItemToCart({
@@ -61,13 +68,21 @@ const SingleCartCheckout = () => {
         );
         if (responseData.type === "cart/addItemToCart/fulfilled") {
           console.log(responseData, "respnsess");
+
+        
           const response = await dispatch(
-            checkoutMultipleProducts({
-              cart_unique_ids: cartUniqueIds,
-              payment_method,
+            checkoutSingleProduct({
+              product_unique_id: product_unique_id,
+              quantity: 1,
+              payment_method: selectedOption,
+              shipping_unique_id,
+              shipping_fee: shipping_fee,
+              to_address: to_address,
+              duration: duration,
+              distance: distance,
             })
           );
-
+          console.log("Checkout response:", response);
           if (response.payload.success === true) {
             const tracking_number = response?.payload?.data?.tracking_number;
             console.log(tracking_number, "trac");
@@ -90,6 +105,20 @@ const SingleCartCheckout = () => {
 
   const [cartUniqueIds, setCartUniqueIds] = useState([]);
   const [newLocation, setLocation] = useState("");
+
+
+
+  console.log(
+    imageUrl,
+    shipping_fee,
+    distance,
+    duration,
+    shipping_unique_id,
+    origin_address,
+    cartUniqueIds,
+    "origin_address"
+  );
+
 
   //   useEffect(() => {
   //     dispatch(fetchCartData())

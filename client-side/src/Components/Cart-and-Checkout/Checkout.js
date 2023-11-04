@@ -299,16 +299,18 @@ const Cart = () => {
 
         console.log(checkoutResponse, "extractedDatacheckoutResponse");
         if (checkoutResponse?.payload?.success === true) {
-          navigate("/orderr");
+          //navigate("/orderr");
           const tracking_number =
             checkoutResponse?.payload?.data?.tracking_number;
           console.log(tracking_number, "trststtsac");
 
           try {
-            const payOrderResponse = await dispatch(
-              payOrder({ tracking_number })
-            );
+            const payOrderResponse = await dispatch(payOrder(tracking_number));
             console.log("Responsetracking_number:", payOrderResponse);
+
+            if (payOrderResponse?.type === "orders/payOrder/fulfilled") {
+              navigate("/orderr");
+            }
           } catch (error) {}
         }
 

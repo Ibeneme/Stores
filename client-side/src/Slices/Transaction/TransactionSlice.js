@@ -1,11 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const API_BASE_URL = 'https://us-central1-hydra-express.cloudfunctions.net/app';
-
+const API_BASE_URL = "https://us-central1-hydra-express.cloudfunctions.net/app";
 
 const getAccessTokenFromState = (getState) => {
-  const { token } = getState().auth; 
+  const { token } = getState().auth;
   return token;
 };
 
@@ -14,29 +13,43 @@ const createAxiosInstance = (getState) => {
   return axios.create({
     baseURL: API_BASE_URL,
     headers: {
-      'hydra-express-access-key': token,
+      "hydra-express-access-token": token,
     },
   });
 };
 
+const fetchAllTransactions = createAsyncThunk(
+  "transaction/fetchAllTransactions",
+  async (_, { getState }) => {
+    const { token } = getState().auth;
+    const config = {
+      headers: {
+        "hydra-express-access-token": token,
+      },
+    };
 
-const fetchAllTransactions = createAsyncThunk('transaction/fetchAllTransactions', async (_, { getState }) => {
-  try {
-    const axiosInstance = createAxiosInstance(getState);
-    const response = await axiosInstance.get('/user/transactions');
-    return response.data;
-  } catch (error) {
-    throw error.response.data;
+    try {
+      const response = await axios.get(
+        `https://us-central1-hydra-express.cloudfunctions.net/app/user/transactions`,
+        config
+      );
+      console.log(response.data, "catchData:");
+      return response.data;
+    } catch (error) {
+      console.log(error.response, "catchDataeer:");
+      throw error.response.data;
+    }
   }
-});
-
+);
 
 const fetchTransactionsByType = createAsyncThunk(
-  'transaction/fetchTransactionsByType',
+  "transaction/fetchTransactionsByType",
   async (transactionType, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      const response = await axiosInstance.get(`/user/transactions/via/type?type=${transactionType}`);
+      const response = await axiosInstance.get(
+        `/user/transactions/via/type?type=${transactionType}`
+      );
       return response.data;
     } catch (error) {
       throw error.response.data;
@@ -44,9 +57,8 @@ const fetchTransactionsByType = createAsyncThunk(
   }
 );
 
-
 const fetchTransactionsByStatus = createAsyncThunk(
-  'transaction/fetchTransactionsByStatus',
+  "transaction/fetchTransactionsByStatus",
   async (transactionStatus, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
@@ -60,13 +72,14 @@ const fetchTransactionsByStatus = createAsyncThunk(
   }
 );
 
-
 const fetchTransactionByUniqueId = createAsyncThunk(
-  'transaction/fetchTransactionByUniqueId',
+  "transaction/fetchTransactionByUniqueId",
   async (uniqueId, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      const response = await axiosInstance.get(`/user/transaction?unique_id=${uniqueId}`);
+      const response = await axiosInstance.get(
+        `/user/transaction?unique_id=${uniqueId}`
+      );
       return response.data;
     } catch (error) {
       throw error.response.data;
@@ -76,11 +89,15 @@ const fetchTransactionByUniqueId = createAsyncThunk(
 
 // Create an async thunk to make a payment deposit transaction
 const makePaymentDeposit = createAsyncThunk(
-  'transaction/makePaymentDeposit',
+  "transaction/makePaymentDeposit",
   async ({ amount, payment_method, reference }, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      await axiosInstance.post('/user/transaction/payment/deposit', { amount, payment_method, reference });
+      await axiosInstance.post("/user/transaction/payment/deposit", {
+        amount,
+        payment_method,
+        reference,
+      });
     } catch (error) {
       throw error.response.data;
     }
@@ -89,11 +106,13 @@ const makePaymentDeposit = createAsyncThunk(
 
 // Create an async thunk to cancel a payment deposit transaction
 const cancelPaymentDeposit = createAsyncThunk(
-  'transaction/cancelPaymentDeposit',
+  "transaction/cancelPaymentDeposit",
   async (uniqueId, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      await axiosInstance.put('/user/transaction/cancel/deposit', { unique_id: uniqueId });
+      await axiosInstance.put("/user/transaction/cancel/deposit", {
+        unique_id: uniqueId,
+      });
     } catch (error) {
       throw error.response.data;
     }
@@ -102,11 +121,13 @@ const cancelPaymentDeposit = createAsyncThunk(
 
 // Create an async thunk to complete a payment deposit transaction
 const completePaymentDeposit = createAsyncThunk(
-  'transaction/completePaymentDeposit',
+  "transaction/completePaymentDeposit",
   async (uniqueId, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      await axiosInstance.put('/user/transaction/complete/deposit', { unique_id: uniqueId });
+      await axiosInstance.put("/user/transaction/complete/deposit", {
+        unique_id: uniqueId,
+      });
     } catch (error) {
       throw error.response.data;
     }
@@ -115,11 +136,14 @@ const completePaymentDeposit = createAsyncThunk(
 
 // Create an async thunk to make a payment withdrawal transaction
 const makePaymentWithdrawal = createAsyncThunk(
-  'transaction/makePaymentWithdrawal',
+  "transaction/makePaymentWithdrawal",
   async ({ amount, payment_method }, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      await axiosInstance.post('/user/transaction/payment/withdrawal', { amount, payment_method });
+      await axiosInstance.post("/user/transaction/payment/withdrawal", {
+        amount,
+        payment_method,
+      });
     } catch (error) {
       throw error.response.data;
     }
@@ -128,11 +152,13 @@ const makePaymentWithdrawal = createAsyncThunk(
 
 // Create an async thunk to cancel a payment withdrawal transaction
 const cancelPaymentWithdrawal = createAsyncThunk(
-  'transaction/cancelPaymentWithdrawal',
+  "transaction/cancelPaymentWithdrawal",
   async (uniqueId, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      await axiosInstance.put('/user/transaction/cancel/withdrawal', { unique_id: uniqueId });
+      await axiosInstance.put("/user/transaction/cancel/withdrawal", {
+        unique_id: uniqueId,
+      });
     } catch (error) {
       throw error.response.data;
     }
@@ -141,11 +167,13 @@ const cancelPaymentWithdrawal = createAsyncThunk(
 
 // Create an async thunk to complete a payment withdrawal transaction
 const completePaymentWithdrawal = createAsyncThunk(
-  'transaction/completePaymentWithdrawal',
+  "transaction/completePaymentWithdrawal",
   async (uniqueId, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      await axiosInstance.put('/user/transaction/complete/withdrawal', { unique_id: uniqueId });
+      await axiosInstance.put("/user/transaction/complete/withdrawal", {
+        unique_id: uniqueId,
+      });
     } catch (error) {
       throw error.response.data;
     }
@@ -154,14 +182,14 @@ const completePaymentWithdrawal = createAsyncThunk(
 
 // Create an async thunk to delete a transaction
 const deleteTransaction = createAsyncThunk(
-  'transaction/deleteTransaction',
+  "transaction/deleteTransaction",
   async (uniqueId, { getState }) => {
     try {
       const axiosInstance = createAxiosInstance(getState);
-      await axiosInstance.delete('/user/transaction', {
+      await axiosInstance.delete("/user/transaction", {
         data: { unique_id: uniqueId },
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
     } catch (error) {
@@ -172,7 +200,7 @@ const deleteTransaction = createAsyncThunk(
 
 // Create the Redux slice for transactions
 const transactionSlice = createSlice({
-  name: 'transaction',
+  name: "transaction",
   initialState: {
     transactions: null,
     loading: false,
